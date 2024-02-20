@@ -3,7 +3,9 @@ ea4bc82a6ad023ab7ee23ee620429895
 control_label_theme.tres::Theme::4379940882667510231::1708391602::0::1::::<><>::uid://ce3b7qrw14sp3::::res://assets/fonts/montreal/Montreal-Regular.ttf
 icon.svg::CompressedTexture2D::3101452915050814374::1707697524::1708392974::1::::<><>::
 README.md::TextFile::-1::1708391602::0::1::::<><>::
-::res://assets/::1708394445
+::res://assets/::1708395084
+back01.png::CompressedTexture2D::4006931886431159750::1707697774::1708395084::1::::<><>::
+back02.png::CompressedTexture2D::5694519350841094444::1707697774::1708395084::1::::<><>::
 background.jpg::CompressedTexture2D::1922810555673797878::1708391602::1708394447::1::::<><>::
 ::res://assets/buttons/::1708393901
 IconButton_Small_Blue_Circle.png::CompressedTexture2D::8184744858480372790::1708391602::1708392974::1::::<><>::
@@ -29,11 +31,14 @@ OFL.txt::TextFile::-1::1708391602::0::1::::<><>::
 Banner_Orange.svg::CompressedTexture2D::2580597008150101855::1708391602::1708392974::1::::<><>::
 Box_Orange_Rounded.svg::CompressedTexture2D::4974059409305271479::1708391602::1708392975::1::::<><>::
 ButtonText_Orange_TextField.png::CompressedTexture2D::8261383073031545950::1708391602::1708392974::1::::<><>::
-::res://scenes/::1708394445
+::res://scenes/::1708395172
 game_scene.tscn::PackedScene::1706795221342817316::1708394445::0::1::::<><>::uid://2non5yojsj8q::::res://assets/background.jpg<>uid://cdti6c0vnval3::::res://scenes/pause_button.tscn<>uid://b3nw8ski1k4dn::::res://control_label_theme.tres
-main_node.tscn::PackedScene::8479032448855330000::1708393737::0::1::::<><>::res://scripts/main_node.gd<>uid://dkej8f56i2pty::::res://scenes/start_scene.tscn<>uid://yk1wyekngt53::::res://scenes/game_scene.tscn
+main_node.tscn::PackedScene::8479032448855330000::1708395172::0::1::::<><>::res://scripts/main_node.gd<>uid://dkej8f56i2pty::::res://scenes/start_scene.tscn<>uid://yk1wyekngt53::::res://scenes/game_scene.tscn
 pause_button.tscn::PackedScene::5023172315819771242::1708391602::0::1::::<><>::uid://caigyein2587b::::res://assets/buttons/IconButton_Small_Orange_Circle.svg<>uid://b8wlkh3hxbgdn::::res://assets/fonts/kirifont/KiriFont.ttf
-start_scene.tscn::PackedScene::7870013692990777106::1708394445::0::1::::<><>::res://scripts/start_screen.gd<>uid://2non5yojsj8q::::res://assets/background.jpg<>uid://bc1cb5najykmp::::res://assets/start_screen/Banner_Orange.svg<>uid://bo10p827dpevb::::res://assets/fonts/LiberationSerif-Regular.ttf<>uid://bwo4udgrflhao::::res://assets/buttons/red_button11.png<>uid://dwqlsmbe6bsv::::res://assets/buttons/red_button12.png<>uid://b8wlkh3hxbgdn::::res://assets/fonts/kirifont/KiriFont.ttf
-::res://scripts/::1708391602
+start_scene 2.tscn::PackedScene::6089513931954692728::1708395172::0::1::::<><>::uid://2non5yojsj8q::::res://assets/background.jpg<>uid://bo10p827dpevb::::res://assets/fonts/LiberationSerif-Regular.ttf<>uid://bwo4udgrflhao::::res://assets/buttons/red_button11.png<>uid://dwqlsmbe6bsv::::res://assets/buttons/red_button12.png<>uid://b8wlkh3hxbgdn::::res://assets/fonts/kirifont/KiriFont.ttf<>uid://bxc8t2wncfxs5::::res://assets/back01.png<>res://scripts/CardTopLeft.gd<>uid://cnep5wnsqfkvs::::res://assets/back02.png<>res://scripts/CardBtmRight.gd
+start_scene.tscn::PackedScene::7870013692990777106::1708395172::0::1::::<><>::res://scripts/start_screen.gd<>uid://2non5yojsj8q::::res://assets/background.jpg<>uid://bc1cb5najykmp::::res://assets/start_screen/Banner_Orange.svg<>uid://bo10p827dpevb::::res://assets/fonts/LiberationSerif-Regular.ttf<>uid://bwo4udgrflhao::::res://assets/buttons/red_button11.png<>uid://dwqlsmbe6bsv::::res://assets/buttons/red_button12.png<>uid://b8wlkh3hxbgdn::::res://assets/fonts/kirifont/KiriFont.ttf
+::res://scripts/::1708395013
+CardBtmRight.gd::GDScript::-1::1707799186::0::1::::<>Sprite2D<>::
+CardTopLeft.gd::GDScript::-1::1707798512::0::1::::<>Sprite2D<>::
 main_node.gd::GDScript::-1::1708391602::0::1::::<>Node<>::
 start_screen.gd::GDScript::-1::1708391602::0::1::::<>Node2D<>::

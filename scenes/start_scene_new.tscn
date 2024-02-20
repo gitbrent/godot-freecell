@@ -1,0 +1,93 @@
+[gd_scene load_steps=10 format=3 uid="uid://cs02n06c7qb41"]
+
+[ext_resource type="Texture2D" uid="uid://2non5yojsj8q" path="res://assets/background.jpg" id="1_56qmj"]
+[ext_resource type="FontFile" uid="uid://bo10p827dpevb" path="res://assets/fonts/LiberationSerif-Regular.ttf" id="2_ddlmt"]
+[ext_resource type="Texture2D" uid="uid://bwo4udgrflhao" path="res://assets/buttons/red_button11.png" id="3_d8fqx"]
+[ext_resource type="Texture2D" uid="uid://dwqlsmbe6bsv" path="res://assets/buttons/red_button12.png" id="4_mv4h2"]
+[ext_resource type="FontFile" uid="uid://b8wlkh3hxbgdn" path="res://assets/fonts/kirifont/KiriFont.ttf" id="5_e5gml"]
+[ext_resource type="Texture2D" uid="uid://bxc8t2wncfxs5" path="res://assets/back01.png" id="5_uibdg"]
+[ext_resource type="Script" path="res://scripts/CardTopLeft.gd" id="6_6a0jv"]
+[ext_resource type="Texture2D" uid="uid://cnep5wnsqfkvs" path="res://assets/back02.png" id="7_t446a"]
+[ext_resource type="Script" path="res://scripts/CardBtmRight.gd" id="8_iekfn"]
+
+[node name="StartScene" type="Node"]
+
+[node name="Background" type="TextureRect" parent="."]
+offset_right = 1152.0
+offset_bottom = 648.0
+texture = ExtResource("1_56qmj")
+expand_mode = 1
+
+[node name="Title" type="RichTextLabel" parent="."]
+offset_top = 161.0
+offset_right = 1154.0
+offset_bottom = 311.0
+theme_override_colors/default_color = Color(0.6, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.2)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/shadow_offset_x = 5
+theme_override_constants/shadow_offset_y = 5
+theme_override_constants/shadow_outline_size = 5
+theme_override_constants/outline_size = 5
+theme_override_fonts/normal_font = ExtResource("2_ddlmt")
+theme_override_font_sizes/normal_font_size = 132
+bbcode_enabled = true
+text = "[center]FreeCell Solitaire[/center]"
+
+[node name="StartButton" type="TextureButton" parent="."]
+offset_left = 398.0
+offset_top = 354.0
+offset_right = 782.0
+offset_bottom = 454.0
+texture_normal = ExtResource("3_d8fqx")
+texture_pressed = ExtResource("4_mv4h2")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="CenterContainer" type="CenterContainer" parent="StartButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="StartButton/CenterContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_e5gml")
+theme_override_font_sizes/font_size = 48
+text = "START"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TopContainer" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 180.0
+grow_horizontal = 2
+
+[node name="CardTopLeft" type="Sprite2D" parent="TopContainer"]
+position = Vector2(75, 90)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("5_uibdg")
+script = ExtResource("6_6a0jv")
+
+[node name="BtmContainer" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -183.0
+offset_right = 2.0
+offset_bottom = -3.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="CardBtmRight" type="Sprite2D" parent="BtmContainer"]
+position = Vector2(1083, 94)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("7_t446a")
+script = ExtResource("8_iekfn")

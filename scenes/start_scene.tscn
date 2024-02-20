@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://dkej8f56i2pty"]
 
 [ext_resource type="Script" path="res://scripts/start_screen.gd" id="1_54cyh"]
-[ext_resource type="Texture2D" uid="uid://2non5yojsj8q" path="res://assets/background.jpg" id="1_p6www"]
+[ext_resource type="Texture2D" uid="uid://2non5yojsj8q" path="res://assets/background.jpg" id="2_2bjxc"]
 [ext_resource type="Texture2D" uid="uid://bc1cb5najykmp" path="res://assets/start_screen/Banner_Orange.svg" id="2_ppja0"]
 [ext_resource type="FontFile" uid="uid://bo10p827dpevb" path="res://assets/fonts/LiberationSerif-Regular.ttf" id="4_g6ll0"]
 [ext_resource type="Texture2D" uid="uid://bwo4udgrflhao" path="res://assets/buttons/red_button11.png" id="4_mxfrb"]
@@ -15,7 +15,7 @@ script = ExtResource("1_54cyh")
 offset_right = 1152.0
 offset_bottom = 648.0
 size_flags_vertical = 4
-texture = ExtResource("1_p6www")
+texture = ExtResource("2_2bjxc")
 expand_mode = 3
 
 [node name="BannerOrange" type="Sprite2D" parent="."]
