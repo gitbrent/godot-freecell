@@ -4,3 +4,5 @@ res://scenes/start_scene 2.tscn
 res://scenes/start_scene_new.tscn
 res://scenes/start_scene_new.gd
 res://scripts/main_node.gd
+res://scripts/CardTopLeft.gd
+res://scripts/CardBtmRight.gd

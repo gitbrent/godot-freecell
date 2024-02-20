@@ -9,7 +9,7 @@ var sprite_width = 75
 
 func _ready():
 	parent_width = get_parent().get_size().x
-	sprite = get_parent().get_node("CardBtmRight")
+	sprite = get_parent().get_node("CardR")
 	sprite_width = sprite.get_rect().size.x * sprite.scale.x
 
 func _process(delta):

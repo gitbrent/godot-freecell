@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://cs02n06c7qb41"]
+[gd_scene load_steps=13 format=3 uid="uid://cs02n06c7qb41"]
 
 [ext_resource type="Texture2D" uid="uid://2non5yojsj8q" path="res://assets/background.jpg" id="1_jssrt"]
 [ext_resource type="Script" path="res://scenes/start_scene_new.gd" id="1_rm5e3"]
@@ -6,10 +6,12 @@
 [ext_resource type="Texture2D" uid="uid://bwo4udgrflhao" path="res://assets/buttons/red_button11.png" id="3_w88dj"]
 [ext_resource type="Texture2D" uid="uid://dwqlsmbe6bsv" path="res://assets/buttons/red_button12.png" id="4_l5kvs"]
 [ext_resource type="FontFile" uid="uid://b8wlkh3hxbgdn" path="res://assets/fonts/kirifont/KiriFont.ttf" id="5_kmbjq"]
-[ext_resource type="Texture2D" uid="uid://bxc8t2wncfxs5" path="res://assets/back01.png" id="6_ahjxa"]
+[ext_resource type="Texture2D" uid="uid://c0i3yjwwyr23w" path="res://assets/cards/clubs_ace.png" id="7_fbiee"]
 [ext_resource type="Script" path="res://scripts/CardTopLeft.gd" id="7_mxw17"]
-[ext_resource type="Texture2D" uid="uid://cnep5wnsqfkvs" path="res://assets/back02.png" id="8_ovatb"]
 [ext_resource type="Script" path="res://scripts/CardBtmRight.gd" id="9_o68e0"]
+[ext_resource type="Texture2D" uid="uid://dji1xb1v85db6" path="res://assets/cards/diamonds_ace.png" id="9_of62o"]
+[ext_resource type="Texture2D" uid="uid://6w8vr1fs0gr4" path="res://assets/cards/hearts_ace.png" id="11_04y4u"]
+[ext_resource type="Texture2D" uid="uid://b8fkycivux6mx" path="res://assets/cards/spades_ace.png" id="12_0onm5"]
 
 [node name="StartScene" type="Node2D"]
 script = ExtResource("1_rm5e3")
@@ -51,17 +53,16 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_bottom = -8.0
 grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Label" type="Label" parent="StartButton/CenterContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("5_kmbjq")
-theme_override_font_sizes/font_size = 48
+theme_override_font_sizes/font_size = 42
 text = "START"
 
-[node name="TopContainer" type="Control" parent="."]
+[node name="ContTop" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 10
 anchor_right = 1.0
@@ -69,13 +70,19 @@ offset_right = 1152.0
 offset_bottom = 180.0
 grow_horizontal = 2
 
-[node name="CardTopLeft" type="Sprite2D" parent="TopContainer"]
+[node name="CardL" type="Sprite2D" parent="ContTop"]
 position = Vector2(75, 90)
 scale = Vector2(0.2, 0.2)
-texture = ExtResource("6_ahjxa")
+texture = ExtResource("7_fbiee")
 script = ExtResource("7_mxw17")
 
-[node name="BtmContainer" type="Control" parent="."]
+[node name="CardR" type="Sprite2D" parent="ContTop"]
+position = Vector2(1083, 94)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("9_of62o")
+script = ExtResource("9_o68e0")
+
+[node name="ContBtm" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 12
 anchor_top = 1.0
@@ -88,10 +95,16 @@ offset_bottom = 649.0
 grow_horizontal = 2
 grow_vertical = 0
 
-[node name="CardBtmRight" type="Sprite2D" parent="BtmContainer"]
+[node name="CardL" type="Sprite2D" parent="ContBtm"]
+position = Vector2(75, 90)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("11_04y4u")
+script = ExtResource("7_mxw17")
+
+[node name="CardR" type="Sprite2D" parent="ContBtm"]
 position = Vector2(1083, 94)
 scale = Vector2(0.2, 0.2)
-texture = ExtResource("8_ovatb")
+texture = ExtResource("12_0onm5")
 script = ExtResource("9_o68e0")
 
 [connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]
