@@ -10,4 +10,3 @@ script = ExtResource("1_mdu7i")
 [node name="StartScene" parent="." instance=ExtResource("2_rlurv")]
 
 [node name="GameScene" parent="." instance=ExtResource("3_0efa7")]
-visible = false

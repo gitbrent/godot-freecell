@@ -14,4 +14,3 @@ func _process(delta):
 func on_start_button_pressed():
 	start_scene.visible = false
 	game_scene.visible = true
-	#pass

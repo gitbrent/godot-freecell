@@ -6,7 +6,7 @@
 
 [node name="GameScene" type="Node2D"]
 
-[node name="BackgroundGreenFelt" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="."]
 offset_right = 1154.0
 offset_bottom = 648.0
 texture = ExtResource("1_86hx2")
@@ -18,7 +18,7 @@ anchors_preset = 0
 offset_right = 230.0
 offset_bottom = 648.0
 
-[node name="PauseButton" parent="Control" instance=ExtResource("2_mvke8")]
+[node name="BtnPause" parent="Control" instance=ExtResource("2_mvke8")]
 layout_mode = 2
 offset_left = 15.0
 offset_top = 15.0
@@ -50,28 +50,28 @@ offset_bottom = -10.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Control/ColorRect/VBoxContainer"]
+[node name="HBoxContScore" type="HBoxContainer" parent="Control/ColorRect/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Control/ColorRect/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="Control/ColorRect/VBoxContainer/HBoxContScore"]
 layout_mode = 2
 theme = ExtResource("3_vv2if")
 text = "Score	"
 
-[node name="Label2" type="Label" parent="Control/ColorRect/VBoxContainer/HBoxContainer"]
+[node name="Value" type="Label" parent="Control/ColorRect/VBoxContainer/HBoxContScore"]
 layout_mode = 2
 size_flags_horizontal = 10
 text = "9999"
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="Control/ColorRect/VBoxContainer"]
+[node name="HBoxContMoves" type="HBoxContainer" parent="Control/ColorRect/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Control/ColorRect/VBoxContainer/HBoxContainer2"]
+[node name="Label" type="Label" parent="Control/ColorRect/VBoxContainer/HBoxContMoves"]
 layout_mode = 2
 theme = ExtResource("3_vv2if")
 text = "Moves"
 
-[node name="Label2" type="Label" parent="Control/ColorRect/VBoxContainer/HBoxContainer2"]
+[node name="Value" type="Label" parent="Control/ColorRect/VBoxContainer/HBoxContMoves"]
 layout_mode = 2
 size_flags_horizontal = 10
 text = "13	"
