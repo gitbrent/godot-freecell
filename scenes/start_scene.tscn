@@ -1,0 +1,103 @@
+[gd_scene load_steps=9 format=3 uid="uid://dkej8f56i2pty"]
+
+[ext_resource type="Script" path="res://scripts/start_screen.gd" id="1_54cyh"]
+[ext_resource type="Texture2D" uid="uid://2non5yojsj8q" path="res://assets/background_green felt.jpg" id="1_p6www"]
+[ext_resource type="Texture2D" uid="uid://bc1cb5najykmp" path="res://assets/start_screen/Banner_Orange.svg" id="2_ppja0"]
+[ext_resource type="Texture2D" uid="uid://c71jvatphm1fc" path="res://assets/buttons/UI-7.png" id="4_xs1ld"]
+[ext_resource type="Texture2D" uid="uid://cid7a2p8kpokp" path="res://assets/buttons/UI-8.png" id="5_qrdwh"]
+[ext_resource type="FontFile" uid="uid://b8wlkh3hxbgdn" path="res://assets/fonts/kirifont/KiriFont.ttf" id="6_pai5w"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ed4aq"]
+bg_color = Color(0.219608, 0.568627, 0.917647, 1)
+border_width_bottom = 4
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+shadow_color = Color(0, 0, 0, 0.2)
+shadow_size = 4
+shadow_offset = Vector2(2, 2)
+
+[sub_resource type="Theme" id="Theme_7po1u"]
+Button/styles/normal = SubResource("StyleBoxFlat_ed4aq")
+
+[node name="StartScreen" type="Node2D"]
+script = ExtResource("1_54cyh")
+
+[node name="Background" type="TextureRect" parent="."]
+offset_right = 1152.0
+offset_bottom = 648.0
+size_flags_vertical = 4
+texture = ExtResource("1_p6www")
+expand_mode = 3
+
+[node name="BannerOrange" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(575, 218)
+scale = Vector2(0.836264, 0.836264)
+texture = ExtResource("2_ppja0")
+
+[node name="Title" type="RichTextLabel" parent="."]
+offset_top = 135.0
+offset_right = 1152.0
+offset_bottom = 280.0
+size_flags_horizontal = 4
+theme_override_colors/default_color = Color(1, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0.2, 0.2, 0.2, 1)
+theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
+theme_override_constants/shadow_offset_x = 4
+theme_override_constants/shadow_offset_y = 4
+theme_override_constants/shadow_outline_size = 4
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/normal_font_size = 96
+bbcode_enabled = true
+text = "[center]FreeCell Solitaire[/center]"
+
+[node name="StartButton" type="TextureButton" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 383.0
+offset_top = 385.0
+offset_right = 1176.0
+offset_bottom = 591.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+size_flags_vertical = 4
+texture_normal = ExtResource("5_qrdwh")
+texture_pressed = ExtResource("5_qrdwh")
+texture_hover = ExtResource("4_xs1ld")
+
+[node name="CenterContainer" type="CenterContainer" parent="StartButton"]
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -71.5
+offset_right = 71.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="StartButton/CenterContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("6_pai5w")
+theme_override_font_sizes/font_size = 72
+text = "Start"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="."]
+visible = false
+offset_left = 383.0
+offset_top = 314.0
+offset_right = 614.0
+offset_bottom = 385.0
+theme = SubResource("Theme_7po1u")
+text = "START"
+
+[connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]
