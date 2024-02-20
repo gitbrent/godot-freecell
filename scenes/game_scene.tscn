@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://yk1wyekngt53"]
 
-[ext_resource type="Texture2D" uid="uid://2non5yojsj8q" path="res://assets/background_green felt.jpg" id="1_86hx2"]
+[ext_resource type="Texture2D" uid="uid://2non5yojsj8q" path="res://assets/background.jpg" id="1_86hx2"]
 [ext_resource type="PackedScene" uid="uid://cdti6c0vnval3" path="res://scenes/pause_button.tscn" id="2_mvke8"]
 [ext_resource type="Theme" uid="uid://b3nw8ski1k4dn" path="res://control_label_theme.tres" id="3_vv2if"]
 
