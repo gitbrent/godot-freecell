@@ -1,8 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://yk1wyekngt53"]
+[gd_scene load_steps=6 format=3 uid="uid://yk1wyekngt53"]
 
 [ext_resource type="Texture2D" uid="uid://2non5yojsj8q" path="res://assets/background_green felt.jpg" id="1_86hx2"]
 [ext_resource type="PackedScene" uid="uid://cdti6c0vnval3" path="res://scenes/pause_button.tscn" id="2_mvke8"]
 [ext_resource type="Theme" uid="uid://b3nw8ski1k4dn" path="res://control_label_theme.tres" id="3_vv2if"]
+[ext_resource type="Texture2D" uid="uid://5ua6yri85q8k" path="res://assets/cards/back07.png" id="4_hsxry"]
+[ext_resource type="Texture2D" uid="uid://bghmitwbyi8rc" path="res://assets/cards/clubs_king.png" id="5_45xfn"]
 
 [node name="GameScene" type="Node2D"]
 
@@ -12,20 +14,29 @@ offset_bottom = 648.0
 texture = ExtResource("1_86hx2")
 expand_mode = 3
 
-[node name="Control" type="Control" parent="."]
+[node name="Label" type="Label" parent="."]
+offset_left = 624.0
+offset_top = 15.0
+offset_right = 682.0
+offset_bottom = 118.0
+theme_override_font_sizes/font_size = 36
+text = "A B
+C D"
+
+[node name="LeftControl" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 230.0
 offset_bottom = 648.0
 
-[node name="BtnPause" parent="Control" instance=ExtResource("2_mvke8")]
+[node name="BtnPause" parent="LeftControl" instance=ExtResource("2_mvke8")]
 layout_mode = 2
 offset_left = 15.0
 offset_top = 15.0
 offset_right = 280.0
 offset_bottom = 281.0
 
-[node name="ColorRect" type="ColorRect" parent="Control"]
+[node name="InfoRect" type="ColorRect" parent="LeftControl"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -38,7 +49,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.25098)
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Control/ColorRect"]
+[node name="VBoxContainer" type="VBoxContainer" parent="LeftControl/InfoRect"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -50,28 +61,174 @@ offset_bottom = -10.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="HBoxContScore" type="HBoxContainer" parent="Control/ColorRect/VBoxContainer"]
+[node name="HBoxContScore" type="HBoxContainer" parent="LeftControl/InfoRect/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Control/ColorRect/VBoxContainer/HBoxContScore"]
+[node name="Label" type="Label" parent="LeftControl/InfoRect/VBoxContainer/HBoxContScore"]
 layout_mode = 2
 theme = ExtResource("3_vv2if")
 text = "Score	"
 
-[node name="Value" type="Label" parent="Control/ColorRect/VBoxContainer/HBoxContScore"]
+[node name="Value" type="Label" parent="LeftControl/InfoRect/VBoxContainer/HBoxContScore"]
 layout_mode = 2
 size_flags_horizontal = 10
 text = "9999"
 
-[node name="HBoxContMoves" type="HBoxContainer" parent="Control/ColorRect/VBoxContainer"]
+[node name="HBoxContMoves" type="HBoxContainer" parent="LeftControl/InfoRect/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Control/ColorRect/VBoxContainer/HBoxContMoves"]
+[node name="Label" type="Label" parent="LeftControl/InfoRect/VBoxContainer/HBoxContMoves"]
 layout_mode = 2
 theme = ExtResource("3_vv2if")
 text = "Moves"
 
-[node name="Value" type="Label" parent="Control/ColorRect/VBoxContainer/HBoxContMoves"]
+[node name="Value" type="Label" parent="LeftControl/InfoRect/VBoxContainer/HBoxContMoves"]
 layout_mode = 2
 size_flags_horizontal = 10
 text = "13	"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+offset_left = 208.0
+offset_top = 16.0
+offset_right = 578.0
+offset_bottom = 116.0
+alignment = 1
+
+[node name="Sprite2D" type="Control" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+
+[node name="Back070" type="Sprite2D" parent="HBoxContainer/Sprite2D"]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("4_hsxry")
+centered = false
+
+[node name="Back071" type="Sprite2D" parent="HBoxContainer"]
+position = Vector2(100, 0)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("4_hsxry")
+centered = false
+
+[node name="Back072" type="Sprite2D" parent="HBoxContainer"]
+position = Vector2(200, 0)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("4_hsxry")
+centered = false
+
+[node name="Back073" type="Sprite2D" parent="HBoxContainer"]
+position = Vector2(300, 0)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("4_hsxry")
+centered = false
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="."]
+offset_left = 720.0
+offset_top = 16.0
+offset_right = 1090.0
+offset_bottom = 116.0
+
+[node name="Back070" type="Sprite2D" parent="HBoxContainer2"]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("4_hsxry")
+centered = false
+
+[node name="Back071" type="Sprite2D" parent="HBoxContainer2"]
+position = Vector2(100, 0)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("4_hsxry")
+centered = false
+
+[node name="Back072" type="Sprite2D" parent="HBoxContainer2"]
+position = Vector2(200, 0)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("4_hsxry")
+centered = false
+
+[node name="Back073" type="Sprite2D" parent="HBoxContainer2"]
+position = Vector2(300, 0)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("4_hsxry")
+centered = false
+
+[node name="PlayCont" type="HBoxContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 208.0
+offset_top = 160.0
+offset_right = 1136.0
+offset_bottom = 605.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Column0" type="CenterContainer" parent="PlayCont"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="PlayCont/Column0"]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("5_45xfn")
+centered = false
+
+[node name="Column1" type="Control" parent="PlayCont"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="PlayCont/Column1"]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("5_45xfn")
+centered = false
+
+[node name="Column2" type="Control" parent="PlayCont"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="PlayCont/Column2"]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("5_45xfn")
+centered = false
+
+[node name="Column3" type="Control" parent="PlayCont"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="PlayCont/Column3"]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("5_45xfn")
+centered = false
+
+[node name="Column4" type="Control" parent="PlayCont"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="PlayCont/Column4"]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("5_45xfn")
+centered = false
+
+[node name="Column5" type="Control" parent="PlayCont"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="PlayCont/Column5"]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("5_45xfn")
+centered = false
+
+[node name="Column6" type="Control" parent="PlayCont"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="PlayCont/Column6"]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("5_45xfn")
+centered = false
+
+[node name="Column7" type="Control" parent="PlayCont"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="PlayCont/Column7"]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("5_45xfn")
+centered = false
