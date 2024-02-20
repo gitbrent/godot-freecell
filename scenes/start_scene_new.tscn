@@ -1,21 +1,23 @@
-[gd_scene load_steps=10 format=3 uid="uid://cs02n06c7qb41"]
+[gd_scene load_steps=11 format=3 uid="uid://cs02n06c7qb41"]
 
-[ext_resource type="Texture2D" uid="uid://2non5yojsj8q" path="res://assets/background.jpg" id="1_56qmj"]
-[ext_resource type="FontFile" uid="uid://bo10p827dpevb" path="res://assets/fonts/LiberationSerif-Regular.ttf" id="2_ddlmt"]
-[ext_resource type="Texture2D" uid="uid://bwo4udgrflhao" path="res://assets/buttons/red_button11.png" id="3_d8fqx"]
-[ext_resource type="Texture2D" uid="uid://dwqlsmbe6bsv" path="res://assets/buttons/red_button12.png" id="4_mv4h2"]
-[ext_resource type="FontFile" uid="uid://b8wlkh3hxbgdn" path="res://assets/fonts/kirifont/KiriFont.ttf" id="5_e5gml"]
-[ext_resource type="Texture2D" uid="uid://bxc8t2wncfxs5" path="res://assets/back01.png" id="5_uibdg"]
-[ext_resource type="Script" path="res://scripts/CardTopLeft.gd" id="6_6a0jv"]
-[ext_resource type="Texture2D" uid="uid://cnep5wnsqfkvs" path="res://assets/back02.png" id="7_t446a"]
-[ext_resource type="Script" path="res://scripts/CardBtmRight.gd" id="8_iekfn"]
+[ext_resource type="Texture2D" uid="uid://2non5yojsj8q" path="res://assets/background.jpg" id="1_jssrt"]
+[ext_resource type="Script" path="res://scenes/start_scene_new.gd" id="1_rm5e3"]
+[ext_resource type="FontFile" uid="uid://bo10p827dpevb" path="res://assets/fonts/LiberationSerif-Regular.ttf" id="2_2aa4l"]
+[ext_resource type="Texture2D" uid="uid://bwo4udgrflhao" path="res://assets/buttons/red_button11.png" id="3_w88dj"]
+[ext_resource type="Texture2D" uid="uid://dwqlsmbe6bsv" path="res://assets/buttons/red_button12.png" id="4_l5kvs"]
+[ext_resource type="FontFile" uid="uid://b8wlkh3hxbgdn" path="res://assets/fonts/kirifont/KiriFont.ttf" id="5_kmbjq"]
+[ext_resource type="Texture2D" uid="uid://bxc8t2wncfxs5" path="res://assets/back01.png" id="6_ahjxa"]
+[ext_resource type="Script" path="res://scripts/CardTopLeft.gd" id="7_mxw17"]
+[ext_resource type="Texture2D" uid="uid://cnep5wnsqfkvs" path="res://assets/back02.png" id="8_ovatb"]
+[ext_resource type="Script" path="res://scripts/CardBtmRight.gd" id="9_o68e0"]
 
-[node name="StartScene" type="Node"]
+[node name="StartScene" type="Node2D"]
+script = ExtResource("1_rm5e3")
 
 [node name="Background" type="TextureRect" parent="."]
 offset_right = 1152.0
 offset_bottom = 648.0
-texture = ExtResource("1_56qmj")
+texture = ExtResource("1_jssrt")
 expand_mode = 1
 
 [node name="Title" type="RichTextLabel" parent="."]
@@ -29,7 +31,7 @@ theme_override_constants/shadow_offset_x = 5
 theme_override_constants/shadow_offset_y = 5
 theme_override_constants/shadow_outline_size = 5
 theme_override_constants/outline_size = 5
-theme_override_fonts/normal_font = ExtResource("2_ddlmt")
+theme_override_fonts/normal_font = ExtResource("2_2aa4l")
 theme_override_font_sizes/normal_font_size = 132
 bbcode_enabled = true
 text = "[center]FreeCell Solitaire[/center]"
@@ -39,8 +41,8 @@ offset_left = 398.0
 offset_top = 354.0
 offset_right = 782.0
 offset_bottom = 454.0
-texture_normal = ExtResource("3_d8fqx")
-texture_pressed = ExtResource("4_mv4h2")
+texture_normal = ExtResource("3_w88dj")
+texture_pressed = ExtResource("4_l5kvs")
 ignore_texture_size = true
 stretch_mode = 0
 
@@ -55,24 +57,23 @@ grow_vertical = 2
 
 [node name="Label" type="Label" parent="StartButton/CenterContainer"]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("5_e5gml")
+theme_override_fonts/font = ExtResource("5_kmbjq")
 theme_override_font_sizes/font_size = 48
 text = "START"
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="TopContainer" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 10
 anchor_right = 1.0
+offset_right = 1152.0
 offset_bottom = 180.0
 grow_horizontal = 2
 
 [node name="CardTopLeft" type="Sprite2D" parent="TopContainer"]
 position = Vector2(75, 90)
 scale = Vector2(0.2, 0.2)
-texture = ExtResource("5_uibdg")
-script = ExtResource("6_6a0jv")
+texture = ExtResource("6_ahjxa")
+script = ExtResource("7_mxw17")
 
 [node name="BtmContainer" type="Control" parent="."]
 layout_mode = 3
@@ -80,14 +81,17 @@ anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -183.0
-offset_right = 2.0
-offset_bottom = -3.0
+offset_left = 4.0
+offset_top = 469.0
+offset_right = 1156.0
+offset_bottom = 649.0
 grow_horizontal = 2
 grow_vertical = 0
 
 [node name="CardBtmRight" type="Sprite2D" parent="BtmContainer"]
 position = Vector2(1083, 94)
 scale = Vector2(0.2, 0.2)
-texture = ExtResource("7_t446a")
-script = ExtResource("8_iekfn")
+texture = ExtResource("8_ovatb")
+script = ExtResource("9_o68e0")
+
+[connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]
