@@ -1,5 +1,6 @@
-[gd_scene load_steps=10 format=3 uid="uid://yk1wyekngt53"]
+[gd_scene load_steps=12 format=3 uid="uid://yk1wyekngt53"]
 
+[ext_resource type="Script" path="res://scripts/game_scene.gd" id="1_6cyku"]
 [ext_resource type="Texture2D" uid="uid://2non5yojsj8q" path="res://assets/background_green felt.jpg" id="1_86hx2"]
 [ext_resource type="PackedScene" uid="uid://cdti6c0vnval3" path="res://scenes/pause_button.tscn" id="2_mvke8"]
 [ext_resource type="Theme" uid="uid://b3nw8ski1k4dn" path="res://control_label_theme.tres" id="3_vv2if"]
@@ -9,8 +10,10 @@
 [ext_resource type="Texture2D" uid="uid://12tt2cah233x" path="res://assets/cards/diamonds_ace.png" id="6_p848p"]
 [ext_resource type="Texture2D" uid="uid://ba3fsak3ptwmi" path="res://assets/cards/hearts_ace.png" id="7_oqxkc"]
 [ext_resource type="Texture2D" uid="uid://n0yl1q6pjpup" path="res://assets/cards/spades_ace.png" id="8_o5bie"]
+[ext_resource type="Script" path="res://scripts/TableauPile.gd" id="10_oi362"]
 
 [node name="GameScene" type="Node2D"]
+script = ExtResource("1_6cyku")
 
 [node name="Background" type="TextureRect" parent="."]
 offset_right = 1154.0
@@ -190,6 +193,7 @@ offset_right = 1128.0
 offset_bottom = 605.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("10_oi362")
 
 [node name="Column0" type="CenterContainer" parent="TableauPile"]
 layout_mode = 2
