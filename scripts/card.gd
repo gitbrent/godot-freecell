@@ -2,42 +2,19 @@ extends Node2D
 
 class_name Card
 
-# Enumerated types for suits and ranks 
-enum Suit {
-	HEARTS,
-	DIAMONDS, 
-	CLUBS, 
-	SPADES 
-}
-enum Rank { 
-	ACE = 1,
-	TWO,
-	THREE,
-	FOUR,
-	FIVE,
-	SIX,
-	SEVEN,
-	EIGHT,
-	NINE,
-	TEN,
-	JACK,
-	QUEEN,
-	KING
-}
-
 # card image
 @onready var sprite = $Sprite2D  # Assuming the Sprite is a child node named "Sprite"
 
 # Card properties
-var suit: Suit 
-var rank: Rank
+var suit: Enums.Suit
+var rank: Enums.Rank
 var is_face_up: bool
 var location: Vector2  # Current pile/cell position
 
 # Card texture or sprite path
 var texture_path: String
 
-func _init(suit: Suit, rank: Rank):
+func initialize(suit: Enums.Suit, rank: Enums.Rank):
 	self.suit = suit
 	self.rank = rank
 	self.is_face_up = false
@@ -58,19 +35,19 @@ func load_texture(sprite: Sprite2D):
 	sprite.texture = ResourceLoader.load(texture_path)
 
 # Helper functions for converting enum values to strings
-func suit_to_string(suit: Suit) -> String:
-	if suit == Suit.HEARTS:
+func suit_to_string(suit: Enums.Suit) -> String:
+	if suit == Enums.Suit.HEARTS:
 		return "hearts"
-	elif suit == Suit.DIAMONDS:
+	elif suit == Enums.Suit.DIAMONDS:
 		return "diamonds"
-	elif suit == Suit.CLUBS:
+	elif suit == Enums.Suit.CLUBS:
 		return "clubs"
-	elif suit == Suit.SPADES:
+	elif suit == Enums.Suit.SPADES:
 		return "spades"
 	else:
 		return "unknown"
 
-func rank_to_string(rank: Rank) -> String:
+func rank_to_string(rank: Enums.Rank) -> String:
 	return str(int(rank))  # Convert Rank enum value to string directly
 
 func flip():

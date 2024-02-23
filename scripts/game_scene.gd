@@ -14,21 +14,24 @@ func _ready():
 func _process(delta):
 	pass
 
-func create_pile(position: Vector2) -> Control:
-	# Create a pile Control node, add it as child, and configure (drag-n-drop, visuals, etc.)
-	var pile = Control.new()
-	add_child(pile)
-	pile.position = position
-	# ... further pile setup ...
-	return pile
-
 func deal_cards():
 	# Shuffle the deck (optional)
 	# Distribute cards to piles based on your game rules
 	for i in 51:
-		var card:Node2D = load("res://scenes/card.tscn").instantiate()
-		# Add card to a pile (choose the pile based on your rules)
-		tableau_pile.add_card(card)
+		var card_scene = load("res://scenes/card.tscn") # Load the PackedScene
+		var card_instance = card_scene.instantiate() # Instantiate it, which should be an instance of Card
+
+		# Now, to make sure GDScript understands it's a Card, you can either:
+		if card_instance is Card:
+			var card: Card = card_instance
+			# Initialize the card with suit and rank
+			card.initialize(Enums.Suit.HEARTS, Enums.Rank.ACE)  # Example, you'll probably want to vary this based on actual game logic
+			# Add card to a pile (choose the pile based on your rules)
+			tableau_pile.add_child(card)
+			# Now you can use 'card' as an instance of your Card class.
+		else:
+			print("Error: The instantiated object is not a Card.")
+			print(card_instance.get_class()) # This should help identify what you're actually instantiating
 
 func handle_card_drag(card: Card, source_pile: Control, target_pile: Control):
 	# Check if move is valid based on game rules
