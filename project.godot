@@ -15,6 +15,10 @@ run/main_scene="res://scenes/main_node.tscn"
 config/features=PackedStringArray("4.2", "Mobile")
 config/icon="res://icon.svg"
 
+[autoload]
+
+Enums="*res://scripts/enums.gd"
+
 [display]
 
 window/canvas_textures/default_texture_filter=1
