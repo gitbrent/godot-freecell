@@ -11,8 +11,9 @@ var rank: Enums.Rank
 var location: Vector2  # Current pile/cell position
 var dragging = false
 var drag_offset = Vector2()
+var original_position = Vector2()
 
-func _on_area_2d_input_event(viewport, event, shape_idx):
+func _on_area_2d_input_event(_viewport, event, _shape_idx):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
 			emit_signal("card_drag_started", self, get_global_mouse_position())

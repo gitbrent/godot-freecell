@@ -27,12 +27,24 @@ func _on_card_drag_started(card, initial_mouse_position):
 	print("START drag: " + str(card.rank) +"-"+ str(card.suit))
 	drag_offset = initial_mouse_position - card.global_position
 	dragged_card = card
+	card.original_position = card.global_position  # Store the original position at drag start
+	#print("card.z_index: ", card.z_index)
 	card.z_index = 1000
 
 func _on_card_drag_ended(card):
 	print("..END drag: " + str(card.rank) +"-"+ str(card.suit))
+	var tween = get_tree().create_tween()
+	tween.tween_property(card, "global_position", card.original_position, 0.5)
+	tween.tween_callback(reset_card_z_indices)
 	dragged_card = null
-	card.z_index = 0
+
+func reset_card_z_indices():
+	for i in range(tableau_piles.size()):
+		var pile = tableau_piles[i]
+		for j in range(pile.get_child_count()):
+			var card = pile.get_child(j)
+			card.z_index = j
+			#print("card.z_index: ", card.z_index)
 
 func deal_cards():
 	var deck = []
@@ -71,6 +83,9 @@ func deal_cards():
 				tableau_piles[i].add_card(card)
 			else:
 				print("Error: The instantiated object is not a Card.")
+	
+	# STEP 5:
+	#reset_card_z_indices()
 
 # (???) useful? [untested!]
 func handle_card_drag(card: Card, source_pile: Control, target_pile: Control):
