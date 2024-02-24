@@ -1,17 +1,20 @@
 extends Control
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
+var cards = [] # Keep track of the cards in this pile
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
+# Offset values for card positioning
+var vertical_offset = 40 # Adjust as needed for your game's visuals
+var horizontal_offset = 10 # Adjust as needed for spacing between columns
 
 func add_card(card: Card):
-	# Add the card to the pile data (list, array, etc.)
-	# Update pile visuals (add card node as child, position it, etc.)
 	if card is Card:
-		print(card.rank)
+		add_child(card) # Add the card to this node
+		var card_position = Vector2(horizontal_offset, cards.size() * vertical_offset)
+		card.position = card_position
+		cards.append(card)
+		#print("Added card with position: ", card.position, " in column ", column_index)
 	else:
-		print("nope!")
+		print("Attempted to add a non-Card node to the tableau pile.")
+
+func remove_card(card: Card):
+	print('TODO:')

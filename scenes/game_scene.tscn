@@ -1,16 +1,15 @@
-[gd_scene load_steps=12 format=3 uid="uid://yk1wyekngt53"]
+[gd_scene load_steps=11 format=3 uid="uid://yk1wyekngt53"]
 
 [ext_resource type="Script" path="res://scripts/game_scene.gd" id="1_6cyku"]
 [ext_resource type="Texture2D" uid="uid://2non5yojsj8q" path="res://assets/background_green felt.jpg" id="1_86hx2"]
 [ext_resource type="PackedScene" uid="uid://cdti6c0vnval3" path="res://scenes/pause_button.tscn" id="2_mvke8"]
 [ext_resource type="Theme" uid="uid://b3nw8ski1k4dn" path="res://control_label_theme.tres" id="3_vv2if"]
 [ext_resource type="Texture2D" uid="uid://5ua6yri85q8k" path="res://assets/cards/back07.png" id="4_hsxry"]
-[ext_resource type="Texture2D" uid="uid://bghmitwbyi8rc" path="res://assets/cards/clubs_king.png" id="5_45xfn"]
 [ext_resource type="Texture2D" uid="uid://cfqfdlwv3dicd" path="res://assets/cards/clubs_ace.png" id="5_fvdih"]
 [ext_resource type="Texture2D" uid="uid://12tt2cah233x" path="res://assets/cards/diamonds_ace.png" id="6_p848p"]
 [ext_resource type="Texture2D" uid="uid://ba3fsak3ptwmi" path="res://assets/cards/hearts_ace.png" id="7_oqxkc"]
 [ext_resource type="Texture2D" uid="uid://n0yl1q6pjpup" path="res://assets/cards/spades_ace.png" id="8_o5bie"]
-[ext_resource type="Script" path="res://scripts/TableauPile.gd" id="10_oi362"]
+[ext_resource type="PackedScene" uid="uid://cxf5h1ul17kl" path="res://scenes/tableau_pile.tscn" id="10_xpokh"]
 
 [node name="GameScene" type="Node2D"]
 script = ExtResource("1_6cyku")
@@ -183,7 +182,7 @@ scale = Vector2(0.195, 0.195)
 texture = ExtResource("8_o5bie")
 centered = false
 
-[node name="TableauPile" type="HBoxContainer" parent="."]
+[node name="TableauPileCont" type="HBoxContainer" parent="."]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -193,82 +192,27 @@ offset_right = 1128.0
 offset_bottom = 605.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("10_oi362")
 
-[node name="Column0" type="CenterContainer" parent="TableauPile"]
+[node name="TableauPile0" parent="TableauPileCont" instance=ExtResource("10_xpokh")]
 layout_mode = 2
-size_flags_horizontal = 3
 
-[node name="Sprite2D" type="Sprite2D" parent="TableauPile/Column0"]
-scale = Vector2(0.2, 0.2)
-texture = ExtResource("5_45xfn")
-centered = false
-
-[node name="Sprite2D2" type="Sprite2D" parent="TableauPile/Column0"]
-scale = Vector2(0.2, 0.2)
-texture = ExtResource("5_45xfn")
-centered = false
-offset = Vector2(0, 150)
-
-[node name="Column1" type="Control" parent="TableauPile"]
+[node name="TableauPile1" parent="TableauPileCont" instance=ExtResource("10_xpokh")]
 layout_mode = 2
-size_flags_horizontal = 3
 
-[node name="Sprite2D" type="Sprite2D" parent="TableauPile/Column1"]
-scale = Vector2(0.2, 0.2)
-texture = ExtResource("5_45xfn")
-centered = false
-
-[node name="Column2" type="Control" parent="TableauPile"]
+[node name="TableauPile2" parent="TableauPileCont" instance=ExtResource("10_xpokh")]
 layout_mode = 2
-size_flags_horizontal = 3
 
-[node name="Sprite2D" type="Sprite2D" parent="TableauPile/Column2"]
-scale = Vector2(0.2, 0.2)
-texture = ExtResource("5_45xfn")
-centered = false
-
-[node name="Column3" type="Control" parent="TableauPile"]
+[node name="TableauPile3" parent="TableauPileCont" instance=ExtResource("10_xpokh")]
 layout_mode = 2
-size_flags_horizontal = 3
 
-[node name="Sprite2D" type="Sprite2D" parent="TableauPile/Column3"]
-scale = Vector2(0.2, 0.2)
-texture = ExtResource("5_45xfn")
-centered = false
-
-[node name="Column4" type="Control" parent="TableauPile"]
+[node name="TableauPile4" parent="TableauPileCont" instance=ExtResource("10_xpokh")]
 layout_mode = 2
-size_flags_horizontal = 3
 
-[node name="Sprite2D" type="Sprite2D" parent="TableauPile/Column4"]
-scale = Vector2(0.2, 0.2)
-texture = ExtResource("5_45xfn")
-centered = false
-
-[node name="Column5" type="Control" parent="TableauPile"]
+[node name="TableauPile5" parent="TableauPileCont" instance=ExtResource("10_xpokh")]
 layout_mode = 2
-size_flags_horizontal = 3
 
-[node name="Sprite2D" type="Sprite2D" parent="TableauPile/Column5"]
-scale = Vector2(0.2, 0.2)
-texture = ExtResource("5_45xfn")
-centered = false
-
-[node name="Column6" type="Control" parent="TableauPile"]
+[node name="TableauPile6" parent="TableauPileCont" instance=ExtResource("10_xpokh")]
 layout_mode = 2
-size_flags_horizontal = 3
 
-[node name="Sprite2D" type="Sprite2D" parent="TableauPile/Column6"]
-scale = Vector2(0.2, 0.2)
-texture = ExtResource("5_45xfn")
-centered = false
-
-[node name="Column7" type="Control" parent="TableauPile"]
+[node name="TableauPile7" parent="TableauPileCont" instance=ExtResource("10_xpokh")]
 layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Sprite2D" type="Sprite2D" parent="TableauPile/Column7"]
-scale = Vector2(0.2, 0.2)
-texture = ExtResource("5_45xfn")
-centered = false

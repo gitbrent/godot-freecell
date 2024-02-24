@@ -1,37 +1,46 @@
 extends Node2D
 
-# Declare variables
-@onready var free_cell_pile = $TopContainer/FreeCellPile
-@onready var foundation_pile = $TopContainer/FoundationPile
-@onready var tableau_pile = $TableauPile
+# Declare variables for all tableau piles
+var tableau_piles = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	# Initialize tableau pile references
+	for i in range(0, 8): # Assuming you named them TableauPile0 through TableauPile7
+		tableau_piles.append(get_node("TableauPileCont/TableauPile" + str(i)))
+	
 	deal_cards()
-	#pass # Replace with function body.
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
 
 func deal_cards():
-	# Shuffle the deck (optional)
-	# Distribute cards to piles based on your game rules
-	for i in 51:
-		var card_scene = load("res://scenes/card.tscn") # Load the PackedScene
-		var card_instance = card_scene.instantiate() # Instantiate it, which should be an instance of Card
-
-		# Now, to make sure GDScript understands it's a Card, you can either:
-		if card_instance is Card:
-			var card: Card = card_instance
-			# Initialize the card with suit and rank
-			card.initialize(Enums.Suit.HEARTS, Enums.Rank.ACE)  # Example, you'll probably want to vary this based on actual game logic
-			# Add card to a pile (choose the pile based on your rules)
-			tableau_pile.add_child(card)
-			# Now you can use 'card' as an instance of your Card class.
-		else:
-			print("Error: The instantiated object is not a Card.")
-			print(card_instance.get_class()) # This should help identify what you're actually instantiating
+	var deck = []
+	
+	# Create the standard 52 playing cards
+	for suit in Enums.Suit.values():
+		for rank in Enums.Rank.values():
+			deck.append({"suit": suit, "rank": rank})
+	
+	# Shuffle the deck
+	deck.shuffle()
+	
+	# Setup for dealing cards to tableau piles according to FreeCell rules
+	var num_cards_in_columns = [7, 7, 7, 7, 6, 6, 6, 6]
+	var deck_index = 0
+	
+	for i in range(tableau_piles.size()):
+		var num_cards = num_cards_in_columns[i]
+		for j in range(num_cards):
+			var card_info = deck[deck_index]
+			deck_index += 1
+			
+			var card_scene = load("res://scenes/card.tscn")
+			var card_instance = card_scene.instantiate()
+			
+			if card_instance is Card:
+				var card: Card = card_instance
+				card.call_deferred("initialize", card_info["suit"], card_info["rank"])
+				tableau_piles[i].add_card(card)
+			else:
+				print("Error: The instantiated object is not a Card.")
 
 func handle_card_drag(card: Card, source_pile: Control, target_pile: Control):
 	# Check if move is valid based on game rules
@@ -42,5 +51,3 @@ func handle_card_drag(card: Card, source_pile: Control, target_pile: Control):
 		target_pile.add_card(card)
 		# Update card position and visuals
 		card.update_position_and_visuals()
-
-# Other functions for game logic, player turns, win/lose conditions, etc.
