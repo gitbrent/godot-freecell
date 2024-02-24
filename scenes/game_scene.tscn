@@ -203,26 +203,34 @@ grow_vertical = 2
 
 [node name="TableauPile0" parent="TableauPileCont" instance=ExtResource("10_xpokh")]
 layout_mode = 2
+mouse_filter = 1
 
 [node name="TableauPile1" parent="TableauPileCont" instance=ExtResource("10_xpokh")]
 layout_mode = 2
+mouse_filter = 1
 
 [node name="TableauPile2" parent="TableauPileCont" instance=ExtResource("10_xpokh")]
 layout_mode = 2
+mouse_filter = 1
 
 [node name="TableauPile3" parent="TableauPileCont" instance=ExtResource("10_xpokh")]
 layout_mode = 2
+mouse_filter = 1
 
 [node name="TableauPile4" parent="TableauPileCont" instance=ExtResource("10_xpokh")]
 layout_mode = 2
+mouse_filter = 1
 
 [node name="TableauPile5" parent="TableauPileCont" instance=ExtResource("10_xpokh")]
 layout_mode = 2
+mouse_filter = 1
 
 [node name="TableauPile6" parent="TableauPileCont" instance=ExtResource("10_xpokh")]
 layout_mode = 2
+mouse_filter = 1
 
 [node name="TableauPile7" parent="TableauPileCont" instance=ExtResource("10_xpokh")]
 layout_mode = 2
+mouse_filter = 1
 
 [connection signal="pressed" from="LeftControl/BtnDeal" to="." method="_on_btn_deal_pressed"]
