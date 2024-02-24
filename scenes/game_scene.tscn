@@ -1,10 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://yk1wyekngt53"]
+[gd_scene load_steps=12 format=3 uid="uid://yk1wyekngt53"]
 
 [ext_resource type="Script" path="res://scripts/game_scene.gd" id="1_6cyku"]
 [ext_resource type="Texture2D" uid="uid://2non5yojsj8q" path="res://assets/background_green felt.jpg" id="1_86hx2"]
-[ext_resource type="PackedScene" uid="uid://cdti6c0vnval3" path="res://scenes/pause_button.tscn" id="2_mvke8"]
+[ext_resource type="PackedScene" uid="uid://cdti6c0vnval3" path="res://scenes/btn_pause.tscn" id="2_mvke8"]
 [ext_resource type="Theme" uid="uid://b3nw8ski1k4dn" path="res://control_label_theme.tres" id="3_vv2if"]
 [ext_resource type="Texture2D" uid="uid://5ua6yri85q8k" path="res://assets/cards/back07.png" id="4_hsxry"]
+[ext_resource type="PackedScene" uid="uid://pmwtogh2qbp7" path="res://scenes/btn_deal.tscn" id="4_pqekv"]
 [ext_resource type="Texture2D" uid="uid://cfqfdlwv3dicd" path="res://assets/cards/clubs_ace.png" id="5_fvdih"]
 [ext_resource type="Texture2D" uid="uid://12tt2cah233x" path="res://assets/cards/diamonds_ace.png" id="6_p848p"]
 [ext_resource type="Texture2D" uid="uid://ba3fsak3ptwmi" path="res://assets/cards/hearts_ace.png" id="7_oqxkc"]
@@ -32,6 +33,13 @@ offset_left = 15.0
 offset_top = 15.0
 offset_right = 280.0
 offset_bottom = 281.0
+
+[node name="BtnDeal" parent="LeftControl" instance=ExtResource("4_pqekv")]
+layout_mode = 0
+offset_left = 111.0
+offset_top = 15.0
+offset_right = 377.0
+offset_bottom = 282.0
 
 [node name="InfoRect" type="ColorRect" parent="LeftControl"]
 layout_mode = 1
@@ -216,3 +224,5 @@ layout_mode = 2
 
 [node name="TableauPile7" parent="TableauPileCont" instance=ExtResource("10_xpokh")]
 layout_mode = 2
+
+[connection signal="pressed" from="LeftControl/BtnDeal" to="." method="_on_btn_deal_pressed"]

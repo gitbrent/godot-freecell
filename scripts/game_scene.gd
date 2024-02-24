@@ -14,18 +14,23 @@ func _ready():
 func deal_cards():
 	var deck = []
 	
-	# Create the standard 52 playing cards
+	# STEP 1: clear all cards
+	for i in range(tableau_piles.size()):
+		tableau_piles[i].remove_all_cards()
+		
+	# STEP 1: Create the standard 52 playing cards
 	for suit in Enums.Suit.values():
 		for rank in Enums.Rank.values():
 			deck.append({"suit": suit, "rank": rank})
 	
-	# Shuffle the deck
+	# STEP 2: Shuffle the deck
 	deck.shuffle()
 	
-	# Setup for dealing cards to tableau piles according to FreeCell rules
+	# STEP 3: Setup for dealing cards to tableau piles according to FreeCell rules
 	var num_cards_in_columns = [7, 7, 7, 7, 6, 6, 6, 6]
 	var deck_index = 0
 	
+	# STEP 4: Deal
 	for i in range(tableau_piles.size()):
 		var num_cards = num_cards_in_columns[i]
 		for j in range(num_cards):
@@ -42,6 +47,7 @@ func deal_cards():
 			else:
 				print("Error: The instantiated object is not a Card.")
 
+# ???
 func handle_card_drag(card: Card, source_pile: Control, target_pile: Control):
 	# Check if move is valid based on game rules
 	if card.can_move_to(target_pile.get_top_card()):
@@ -51,3 +57,7 @@ func handle_card_drag(card: Card, source_pile: Control, target_pile: Control):
 		target_pile.add_card(card)
 		# Update card position and visuals
 		card.update_position_and_visuals()
+
+
+func _on_btn_deal_pressed():
+	deal_cards()

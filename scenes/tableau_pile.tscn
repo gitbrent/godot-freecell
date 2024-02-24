@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cxf5h1ul17kl"]
 
-[ext_resource type="Script" path="res://scripts/TableauPile.gd" id="1_47fmm"]
+[ext_resource type="Script" path="res://scripts/tableau_pile.gd" id="1_47fmm"]
 
 [node name="TableauPile0" type="Control"]
 layout_mode = 3

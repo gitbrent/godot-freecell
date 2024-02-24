@@ -1,10 +1,8 @@
 extends Control
 
 var cards = [] # Keep track of the cards in this pile
-
-# Offset values for card positioning
-var vertical_offset = 40 # Adjust as needed for your game's visuals
-var horizontal_offset = 10 # Adjust as needed for spacing between columns
+var vertical_offset = 40
+var horizontal_offset = 10
 
 func add_card(card: Card):
 	if card is Card:
@@ -17,4 +15,10 @@ func add_card(card: Card):
 		print("Attempted to add a non-Card node to the tableau pile.")
 
 func remove_card(card: Card):
-	print('TODO:')
+	remove_child(card)
+	cards.erase(card)
+
+func remove_all_cards():
+	while cards.size() > 0:
+		var card = cards[0]
+		remove_card(card)
