@@ -1,15 +1,59 @@
 extends Node2D
 
-# Declare variables for all tableau piles
+# VARIABLES
 var tableau_piles = []
+var dragged_card : Card = null
+var drag_offset : Vector2 = Vector2()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	# Initialize tableau pile references
+	# STEP 1: drag-n-drop
+	set_process_unhandled_input(true)
+
+	# STEP 2: Initialize tableau pile references
 	for i in range(0, 8): # Assuming you named them TableauPile0 through TableauPile7
 		tableau_piles.append(get_node("TableauPileCont/TableauPile" + str(i)))
-	
+
+	# STEP 3: Deal all 52 cards onto tableua
 	deal_cards()
+
+func _unhandled_input(event):
+	if event is InputEventMouseMotion and dragged_card:
+		dragged_card.global_position = event.global_position - drag_offset
+	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
+		# dragged_card = null # Release the drag when the mouse button is released
+		# DO NOT DO THIS: ^^^: `_on_card_drag_ended()` needs this value (and will do cleanup)
+		pass
+
+static func compare_cards_z_index(a, b):
+	return a.z_index < b.z_index
+
+func _on_card_drag_started(card, initial_mouse_position):
+	print("START drag: " + str(card.rank) +"-"+ str(card.suit) + " at " + str(card.z_index))
+	drag_offset = initial_mouse_position - card.global_position
+	dragged_card = card
+	card.original_position = card.global_position
+	card.z_index = 1000
+	# FIXME: card under the one selected loses a z-index
+	# reset_card_z_indices()
+
+func _on_card_drag_ended(card):
+	# IMPORTANT: this method is trigged for all cards under the cursor
+	# e.g.: release mouse button over another card and *BOTH* will call this function!
+	if card == dragged_card:
+		print("..END drag: " + str(card.rank) +"-"+ str(card.suit) + " at " + str(card.z_index))
+		var tween = get_tree().create_tween()
+		tween.tween_property(card, "global_position", card.original_position, 0.5)
+		tween.tween_callback(reset_card_z_indices)
+		dragged_card = null
+
+func reset_card_z_indices():
+	for i in range(tableau_piles.size()):
+		var pile = tableau_piles[i]
+		for j in range(pile.get_child_count()):
+			var card = pile.get_child(j)
+			card.z_index = j
+			#print("card.z_index: ", card.z_index)
 
 func deal_cards():
 	var deck = []
@@ -43,11 +87,17 @@ func deal_cards():
 			if card_instance is Card:
 				var card: Card = card_instance
 				card.call_deferred("initialize", card_info["suit"], card_info["rank"])
+				card.connect("card_drag_started", self._on_card_drag_started)
+				card.connect("card_drag_ended", self._on_card_drag_ended)
 				tableau_piles[i].add_card(card)
+				card.add_to_group("cards")
 			else:
 				print("Error: The instantiated object is not a Card.")
+	
+	# STEP 5:
+	reset_card_z_indices()
 
-# ???
+# (???) useful? [untested!]
 func handle_card_drag(card: Card, source_pile: Control, target_pile: Control):
 	# Check if move is valid based on game rules
 	if card.can_move_to(target_pile.get_top_card()):
@@ -57,7 +107,6 @@ func handle_card_drag(card: Card, source_pile: Control, target_pile: Control):
 		target_pile.add_card(card)
 		# Update card position and visuals
 		card.update_position_and_visuals()
-
 
 func _on_btn_deal_pressed():
 	deal_cards()

@@ -1,33 +1,25 @@
+# DESIGN: We use both [Control] nd [Area2D]
+# ......: Control to block mouse clicks and provide DnD
+#.......: Area2D for collisions (dragging csards onto other cards/free cells)
 extends Node2D
-
 class_name Card
 
-# card image
-@onready var sprite = $Sprite2D
+signal card_drag_started(card, initial_mouse_position)
+signal card_drag_ended(card)
+signal clicked(control_node)
 
+@onready var sprite = $Sprite2D # card image
 # Card properties
 var suit: Enums.Suit
 var rank: Enums.Rank
 var location: Vector2  # Current pile/cell position
 var dragging = false
 var drag_offset = Vector2()
+var original_position = Vector2()
 
-func _on_area_2d_input_event(_viewport, event, _shape_idx):
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
-		if event.pressed:  # Start drag
-			print("[card.gd]: Card clicked! " + rank_to_string(rank) +"-"+ suit_to_string(suit))
-			z_index = get_parent().get_child_count()  # bring the card to front on drag start
-			dragging = true
-			drag_offset = global_position - get_global_mouse_position()
-		else:  # Release drag
-			dragging = false
-	elif event is InputEventMouseMotion and dragging:
-		global_position = get_global_mouse_position() + drag_offset
-
-# Depending on your game's rules, you may want to add constraints to dragging 
-# (e.g., only allowing certain cards to be moved or snapping cards back to their original position 
-# if not dropped on a valid target). 
-# For this, you can expand the logic within the _input_event method or introduce new methods to handle these rules.
+func _process(delta):
+	if dragging:
+		global_position = get_global_mouse_position() - drag_offset
 
 func initialize(suitIn: Enums.Suit, rankIn: Enums.Rank):
 	self.suit = suitIn
