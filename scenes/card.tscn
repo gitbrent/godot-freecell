@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://5ua6yri85q8k" path="res://assets/cards/back07.png" id="2_ylvg2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2jll5"]
-size = Vector2(358.718, 517.692)
+size = Vector2(338.462, 497.436)
 
 [node name="Card" type="Node2D"]
 script = ExtResource("1_7ifcu")
@@ -17,7 +17,7 @@ centered = false
 [node name="Area2D" type="Area2D" parent="Sprite2D"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D/Area2D"]
-position = Vector2(169.359, 248.846)
+position = Vector2(174.359, 253.846)
 shape = SubResource("RectangleShape2D_2jll5")
 
 [connection signal="input_event" from="Sprite2D/Area2D" to="." method="_on_area_2d_input_event"]
