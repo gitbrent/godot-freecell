@@ -25,8 +25,11 @@ func _unhandled_input(event):
 		# DO NOT DO THIS: ^^^: `_on_card_drag_ended()` needs this value (and will do cleanup)
 		pass
 
+static func compare_cards_z_index(a, b):
+	return a.z_index < b.z_index
+
 func _on_card_drag_started(card, initial_mouse_position):
-	print("START drag: " + str(card.rank) +"-"+ str(card.suit))
+	print("START drag: " + str(card.rank) +"-"+ str(card.suit) + " at " + str(card.z_index))
 	drag_offset = initial_mouse_position - card.global_position
 	dragged_card = card
 	card.original_position = card.global_position
@@ -38,7 +41,7 @@ func _on_card_drag_ended(card):
 	# IMPORTANT: this method is trigged for all cards under the cursor
 	# e.g.: release mouse button over another card and *BOTH* will call this function!
 	if card == dragged_card:
-		print("..END drag: " + str(card.rank) +"-"+ str(card.suit))
+		print("..END drag: " + str(card.rank) +"-"+ str(card.suit) + " at " + str(card.z_index))
 		var tween = get_tree().create_tween()
 		tween.tween_property(card, "global_position", card.original_position, 0.5)
 		tween.tween_callback(reset_card_z_indices)
@@ -87,6 +90,7 @@ func deal_cards():
 				card.connect("card_drag_started", self._on_card_drag_started)
 				card.connect("card_drag_ended", self._on_card_drag_ended)
 				tableau_piles[i].add_card(card)
+				card.add_to_group("cards")
 			else:
 				print("Error: The instantiated object is not a Card.")
 	

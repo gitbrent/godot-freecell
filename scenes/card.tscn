@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://6ykkdeunbek6"]
+[gd_scene load_steps=5 format=3 uid="uid://6ykkdeunbek6"]
 
 [ext_resource type="Script" path="res://scripts/card.gd" id="1_7ifcu"]
 [ext_resource type="Texture2D" uid="uid://5ua6yri85q8k" path="res://assets/cards/back07.png" id="2_ylvg2"]
+[ext_resource type="Script" path="res://scripts/card_control.gd" id="3_lrmxn"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2jll5"]
 size = Vector2(338.462, 497.436)
@@ -20,4 +21,9 @@ centered = false
 position = Vector2(174.359, 253.846)
 shape = SubResource("RectangleShape2D_2jll5")
 
-[connection signal="input_event" from="Sprite2D/Area2D" to="." method="_on_area_2d_input_event"]
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 69.0
+offset_bottom = 100.0
+script = ExtResource("3_lrmxn")
