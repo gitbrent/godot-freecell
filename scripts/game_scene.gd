@@ -17,35 +17,68 @@ func _ready():
 	# STEP 3: Deal all 52 cards onto tableua
 	deal_cards()
 
-func _unhandled_input(event):
-	if event is InputEventMouseMotion and dragged_card:
-		dragged_card.global_position = event.global_position - drag_offset
-	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
-		# dragged_card = null # Release the drag when the mouse button is released
-		# DO NOT DO THIS: ^^^: `_on_card_drag_ended()` needs this value (and will do cleanup)
-		pass
+func _on_drag_in_progress(card, mouse_position):
+	if card == dragged_card:  # Ensure this is the card you're currently dragging
+		var new_position = mouse_position - drag_offset
+		card.global_position = new_position
 
 static func compare_cards_z_index(a, b):
 	return a.z_index < b.z_index
 
-func _on_card_drag_started(card, initial_mouse_position):
-	print("START drag: " + str(card.rank) +"-"+ str(card.suit) + " at " + str(card.z_index))
-	drag_offset = initial_mouse_position - card.global_position
-	dragged_card = card
-	card.original_position = card.global_position
-	card.z_index = 1000
-	# FIXME: card under the one selected loses a z-index
-	# reset_card_z_indices()
+func identify_card_pile(card: Card) -> int:
+	for pile_index in range(tableau_piles.size()):
+		var pile = tableau_piles[pile_index]
+		for pile_card in pile.get_children():  # Assuming each pile is a parent node to its cards
+			if pile_card is Card and pile_card.suit == card.suit and pile_card.rank == card.rank:
+				return pile_index  # Return the index of the pile that contains the card
+	return -1  # Return -1 or any indicator to signify the card was not found in any pile
+
+func is_valid_drag_start(card: Card, card_pile_index: int) -> bool:
+	#print("Checking if valid drag start for: ", card.rank, card.suit, " in pile ", card_pile_index)
+
+	if card_pile_index == -1:
+		return false  # Card is not in any recognized pile.
+
+	var card_pile = tableau_piles[card_pile_index].get_children()  # Assuming piles are parent nodes to cards.
+
+	# Check if the card is the last in the pile.
+	if card == card_pile[card_pile.size() - 1]:
+		return true
+
+	# Additional checks for valid sequences go here.
+	# Example sequence check (assuming descending sequence without suit check):
+	var card_index = card_pile.find(card)
+	for i in range(card_index, card_pile.size() - 1):
+		if card_pile[i].rank - 1 != card_pile[i + 1].rank:  # Ensure descending order.
+			return false  # Sequence is broken, invalid drag.
+	
+	return true  # Valid sequence
+
+func _on_attempt_drag_start(card, initial_mouse_position):
+	var card_pile_index = identify_card_pile(card)
+
+	# Check if the card is the last one in its pile or part of a valid sequence.
+	if is_valid_drag_start(card, card_pile_index):
+		#print("START drag: " + str(card.rank) + "-" + str(card.suit) + " at " + str(card.z_index))
+		drag_offset = initial_mouse_position - card.global_position
+		dragged_card = card
+		card.original_position = card.global_position
+		card.z_index = 1000  # Temporarily boost z_index for dragging visibility
+	else:
+		#print("[is_valid_drag_start]: Invalid card or sequence")
+		dragged_card = null  # Explicitly ensure dragging isn't started
 
 func _on_card_drag_ended(card):
 	# IMPORTANT: this method is trigged for all cards under the cursor
 	# e.g.: release mouse button over another card and *BOTH* will call this function!
 	if card == dragged_card:
-		print("..END drag: " + str(card.rank) +"-"+ str(card.suit) + " at " + str(card.z_index))
+		#print("..END drag: " + str(card.rank) +"-"+ str(card.suit) + " at " + str(card.z_index))
 		var tween = get_tree().create_tween()
 		tween.tween_property(card, "global_position", card.original_position, 0.5)
 		tween.tween_callback(reset_card_z_indices)
-		dragged_card = null
+	
+	# Ensure to reset this regardless of condition to prevent stuck states
+	dragged_card = null
 
 func reset_card_z_indices():
 	for i in range(tableau_piles.size()):
@@ -87,8 +120,10 @@ func deal_cards():
 			if card_instance is Card:
 				var card: Card = card_instance
 				card.call_deferred("initialize", card_info["suit"], card_info["rank"])
-				card.connect("card_drag_started", self._on_card_drag_started)
-				card.connect("card_drag_ended", self._on_card_drag_ended)
+				var control_node = card.get_node("CardControl")
+				control_node.connect("attempt_drag_start", self._on_attempt_drag_start)
+				control_node.connect("drag_in_progress", self._on_drag_in_progress)
+				control_node.connect("card_drag_ended", self._on_card_drag_ended)
 				tableau_piles[i].add_card(card)
 				card.add_to_group("cards")
 			else:

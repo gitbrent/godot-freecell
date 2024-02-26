@@ -4,72 +4,56 @@
 extends Node2D
 class_name Card
 
-signal card_drag_started(card, initial_mouse_position)
-signal card_drag_ended(card)
-signal clicked(control_node)
-
-@onready var sprite = $Sprite2D # card image
 # Card properties
+@onready var sprite = $Sprite2D # card image
 var suit: Enums.Suit
 var rank: Enums.Rank
+var suit_color#: Enums.SuitColor
 var location: Vector2  # Current pile/cell position
 var dragging = false
 var drag_offset = Vector2()
 var original_position = Vector2()
 
-func _process(delta):
+func _process(_delta):
 	if dragging:
 		global_position = get_global_mouse_position() - drag_offset
 
 func initialize(suitIn: Enums.Suit, rankIn: Enums.Rank):
 	self.suit = suitIn
 	self.rank = rankIn
+	match suitIn:
+		Enums.Suit.HEARTS, Enums.Suit.DIAMONDS:
+			suit_color = Enums.SuitColor.RED
+		Enums.Suit.CLUBS, Enums.Suit.SPADES:
+			suit_color = Enums.SuitColor.BLACK
 	self.location = Vector2.ZERO
 	load_texture()
 
 func load_texture():
 	# Construct texture path based on suit and rank
 	var texture_path = "res://assets/cards/"
-	texture_path += suit_to_string(suit) + "_" + rank_to_string(rank) + ".png"
+	texture_path += Enums.suit_to_string(suit) + "_" + Enums.rank_to_string(rank) + ".png"
 
 	# Load and assign texture
 	sprite.texture = ResourceLoader.load(texture_path)
 	#print('loaded texture: ' + texture_path)
 
-# Helper functions for converting enum values to strings
-func suit_to_string(suitIn: Enums.Suit) -> String:
-	if suitIn == Enums.Suit.HEARTS:
-		return "hearts"
-	elif suitIn == Enums.Suit.DIAMONDS:
-		return "diamonds"
-	elif suitIn == Enums.Suit.CLUBS:
-		return "clubs"
-	elif suitIn == Enums.Suit.SPADES:
-		return "spades"
-	else:
-		return "unknown"
+# Checks if one card can be placed on another according to FreeCell rules
+func can_place_on_card(dragged_card, target_card) -> bool:
+	if dragged_card.rank + 1 == target_card.rank and dragged_card.suit_color != target_card.suit_color:
+		return true
+	return false
 
-func rank_to_string(rankIn: Enums.Rank) -> String:
-	match rankIn:
-		Enums.Rank.TWO: return "02"
-		Enums.Rank.THREE: return "03"
-		Enums.Rank.FOUR: return "04"
-		Enums.Rank.FIVE: return "05"
-		Enums.Rank.SIX: return "06"
-		Enums.Rank.SEVEN: return "07"
-		Enums.Rank.EIGHT: return "08"
-		Enums.Rank.NINE: return "09"
-		Enums.Rank.TEN: return "10"
-		Enums.Rank.JACK: return "jack"
-		Enums.Rank.QUEEN: return "queen"
-		Enums.Rank.KING: return "king"
-		Enums.Rank.ACE: return "ace"
-	return "unknown"
+func _on_area_2d_area_entered(area):
+	var dragged_card = area.get_parent().get_parent()
+	if dragged_card is Card:
+		var can_place = can_place_on_card(dragged_card, self)
+		# FIXME: print('TODO:')
+		#if can_place:
+			#print("Can place ", Enums.human_readable_card(dragged_card), " on ", Enums.human_readable_card(self))
+		#else:
+			#print("Cannot place ", Enums.human_readable_card(dragged_card), " on ", Enums.human_readable_card(self))
 
-# ???
-func can_move_to(other_card: Card) -> bool: 
-	# Basic check for FreeCell rules: alternating colors and descending rank 
-	if (suit != other_card.suit and rank == other_card.rank + 1): 
-		return true 
-	else: 
-		return false
+func _on_area_2d_area_exited(area):
+	# Handle any cleanup or UI feedback reset when a card is no longer dragging over
+	pass # Replace with function body.

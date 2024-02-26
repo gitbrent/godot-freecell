@@ -21,9 +21,13 @@ centered = false
 position = Vector2(174.359, 253.846)
 shape = SubResource("RectangleShape2D_2jll5")
 
-[node name="Control" type="Control" parent="."]
+[node name="CardControl" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 69.0
 offset_bottom = 100.0
+mouse_default_cursor_shape = 2
 script = ExtResource("3_lrmxn")
+
+[connection signal="area_entered" from="Sprite2D/Area2D" to="." method="_on_area_2d_area_entered"]
+[connection signal="area_exited" from="Sprite2D/Area2D" to="." method="_on_area_2d_area_exited"]
