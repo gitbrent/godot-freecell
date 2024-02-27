@@ -71,7 +71,10 @@ func _on_card_drag_start(card, initial_mouse_position):
 		card_dragged = null  # Explicitly ensure dragging isn't started
 
 func _on_card_hover_start(_src_card: Card, tgt_card: Card):
-	if tgt_card:
+	# RULE: Only the top-most (the card completely visible) card is a valid target
+	var pile_tab = tableau_piles[identify_card_pile(tgt_card)]
+	var last_child_index = pile_tab.get_child_count() - 1
+	if tgt_card and tgt_card == pile_tab.get_child(last_child_index):
 		print("[HOVER]_on_card_hover_start: " + Enums.human_readable_card(tgt_card))
 		card_target = tgt_card
 
