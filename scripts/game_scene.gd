@@ -1,9 +1,11 @@
 extends Node2D
 
 # VARIABLES
-var tableau_piles = []
-var dragged_card : Card = null
 var drag_offset : Vector2 = Vector2()
+var tableau_piles = []
+var card_deck = []
+var card_dragged : Card = null
+var card_target: Card = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -18,7 +20,7 @@ func _ready():
 	deal_cards()
 
 func _on_drag_in_progress(card, mouse_position):
-	if card == dragged_card:  # Ensure this is the card you're currently dragging
+	if card == card_dragged:  # Ensure this is the card you're currently dragging
 		var new_position = mouse_position - drag_offset
 		card.global_position = new_position
 
@@ -54,31 +56,56 @@ func is_valid_drag_start(card: Card, card_pile_index: int) -> bool:
 	
 	return true  # Valid sequence
 
-func _on_attempt_drag_start(card, initial_mouse_position):
+func _on_card_drag_start(card, initial_mouse_position):
 	var card_pile_index = identify_card_pile(card)
 
 	# Check if the card is the last one in its pile or part of a valid sequence.
 	if is_valid_drag_start(card, card_pile_index):
 		#print("START drag: " + str(card.rank) + "-" + str(card.suit) + " at " + str(card.z_index))
 		drag_offset = initial_mouse_position - card.global_position
-		dragged_card = card
+		card_dragged = card
 		card.original_position = card.global_position
 		card.z_index = 1000  # Temporarily boost z_index for dragging visibility
 	else:
 		#print("[is_valid_drag_start]: Invalid card or sequence")
-		dragged_card = null  # Explicitly ensure dragging isn't started
+		card_dragged = null  # Explicitly ensure dragging isn't started
+
+func _on_card_hover_start(_src_card: Card, tgt_card: Card):
+	if tgt_card:
+		print("[HOVER]_on_card_hover_start: " + Enums.human_readable_card(tgt_card))
+		card_target = tgt_card
+
+func _on_card_hover_ended(src_card: Card, tgt_card: Card):
+	if card_target == tgt_card:
+		print("  [END]_on_card_hover_ended: " + Enums.human_readable_card(src_card))
+		card_target = null
 
 func _on_card_drag_ended(card):
 	# IMPORTANT: this method is trigged for all cards under the cursor
 	# e.g.: release mouse button over another card and *BOTH* will call this function!
-	if card == dragged_card:
+	if card == card_dragged:
 		#print("..END drag: " + str(card.rank) +"-"+ str(card.suit) + " at " + str(card.z_index))
-		var tween = get_tree().create_tween()
-		tween.tween_property(card, "global_position", card.original_position, 0.5)
-		tween.tween_callback(reset_card_z_indices)
+		if card_target and CardUtils.can_place_on_card(card_dragged, card_target):
+			print("Valid move..: ", Enums.human_readable_card(card_dragged), " onto ", Enums.human_readable_card(card_target))
+			move_card(card_dragged, card_target)
+		else:
+			#print("Invalid move: ", Enums.human_readable_card(src_card), " onto ", Enums.human_readable_card(tgt_card))
+			var tween = get_tree().create_tween()
+			tween.tween_property(card, "global_position", card.original_position, 0.5)
+			tween.tween_callback(reset_card_z_indices)
 	
 	# Ensure to reset this regardless of condition to prevent stuck states
-	dragged_card = null
+	card_dragged = null
+
+func move_card(src_card: Card, tgt_card: Card):
+	var old_pile = identify_card_pile(src_card)
+	var new_pile = identify_card_pile(tgt_card)
+	tableau_piles[old_pile].remove_card(src_card)
+	tableau_piles[new_pile].add_card(src_card)
+	# Additional logic to update positions and game state as necessary
+	# TODO: resort z-indexes? reset_card_positions_in_pile(new_pile)
+	#_on_card_drag_ended(src_card)
+	reset_card_z_indices()
 
 func reset_card_z_indices():
 	for i in range(tableau_piles.size()):
@@ -94,6 +121,7 @@ func deal_cards():
 	# STEP 1: clear all cards
 	for i in range(tableau_piles.size()):
 		tableau_piles[i].remove_all_cards()
+	card_deck = []
 		
 	# STEP 1: Create the standard 52 playing cards
 	for suit in Enums.Suit.values():
@@ -120,28 +148,19 @@ func deal_cards():
 			if card_instance is Card:
 				var card: Card = card_instance
 				card.call_deferred("initialize", card_info["suit"], card_info["rank"])
+				card.connect("card_hover_start", self._on_card_hover_start)
+				card.connect("card_hover_ended", self._on_card_hover_ended)
 				var control_node = card.get_node("CardControl")
-				control_node.connect("attempt_drag_start", self._on_attempt_drag_start)
+				control_node.connect("card_drag_start", self._on_card_drag_start)
 				control_node.connect("drag_in_progress", self._on_drag_in_progress)
 				control_node.connect("card_drag_ended", self._on_card_drag_ended)
 				tableau_piles[i].add_card(card)
-				card.add_to_group("cards")
+				card_deck.append(card)
 			else:
 				print("Error: The instantiated object is not a Card.")
 	
 	# STEP 5:
 	reset_card_z_indices()
-
-# (???) useful? [untested!]
-func handle_card_drag(card: Card, source_pile: Control, target_pile: Control):
-	# Check if move is valid based on game rules
-	if card.can_move_to(target_pile.get_top_card()):
-		# Remove card from source pile
-		source_pile.remove_card(card)
-		# Add card to target pile
-		target_pile.add_card(card)
-		# Update card position and visuals
-		card.update_position_and_visuals()
 
 func _on_btn_deal_pressed():
 	deal_cards()
