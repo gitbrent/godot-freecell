@@ -7,13 +7,13 @@ extends Node2D
 var drag_offset : Vector2 = Vector2()
 var tableau_piles = []
 var card_deck = []
-var free_cell_0 = null
+var free_cell_0 : FreeCell = null
 #
 var card_dragged : Card = null
-var card_target: Card = null
-var hovered_free_cell = null
+var card_target : Card = null
+var hovered_free_cell : FreeCell = null
 #
-var game_prop_moves: int = 0
+var game_prop_moves : int = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -52,7 +52,7 @@ func is_valid_drag_start(card: Card, card_pile_index: int) -> bool:
 	#print("Checking if valid drag start for: ", card.rank, card.suit, " in pile ", card_pile_index)
 
 	if card_pile_index == -1:
-		return false  # Card is not in any recognized pile.
+		return true # (assumption is that this comes from free-cell)
 
 	var card_pile = tableau_piles[card_pile_index].get_children()  # Assuming piles are parent nodes to cards.
 
@@ -157,9 +157,11 @@ func deal_cards():
 	var deck = []
 	
 	# STEP 1: clear all cards
+	card_deck = []
 	for i in range(tableau_piles.size()):
 		tableau_piles[i].remove_all_cards()
-	card_deck = []
+	if free_cell_0:
+		free_cell_0.remove_all()
 		
 	# STEP 1: Create the standard 52 playing cards
 	for suit in Enums.Suit.values():

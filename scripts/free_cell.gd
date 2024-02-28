@@ -24,6 +24,10 @@ func remove_card(card: Card):
 	remove_child(card)
 	card_in_cell = null
 
+func remove_all():
+	if card_in_cell:
+		remove_card(card_in_cell)
+
 func _on_area_2d_area_entered(_area):
 	if not card_in_cell:
 		emit_signal("card_hover_free_start")
