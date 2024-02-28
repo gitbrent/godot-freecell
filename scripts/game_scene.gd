@@ -1,11 +1,19 @@
 extends Node2D
 
+# NODES
+@onready var score = $LeftControl/InfoRect/VBoxContainer/HBoxContMoves/Score
+
 # VARIABLES
 var drag_offset : Vector2 = Vector2()
 var tableau_piles = []
 var card_deck = []
+var free_cell_0 = null
+#
 var card_dragged : Card = null
 var card_target: Card = null
+var hovered_free_cell = null
+#
+var game_prop_moves: int = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -16,8 +24,13 @@ func _ready():
 	for i in range(0, 8): # Assuming you named them TableauPile0 through TableauPile7
 		tableau_piles.append(get_node("TableauPileCont/TableauPile" + str(i)))
 
-	# STEP 3: Deal all 52 cards onto tableua
+	# STEP 3: Deal all 52 cards onto tableau
 	deal_cards()
+	
+	# STEP 4: Init free-cell-pile
+	free_cell_0 = get_node("TopContainer/FreeCellPile/Control0")
+	free_cell_0.connect("card_hover_free_start", self._on_card_hover_free_start)
+	free_cell_0.connect("card_hover_free_ended", self._on_card_hover_free_ended)
 
 func _on_drag_in_progress(card, mouse_position):
 	if card == card_dragged:  # Ensure this is the card you're currently dragging
@@ -70,6 +83,27 @@ func _on_card_drag_start(card, initial_mouse_position):
 		#print("[is_valid_drag_start]: Invalid card or sequence")
 		card_dragged = null  # Explicitly ensure dragging isn't started
 
+func _on_card_drag_ended(card):
+	# IMPORTANT: this method is trigged for all cards under the cursor
+	# e.g.: release mouse button over another card and *BOTH* will call this function!
+	if card == card_dragged:
+		#print("..END drag: " + str(card.rank) +"-"+ str(card.suit) + " at " + str(card.z_index))
+		if card_target and CardUtils.can_place_on_card(card_dragged, card_target):
+			print("Valid move..: ", Enums.human_readable_card(card_dragged), " onto ", Enums.human_readable_card(card_target))
+			move_card(card_dragged, card_target, null)
+		elif hovered_free_cell:
+			print("Valid move..: ", Enums.human_readable_card(card_dragged), " onto FREE CELL")
+			move_card(card_dragged, null, hovered_free_cell)
+			hovered_free_cell = null
+		else:
+			#print("Invalid move: ", Enums.human_readable_card(src_card), " onto ", Enums.human_readable_card(tgt_card))
+			var tween = get_tree().create_tween()
+			tween.tween_property(card, "global_position", card.original_position, 0.5)
+			tween.tween_callback(reset_card_z_indices)
+	
+	# Ensure to reset this regardless of condition to prevent stuck states
+	card_dragged = null
+
 func _on_card_hover_start(_src_card: Card, tgt_card: Card):
 	# RULE: Only the top-most (the card completely visible) card is a valid target
 	var pile_tab = tableau_piles[identify_card_pile(tgt_card)]
@@ -83,32 +117,33 @@ func _on_card_hover_ended(src_card: Card, tgt_card: Card):
 		print("  [END]_on_card_hover_ended: " + Enums.human_readable_card(src_card))
 		card_target = null
 
-func _on_card_drag_ended(card):
-	# IMPORTANT: this method is trigged for all cards under the cursor
-	# e.g.: release mouse button over another card and *BOTH* will call this function!
-	if card == card_dragged:
-		#print("..END drag: " + str(card.rank) +"-"+ str(card.suit) + " at " + str(card.z_index))
-		if card_target and CardUtils.can_place_on_card(card_dragged, card_target):
-			print("Valid move..: ", Enums.human_readable_card(card_dragged), " onto ", Enums.human_readable_card(card_target))
-			move_card(card_dragged, card_target)
-		else:
-			#print("Invalid move: ", Enums.human_readable_card(src_card), " onto ", Enums.human_readable_card(tgt_card))
-			var tween = get_tree().create_tween()
-			tween.tween_property(card, "global_position", card.original_position, 0.5)
-			tween.tween_callback(reset_card_z_indices)
-	
-	# Ensure to reset this regardless of condition to prevent stuck states
-	card_dragged = null
+func _on_card_hover_free_start():
+	hovered_free_cell = free_cell_0
 
-func move_card(src_card: Card, tgt_card: Card):
+func _on_card_hover_free_ended():
+	hovered_free_cell = null
+
+func move_card(src_card: Card, tgt_card: Card, free_cell: FreeCell):
+	# STEP 1: Remove card from pile
 	var old_pile = identify_card_pile(src_card)
-	var new_pile = identify_card_pile(tgt_card)
 	tableau_piles[old_pile].remove_card(src_card)
-	tableau_piles[new_pile].add_card(src_card)
-	# Additional logic to update positions and game state as necessary
-	# TODO: resort z-indexes? reset_card_positions_in_pile(new_pile)
-	#_on_card_drag_ended(src_card)
+
+	# STEP 2: Move card from one pile to another
+	if tgt_card:
+		var new_pile = identify_card_pile(tgt_card)
+		tableau_piles[new_pile].add_card(src_card)
+	elif free_cell:
+		free_cell.add_card(src_card)
+	else:
+		print("ERROR: no move available!")
+
+	# STEP 3: reset indexes
 	reset_card_z_indices()
+
+	# STEP 4: Increase moves
+	game_prop_moves = game_prop_moves + 1
+	score.text = str(game_prop_moves)
+	# TODO: other props too (eg: `Score`)
 
 func reset_card_z_indices():
 	for i in range(tableau_piles.size()):
