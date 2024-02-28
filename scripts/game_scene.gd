@@ -7,7 +7,7 @@ extends Node2D
 var drag_offset : Vector2 = Vector2()
 var tableau_piles = []
 var card_deck = []
-var free_cell_0 : FreeCell = null
+var free_cells : Array = []
 #
 var card_dragged : Card = null
 var card_target : Card = null
@@ -28,9 +28,11 @@ func _ready():
 	deal_cards()
 	
 	# STEP 4: Init free-cell-pile
-	free_cell_0 = get_node("TopContainer/FreeCellPile/Control0")
-	free_cell_0.connect("card_hover_free_start", self._on_card_hover_free_start)
-	free_cell_0.connect("card_hover_free_ended", self._on_card_hover_free_ended)
+	for i in 4:
+		var free_cell = get_node("TopContainer/FreeCellPile/FreeCell" + str(i))
+		free_cell.connect("card_hover_free_start", self._on_card_hover_free_start)
+		free_cell.connect("card_hover_free_ended", self._on_card_hover_free_ended)
+		free_cells.append(free_cell)
 
 func _on_drag_in_progress(card, mouse_position):
 	if card == card_dragged:  # Ensure this is the card you're currently dragging
@@ -74,7 +76,7 @@ func _on_card_drag_start(card, initial_mouse_position):
 
 	# Check if the card is the last one in its pile or part of a valid sequence.
 	if is_valid_drag_start(card, card_pile_index):
-		#print("START drag: " + str(card.rank) + "-" + str(card.suit) + " at " + str(card.z_index))
+		print("START drag: " + str(card.rank) + "-" + str(card.suit) + " at " + str(card.z_index))
 		drag_offset = initial_mouse_position - card.global_position
 		card_dragged = card
 		card.original_position = card.global_position
@@ -83,16 +85,23 @@ func _on_card_drag_start(card, initial_mouse_position):
 		#print("[is_valid_drag_start]: Invalid card or sequence")
 		card_dragged = null  # Explicitly ensure dragging isn't started
 
+# BRENT: WIP: The issue with FreeCell-to-FreeCell is that the card touches **BOTH** Area2D's and the fire enter/leave!!!
 func _on_card_drag_ended(card):
+	# FIXME: dragging a card from FreeCell to FreeCell = broken
+	print("_on_card_drag_ended")
+	#print(card)
+	#print(card_dragged)
+	print("hovered_free_cell = ", hovered_free_cell) # FIXME: why is this null going free-to-free??
+	
 	# IMPORTANT: this method is trigged for all cards under the cursor
 	# e.g.: release mouse button over another card and *BOTH* will call this function!
 	if card == card_dragged:
 		#print("..END drag: " + str(card.rank) +"-"+ str(card.suit) + " at " + str(card.z_index))
 		if card_target and CardUtils.can_place_on_card(card_dragged, card_target):
-			print("Valid move..: ", Enums.human_readable_card(card_dragged), " onto ", Enums.human_readable_card(card_target))
+			print("[Valid Move]: ", Enums.human_readable_card(card_dragged), " onto ", Enums.human_readable_card(card_target))
 			move_card(card_dragged, card_target, null)
 		elif hovered_free_cell:
-			print("Valid move..: ", Enums.human_readable_card(card_dragged), " onto FREE CELL")
+			print("[Valid Move]: ", Enums.human_readable_card(card_dragged), " onto FREE CELL")
 			move_card(card_dragged, null, hovered_free_cell)
 			hovered_free_cell = null
 		else:
@@ -117,22 +126,29 @@ func _on_card_hover_ended(src_card: Card, tgt_card: Card):
 		print("  [END]_on_card_hover_ended: " + Enums.human_readable_card(src_card))
 		card_target = null
 
-func _on_card_hover_free_start():
-	hovered_free_cell = free_cell_0
+func _on_card_hover_free_start(free_cell: FreeCell):
+	print("[HOVER] free_cell ..... ", free_cell)
+	hovered_free_cell = free_cell
 
-func _on_card_hover_free_ended():
+func _on_card_hover_free_ended(free_cell: FreeCell):
+	print('[HOVER] BYE BYE!!!')
 	hovered_free_cell = null
 
 func move_card(src_card: Card, tgt_card: Card, free_cell: FreeCell):
-	# STEP 1: Remove card from pile
+	# STEP 1: Remove card from source pile
 	var old_pile = identify_card_pile(src_card)
-	tableau_piles[old_pile].remove_card(src_card)
-
+	if old_pile > -1:
+		tableau_piles[old_pile].remove_card(src_card)
+	else:
+		for i in range(free_cells.size()):
+			free_cells[i].remove_card(src_card)
+	
 	# STEP 2: Move card from one pile to another
 	if tgt_card:
 		var new_pile = identify_card_pile(tgt_card)
 		tableau_piles[new_pile].add_card(src_card)
 	elif free_cell:
+		src_card.z_index = 10
 		free_cell.add_card(src_card)
 	else:
 		print("ERROR: no move available!")
@@ -155,13 +171,14 @@ func reset_card_z_indices():
 
 func deal_cards():
 	var deck = []
+	game_prop_moves = 0
 	
 	# STEP 1: clear all cards
 	card_deck = []
 	for i in range(tableau_piles.size()):
 		tableau_piles[i].remove_all_cards()
-	if free_cell_0:
-		free_cell_0.remove_all()
+	for i in range(free_cells.size()):
+		free_cells[i].remove_all()
 		
 	# STEP 1: Create the standard 52 playing cards
 	for suit in Enums.Suit.values():
