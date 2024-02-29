@@ -10,9 +10,9 @@ func add_card(card: Card):
 		var card_position = Vector2(horizontal_offset, cards.size() * vertical_offset)
 		card.position = card_position
 		cards.append(card)
-		#print("Added card with position: ", card.position, " in column ", column_index)
+		#print("[tableau] added card with position: ", card.position)
 	else:
-		print("Attempted to add a non-Card node to the tableau pile.")
+		print("[tableau] attempted to add a non-Card node to the pile.")
 
 func remove_card(card: Card):
 	remove_child(card)

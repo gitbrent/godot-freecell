@@ -4,9 +4,9 @@
 [ext_resource type="Texture2D" uid="uid://2non5yojsj8q" path="res://assets/background_green felt.jpg" id="1_86hx2"]
 [ext_resource type="PackedScene" uid="uid://cdti6c0vnval3" path="res://scenes/btn_pause.tscn" id="2_mvke8"]
 [ext_resource type="Theme" uid="uid://b3nw8ski1k4dn" path="res://control_label_theme.tres" id="3_vv2if"]
-[ext_resource type="Texture2D" uid="uid://5ua6yri85q8k" path="res://assets/cards/back07.png" id="4_hsxry"]
 [ext_resource type="PackedScene" uid="uid://pmwtogh2qbp7" path="res://scenes/btn_deal.tscn" id="4_pqekv"]
 [ext_resource type="Texture2D" uid="uid://cfqfdlwv3dicd" path="res://assets/cards/clubs_ace.png" id="5_fvdih"]
+[ext_resource type="PackedScene" uid="uid://chwprjvrdjihp" path="res://scenes/free_cell.tscn" id="6_4qpkg"]
 [ext_resource type="Texture2D" uid="uid://12tt2cah233x" path="res://assets/cards/diamonds_ace.png" id="6_p848p"]
 [ext_resource type="Texture2D" uid="uid://ba3fsak3ptwmi" path="res://assets/cards/hearts_ace.png" id="7_oqxkc"]
 [ext_resource type="Texture2D" uid="uid://n0yl1q6pjpup" path="res://assets/cards/spades_ace.png" id="8_o5bie"]
@@ -65,6 +65,7 @@ offset_right = -10.0
 offset_bottom = -10.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 20
 
 [node name="HBoxContScore" type="HBoxContainer" parent="LeftControl/InfoRect/VBoxContainer"]
 layout_mode = 2
@@ -87,10 +88,23 @@ layout_mode = 2
 theme = ExtResource("3_vv2if")
 text = "Moves"
 
-[node name="Value" type="Label" parent="LeftControl/InfoRect/VBoxContainer/HBoxContMoves"]
+[node name="Score" type="Label" parent="LeftControl/InfoRect/VBoxContainer/HBoxContMoves"]
 layout_mode = 2
 size_flags_horizontal = 10
-text = "13	"
+text = "0"
+
+[node name="HBoxContScore2" type="HBoxContainer" parent="LeftControl/InfoRect/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="LeftControl/InfoRect/VBoxContainer/HBoxContScore2"]
+layout_mode = 2
+theme = ExtResource("3_vv2if")
+text = "Elapsed"
+
+[node name="Value" type="Label" parent="LeftControl/InfoRect/VBoxContainer/HBoxContScore2"]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "00:00"
 
 [node name="TopContainer" type="HBoxContainer" parent="."]
 offset_left = 200.0
@@ -101,50 +115,26 @@ offset_bottom = 116.0
 [node name="FreeCellPile" type="HBoxContainer" parent="TopContainer"]
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
-alignment = 1
+theme_override_constants/separation = 105
 
-[node name="Control0" type="Control" parent="TopContainer/FreeCellPile"]
+[node name="FreeCell0" parent="TopContainer/FreeCellPile" instance=ExtResource("6_4qpkg")]
 layout_mode = 2
-size_flags_horizontal = 3
 
-[node name="Back070" type="Sprite2D" parent="TopContainer/FreeCellPile/Control0"]
-scale = Vector2(0.195, 0.195)
-texture = ExtResource("4_hsxry")
-centered = false
-
-[node name="Control1" type="Control" parent="TopContainer/FreeCellPile"]
+[node name="FreeCell1" parent="TopContainer/FreeCellPile" instance=ExtResource("6_4qpkg")]
 layout_mode = 2
-size_flags_horizontal = 3
 
-[node name="Back071" type="Sprite2D" parent="TopContainer/FreeCellPile/Control1"]
-scale = Vector2(0.195, 0.195)
-texture = ExtResource("4_hsxry")
-centered = false
-
-[node name="Control2" type="Control" parent="TopContainer/FreeCellPile"]
+[node name="FreeCell2" parent="TopContainer/FreeCellPile" instance=ExtResource("6_4qpkg")]
 layout_mode = 2
-size_flags_horizontal = 3
 
-[node name="Back072" type="Sprite2D" parent="TopContainer/FreeCellPile/Control2"]
-scale = Vector2(0.195, 0.195)
-texture = ExtResource("4_hsxry")
-centered = false
-
-[node name="Control3" type="Control" parent="TopContainer/FreeCellPile"]
+[node name="FreeCell3" parent="TopContainer/FreeCellPile" instance=ExtResource("6_4qpkg")]
 layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Back073" type="Sprite2D" parent="TopContainer/FreeCellPile/Control3"]
-scale = Vector2(0.195, 0.195)
-texture = ExtResource("4_hsxry")
-centered = false
 
 [node name="Label" type="Label" parent="TopContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 32
-text = "A B
-C D"
+text = "♠ ♥
+♣ ♦"
 horizontal_alignment = 1
 
 [node name="FoundationPile" type="HBoxContainer" parent="TopContainer"]
