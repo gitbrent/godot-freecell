@@ -115,7 +115,7 @@ offset_bottom = 116.0
 [node name="FreeCellPile" type="HBoxContainer" parent="TopContainer"]
 custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
-alignment = 1
+theme_override_constants/separation = 105
 
 [node name="FreeCell0" parent="TopContainer/FreeCellPile" instance=ExtResource("6_4qpkg")]
 layout_mode = 2

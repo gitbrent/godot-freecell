@@ -76,7 +76,7 @@ func _on_card_drag_start(card, initial_mouse_position):
 
 	# Check if the card is the last one in its pile or part of a valid sequence.
 	if is_valid_drag_start(card, card_pile_index):
-		print("START drag: " + str(card.rank) + "-" + str(card.suit) + " at " + str(card.z_index))
+		#print("START drag: " + str(card.rank) + "-" + str(card.suit) + " at " + str(card.z_index))
 		drag_offset = initial_mouse_position - card.global_position
 		card_dragged = card
 		card.original_position = card.global_position
@@ -85,23 +85,16 @@ func _on_card_drag_start(card, initial_mouse_position):
 		#print("[is_valid_drag_start]: Invalid card or sequence")
 		card_dragged = null  # Explicitly ensure dragging isn't started
 
-# BRENT: WIP: The issue with FreeCell-to-FreeCell is that the card touches **BOTH** Area2D's and the fire enter/leave!!!
 func _on_card_drag_ended(card):
-	# FIXME: dragging a card from FreeCell to FreeCell = broken
-	print("_on_card_drag_ended")
-	#print(card)
-	#print(card_dragged)
-	print("hovered_free_cell = ", hovered_free_cell) # FIXME: why is this null going free-to-free??
-	
 	# IMPORTANT: this method is trigged for all cards under the cursor
 	# e.g.: release mouse button over another card and *BOTH* will call this function!
 	if card == card_dragged:
 		#print("..END drag: " + str(card.rank) +"-"+ str(card.suit) + " at " + str(card.z_index))
 		if card_target and CardUtils.can_place_on_card(card_dragged, card_target):
-			print("[Valid Move]: ", Enums.human_readable_card(card_dragged), " onto ", Enums.human_readable_card(card_target))
+			print("[TABL Valid Move]: ", Enums.human_readable_card(card_dragged), " onto ", Enums.human_readable_card(card_target))
 			move_card(card_dragged, card_target, null)
 		elif hovered_free_cell:
-			print("[Valid Move]: ", Enums.human_readable_card(card_dragged), " onto FREE CELL")
+			print("[FREE Valid Move]: ", Enums.human_readable_card(card_dragged), " onto FREE CELL")
 			move_card(card_dragged, null, hovered_free_cell)
 			hovered_free_cell = null
 		else:
@@ -118,21 +111,22 @@ func _on_card_hover_start(_src_card: Card, tgt_card: Card):
 	var pile_tab = tableau_piles[identify_card_pile(tgt_card)]
 	var last_child_index = pile_tab.get_child_count() - 1
 	if tgt_card and tgt_card == pile_tab.get_child(last_child_index):
-		print("[HOVER]_on_card_hover_start: " + Enums.human_readable_card(tgt_card))
+		#print("[HOVER]_on_card_hover_start: " + Enums.human_readable_card(tgt_card))
 		card_target = tgt_card
 
 func _on_card_hover_ended(src_card: Card, tgt_card: Card):
 	if card_target == tgt_card:
-		print("  [END]_on_card_hover_ended: " + Enums.human_readable_card(src_card))
+		#print("  [END]_on_card_hover_ended: " + Enums.human_readable_card(src_card))
 		card_target = null
 
 func _on_card_hover_free_start(free_cell: FreeCell):
-	print("[HOVER] free_cell ..... ", free_cell)
+	#print("[HOVER] free_cell ..... ", free_cell)
 	hovered_free_cell = free_cell
 
 func _on_card_hover_free_ended(free_cell: FreeCell):
-	print('[HOVER] BYE BYE!!!')
-	hovered_free_cell = null
+	if hovered_free_cell == free_cell:
+		#print('[HOVER] BYE BYE!!!')
+		hovered_free_cell = null
 
 func move_card(src_card: Card, tgt_card: Card, free_cell: FreeCell):
 	# STEP 1: Remove card from source pile
@@ -158,8 +152,11 @@ func move_card(src_card: Card, tgt_card: Card, free_cell: FreeCell):
 
 	# STEP 4: Increase moves
 	game_prop_moves = game_prop_moves + 1
-	score.text = str(game_prop_moves)
+	update_game_props()
 	# TODO: other props too (eg: `Score`)
+
+func update_game_props():
+	score.text = str(game_prop_moves)	
 
 func reset_card_z_indices():
 	for i in range(tableau_piles.size()):
@@ -171,8 +168,7 @@ func reset_card_z_indices():
 
 func deal_cards():
 	var deck = []
-	game_prop_moves = 0
-	
+
 	# STEP 1: clear all cards
 	card_deck = []
 	for i in range(tableau_piles.size()):
@@ -218,6 +214,10 @@ func deal_cards():
 	
 	# STEP 5:
 	reset_card_z_indices()
+	
+	# STEP 6:
+	game_prop_moves = 0
+	update_game_props()
 
 func _on_btn_deal_pressed():
 	deal_cards()

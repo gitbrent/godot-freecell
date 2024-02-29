@@ -9,7 +9,6 @@ size = Vector2(74, 101)
 [node name="FreeCell0" type="Control"]
 layout_mode = 3
 anchors_preset = 0
-size_flags_horizontal = 3
 mouse_filter = 1
 script = ExtResource("1_pfu5x")
 
