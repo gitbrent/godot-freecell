@@ -1,15 +1,12 @@
-[gd_scene load_steps=12 format=3 uid="uid://yk1wyekngt53"]
+[gd_scene load_steps=9 format=3 uid="uid://yk1wyekngt53"]
 
 [ext_resource type="Script" path="res://scripts/game_scene.gd" id="1_6cyku"]
 [ext_resource type="Texture2D" uid="uid://2non5yojsj8q" path="res://assets/background_green felt.jpg" id="1_86hx2"]
 [ext_resource type="PackedScene" uid="uid://cdti6c0vnval3" path="res://scenes/btn_pause.tscn" id="2_mvke8"]
-[ext_resource type="Theme" uid="uid://b3nw8ski1k4dn" path="res://control_label_theme.tres" id="3_vv2if"]
+[ext_resource type="Theme" uid="uid://b3nw8ski1k4dn" path="res://styles/control_label_theme.tres" id="3_vv2if"]
 [ext_resource type="PackedScene" uid="uid://pmwtogh2qbp7" path="res://scenes/btn_deal.tscn" id="4_pqekv"]
-[ext_resource type="Texture2D" uid="uid://cfqfdlwv3dicd" path="res://assets/cards/clubs_ace.png" id="5_fvdih"]
 [ext_resource type="PackedScene" uid="uid://chwprjvrdjihp" path="res://scenes/free_cell.tscn" id="6_4qpkg"]
-[ext_resource type="Texture2D" uid="uid://12tt2cah233x" path="res://assets/cards/diamonds_ace.png" id="6_p848p"]
-[ext_resource type="Texture2D" uid="uid://ba3fsak3ptwmi" path="res://assets/cards/hearts_ace.png" id="7_oqxkc"]
-[ext_resource type="Texture2D" uid="uid://n0yl1q6pjpup" path="res://assets/cards/spades_ace.png" id="8_o5bie"]
+[ext_resource type="PackedScene" uid="uid://diddbqdq5js1f" path="res://scenes/foundation_cell.tscn" id="7_iqgb2"]
 [ext_resource type="PackedScene" uid="uid://cxf5h1ul17kl" path="res://scenes/tableau_pile.tscn" id="10_xpokh"]
 
 [node name="GameScene" type="Node2D"]
@@ -113,7 +110,7 @@ offset_right = 1128.0
 offset_bottom = 116.0
 
 [node name="FreeCellPile" type="HBoxContainer" parent="TopContainer"]
-custom_minimum_size = Vector2(400, 0)
+custom_minimum_size = Vector2(390, 0)
 layout_mode = 2
 theme_override_constants/separation = 105
 
@@ -138,47 +135,21 @@ text = "♠ ♥
 horizontal_alignment = 1
 
 [node name="FoundationPile" type="HBoxContainer" parent="TopContainer"]
-custom_minimum_size = Vector2(400, 0)
+custom_minimum_size = Vector2(390, 0)
 layout_mode = 2
-alignment = 2
+theme_override_constants/separation = 105
 
-[node name="Control0" type="Control" parent="TopContainer/FoundationPile"]
+[node name="FoundationCell0" parent="TopContainer/FoundationPile" instance=ExtResource("7_iqgb2")]
 layout_mode = 2
-size_flags_horizontal = 3
 
-[node name="Back070" type="Sprite2D" parent="TopContainer/FoundationPile/Control0"]
-scale = Vector2(0.195, 0.195)
-texture = ExtResource("5_fvdih")
-centered = false
-
-[node name="Control1" type="MarginContainer" parent="TopContainer/FoundationPile"]
+[node name="FoundationCell1" parent="TopContainer/FoundationPile" instance=ExtResource("7_iqgb2")]
 layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_right = 20
 
-[node name="Back071" type="Sprite2D" parent="TopContainer/FoundationPile/Control1"]
-scale = Vector2(0.195, 0.195)
-texture = ExtResource("6_p848p")
-centered = false
-
-[node name="Control2" type="Control" parent="TopContainer/FoundationPile"]
+[node name="FoundationCell2" parent="TopContainer/FoundationPile" instance=ExtResource("7_iqgb2")]
 layout_mode = 2
-size_flags_horizontal = 3
 
-[node name="Back072" type="Sprite2D" parent="TopContainer/FoundationPile/Control2"]
-scale = Vector2(0.195, 0.195)
-texture = ExtResource("7_oqxkc")
-centered = false
-
-[node name="Control3" type="Control" parent="TopContainer/FoundationPile"]
+[node name="FoundationCell3" parent="TopContainer/FoundationPile" instance=ExtResource("7_iqgb2")]
 layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Back073" type="Sprite2D" parent="TopContainer/FoundationPile/Control3"]
-scale = Vector2(0.195, 0.195)
-texture = ExtResource("8_o5bie")
-centered = false
 
 [node name="TableauPileCont" type="HBoxContainer" parent="."]
 anchors_preset = 15

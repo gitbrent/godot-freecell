@@ -4,16 +4,18 @@ extends Node2D
 @onready var score = $LeftControl/InfoRect/VBoxContainer/HBoxContMoves/Score
 
 # VARIABLES
-const Y_OFFSET = 40
+const Y_OFFSET : int = 40
 var drag_offset : Vector2 = Vector2()
-var tableau_piles = []
-var card_deck = []
+var tableau_piles : Array = []
+var card_deck : Array = []
 var free_cells : Array = []
+var fnda_cells : Array = []
 #
 var card_dragged : Card = null
 var dragging_cards : Array = []
 var card_target : Card = null
 var hovered_free_cell : FreeCell = null
+var hovered_fnda_cell : FoundationCell = null
 #
 var game_prop_moves : int = 0
 
@@ -35,6 +37,15 @@ func _ready():
 		free_cell.connect("card_hover_free_start", self._on_card_hover_free_start)
 		free_cell.connect("card_hover_free_ended", self._on_card_hover_free_ended)
 		free_cells.append(free_cell)
+	
+	# STEP 5: Init foundation-cell-pile
+	for i in 4:
+		var fnda_cell = get_node("TopContainer/FoundationPile/FoundationCell" + str(i))
+		fnda_cell.connect("card_hover_fnda_start", self._on_card_hover_fnda_start)
+		fnda_cell.connect("card_hover_fnda_ended", self._on_card_hover_fnda_ended)
+		fnda_cells.append(fnda_cell)
+
+# =============================================================================
 
 static func compare_cards_z_index(a, b):
 	return a.z_index < b.z_index
@@ -67,6 +78,48 @@ func is_valid_drag_start(card: Card, card_pile_index: int) -> bool:
 			return false  # Sequence is broken, invalid drag.
 	
 	return true  # Valid sequence
+
+func move_card_sequence(tgt_card: Card, free_cell: FreeCell):
+	var new_pile_index = -1
+	if tgt_card:
+		new_pile_index = identify_card_pile(tgt_card)
+	elif free_cell:
+		# For free cells, we'll assume only one card can be moved, which is handled separately.
+		pass
+
+	for src_card in dragging_cards:
+		# STEP 1: Remove card from its source pile
+		var old_pile_index = identify_card_pile(src_card)
+		if old_pile_index > -1:
+			tableau_piles[old_pile_index].remove_card(src_card)
+		else:
+			# Assuming src_card could be in a free cell, attempt to remove it
+			for cell in free_cells:
+				cell.remove_card(src_card)
+
+		# STEP 2: Move card to the new pile, if a target card is specified
+		if new_pile_index != -1:
+			tableau_piles[new_pile_index].add_card(src_card)
+		elif free_cell and free_cells.size() > 0:
+			# If moving to a free cell, ensure only one card is moved
+			if dragging_cards.size() == 1:
+				free_cell.add_card(src_card)
+				break  # Since only one card can be moved to a free cell, break after moving
+			else:
+				print("ERROR: Cannot move more than one card to a Free Cell!")
+				break
+
+	# Reset dragging cards array
+	dragging_cards.clear()
+
+	# Reset z-indexes and other properties as needed
+	reset_card_z_indices()
+
+	# Increment move counter
+	game_prop_moves += 1
+	update_game_props()
+
+# =============================================================================
 
 func get_draggable_sequence(card: Card) -> Array:
 	var cards:Array = []
@@ -162,45 +215,16 @@ func _on_card_hover_free_ended(free_cell: FreeCell):
 		#print('[HOVER] BYE BYE!!!')
 		hovered_free_cell = null
 
-func move_card_sequence(tgt_card: Card, free_cell: FreeCell):
-	var new_pile_index = -1
-	if tgt_card:
-		new_pile_index = identify_card_pile(tgt_card)
-	elif free_cell:
-		# For free cells, we'll assume only one card can be moved, which is handled separately.
-		pass
+func _on_card_hover_fnda_start(fnda_cell: FoundationCell):
+	print("[HOVER] fnda_cell ..... ", fnda_cell)
+	hovered_fnda_cell = fnda_cell
 
-	for src_card in dragging_cards:
-		# STEP 1: Remove card from its source pile
-		var old_pile_index = identify_card_pile(src_card)
-		if old_pile_index > -1:
-			tableau_piles[old_pile_index].remove_card(src_card)
-		else:
-			# Assuming src_card could be in a free cell, attempt to remove it
-			for cell in free_cells:
-				cell.remove_card(src_card)
+func _on_card_hover_fnda_ended(fnda_cell: FoundationCell):
+	if hovered_fnda_cell == fnda_cell:
+		print('[FNDA-HOVER] BYE BYE!!!')
+		hovered_fnda_cell = null
 
-		# STEP 2: Move card to the new pile, if a target card is specified
-		if new_pile_index != -1:
-			tableau_piles[new_pile_index].add_card(src_card)
-		elif free_cell and free_cells.size() > 0:
-			# If moving to a free cell, ensure only one card is moved
-			if dragging_cards.size() == 1:
-				free_cell.add_card(src_card)
-				break  # Since only one card can be moved to a free cell, break after moving
-			else:
-				print("ERROR: Cannot move more than one card to a Free Cell!")
-				break
-
-	# Reset dragging cards array
-	dragging_cards.clear()
-
-	# Reset z-indexes and other properties as needed
-	reset_card_z_indices()
-
-	# Increment move counter
-	game_prop_moves += 1
-	update_game_props()
+# =============================================================================
 
 func update_game_props():
 	score.text = str(game_prop_moves)	
@@ -219,29 +243,34 @@ func reset_card_z_indices():
 	
 	# TODO: same for Founadtions??
 
-func deal_cards():
-	var deck = []
-
-	# STEP 1: clear all cards
+func clear_deck():
 	card_deck = []
 	for i in range(tableau_piles.size()):
 		tableau_piles[i].remove_all_cards()
 	for i in range(free_cells.size()):
 		free_cells[i].remove_all()
-		
-	# STEP 1: Create the standard 52 playing cards
+	for i in range(fnda_cells.size()):
+		fnda_cells[i].remove_all()
+
+func deal_cards():
+	var deck = []
+
+	# STEP 1: clear all cards
+	clear_deck()
+	
+	# STEP 2: Create the standard 52 playing cards
 	for suit in Enums.Suit.values():
 		for rank in Enums.Rank.values():
 			deck.append({"suit": suit, "rank": rank})
 	
-	# STEP 2: Shuffle the deck
+	# STEP 3: Shuffle the deck
 	deck.shuffle()
 	
-	# STEP 3: Setup for dealing cards to tableau piles according to FreeCell rules
+	# STEP 4: Setup for dealing cards to tableau piles according to FreeCell rules
 	var num_cards_in_columns = [7, 7, 7, 7, 6, 6, 6, 6]
 	var deck_index = 0
 	
-	# STEP 4: Deal
+	# STEP 5: Deal
 	for i in range(tableau_piles.size()):
 		var num_cards = num_cards_in_columns[i]
 		for j in range(num_cards):
@@ -265,10 +294,10 @@ func deal_cards():
 			else:
 				print("Error: The instantiated object is not a Card.")
 	
-	# STEP 5:
+	# STEP 6: Reset z-indexes
 	reset_card_z_indices()
 	
-	# STEP 6:
+	# STEP 6: Clear game props
 	game_prop_moves = 0
 	update_game_props()
 
