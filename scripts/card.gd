@@ -7,8 +7,10 @@ class_name Card
 signal card_hover_start(card_dragged, target_card)
 signal card_hover_ended(card_dragged, target_card)
 
+@onready var panel: Panel = $Panel # hover box
+@onready var sprite: Sprite2D = $Sprite2D # card image
+
 # Card properties
-@onready var sprite = $Sprite2D # card image
 var suit: Enums.Suit
 var rank: Enums.Rank
 var suit_color#: Enums.SuitColor
@@ -32,6 +34,8 @@ func initialize(suitIn: Enums.Suit, rankIn: Enums.Rank):
 	var card_control = self.get_node("CardControl")
 	card_control.connect("card_drag_start", self._on_card_drag_start)
 	card_control.connect("card_drag_ended", self._on_card_drag_ended)
+	# C:
+	$Panel.visible = false
 
 func load_texture():
 	# Construct texture path based on suit and rank
@@ -58,3 +62,9 @@ func _on_area_2d_area_exited(area):
 	var hovered_card:Card = area.get_parent().get_parent() if area.get_parent().get_parent() is Card else null
 	if currently_dragging_card and hovered_card:
 		emit_signal("card_hover_ended", currently_dragging_card, hovered_card)
+
+func style_hovered_on():
+	$Panel.visible = true
+
+func style_hovered_off():
+	$Panel.visible = false

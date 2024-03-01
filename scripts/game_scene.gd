@@ -135,7 +135,7 @@ func _on_card_drag_ended(card):
 		dragging_cards.clear()
 		card_dragged = null # Ensure to reset this regardless of condition to prevent stuck states
 
-func _on_card_hover_start(_src_card: Card, tgt_card: Card):
+func _on_card_hover_start(src_card: Card, tgt_card: Card):
 	# RULE: Only the top-most (the card completely visible) card is a valid target
 	var pile_tab = tableau_piles[identify_card_pile(tgt_card)]
 	var last_child_index = pile_tab.get_child_count() - 1
@@ -143,7 +143,12 @@ func _on_card_hover_start(_src_card: Card, tgt_card: Card):
 		#print("[HOVER]_on_card_hover_start: " + Enums.human_readable_card(tgt_card))
 		card_target = tgt_card
 
+	if card_target and CardUtils.can_place_on_card(src_card, card_target):
+		card_target.style_hovered_on()
+
 func _on_card_hover_ended(src_card: Card, tgt_card: Card):
+	tgt_card.style_hovered_off()
+	
 	if card_target == tgt_card:
 		#print("  [END]_on_card_hover_ended: " + Enums.human_readable_card(src_card))
 		card_target = null
