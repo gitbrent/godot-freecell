@@ -157,32 +157,6 @@ func _on_card_hover_free_ended(free_cell: FreeCell):
 		#print('[HOVER] BYE BYE!!!')
 		hovered_free_cell = null
 
-func move_card(src_card: Card, tgt_card: Card, free_cell: FreeCell):
-	# STEP 1: Remove card from source pile
-	var old_pile = identify_card_pile(src_card)
-	if old_pile > -1:
-		tableau_piles[old_pile].remove_card(src_card)
-	else:
-		for i in range(free_cells.size()):
-			free_cells[i].remove_card(src_card)
-	
-	# STEP 2: Move card from one pile to another
-	if tgt_card:
-		var new_pile = identify_card_pile(tgt_card)
-		tableau_piles[new_pile].add_card(src_card)
-	elif free_cell:
-		free_cell.add_card(src_card)
-	else:
-		print("ERROR: no move available!")
-
-	# STEP 3: reset indexes
-	reset_card_z_indices()
-
-	# STEP 4: Increase moves
-	game_prop_moves = game_prop_moves + 1
-	update_game_props()
-	# TODO: other props too (eg: `Score`)
-
 func move_card_sequence(tgt_card: Card, free_cell: FreeCell):
 	var new_pile_index = -1
 	if tgt_card:
