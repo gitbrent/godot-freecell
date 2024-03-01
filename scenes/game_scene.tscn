@@ -27,16 +27,16 @@ offset_bottom = 648.0
 [node name="BtnPause" parent="LeftControl" instance=ExtResource("2_mvke8")]
 layout_mode = 2
 offset_left = 15.0
-offset_top = 15.0
+offset_top = 30.0
 offset_right = 280.0
-offset_bottom = 281.0
+offset_bottom = 296.0
 
 [node name="BtnDeal" parent="LeftControl" instance=ExtResource("4_pqekv")]
 layout_mode = 0
 offset_left = 111.0
-offset_top = 15.0
+offset_top = 30.0
 offset_right = 377.0
-offset_bottom = 282.0
+offset_bottom = 297.0
 
 [node name="InfoRect" type="ColorRect" parent="LeftControl"]
 layout_mode = 1
@@ -44,9 +44,9 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 15.0
-offset_top = 80.0
+offset_top = 100.0
 offset_right = -65.0
-offset_bottom = -168.0
+offset_bottom = -148.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.25098)
@@ -105,9 +105,9 @@ text = "00:00"
 
 [node name="TopContainer" type="HBoxContainer" parent="."]
 offset_left = 200.0
-offset_top = 16.0
+offset_top = 25.0
 offset_right = 1128.0
-offset_bottom = 116.0
+offset_bottom = 125.0
 
 [node name="FreeCellPile" type="HBoxContainer" parent="TopContainer"]
 custom_minimum_size = Vector2(390, 0)
@@ -161,37 +161,46 @@ offset_right = 1128.0
 offset_bottom = 605.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 122
 
 [node name="TableauPile0" parent="TableauPileCont" instance=ExtResource("10_xpokh")]
 layout_mode = 2
+size_flags_horizontal = 1
 mouse_filter = 1
 
 [node name="TableauPile1" parent="TableauPileCont" instance=ExtResource("10_xpokh")]
 layout_mode = 2
+size_flags_horizontal = 1
 mouse_filter = 1
 
 [node name="TableauPile2" parent="TableauPileCont" instance=ExtResource("10_xpokh")]
 layout_mode = 2
+size_flags_horizontal = 1
 mouse_filter = 1
 
 [node name="TableauPile3" parent="TableauPileCont" instance=ExtResource("10_xpokh")]
 layout_mode = 2
+size_flags_horizontal = 1
 mouse_filter = 1
 
 [node name="TableauPile4" parent="TableauPileCont" instance=ExtResource("10_xpokh")]
 layout_mode = 2
+size_flags_horizontal = 1
 mouse_filter = 1
 
 [node name="TableauPile5" parent="TableauPileCont" instance=ExtResource("10_xpokh")]
 layout_mode = 2
+size_flags_horizontal = 1
 mouse_filter = 1
 
 [node name="TableauPile6" parent="TableauPileCont" instance=ExtResource("10_xpokh")]
 layout_mode = 2
+size_flags_horizontal = 1
 mouse_filter = 1
 
 [node name="TableauPile7" parent="TableauPileCont" instance=ExtResource("10_xpokh")]
 layout_mode = 2
+size_flags_horizontal = 1
 mouse_filter = 1
 
 [connection signal="pressed" from="LeftControl/BtnDeal" to="." method="_on_btn_deal_pressed"]

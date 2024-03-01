@@ -2,7 +2,7 @@ extends Control
 
 var cards = [] # Keep track of the cards in this pile
 var vertical_offset = 40
-var horizontal_offset = 10
+var horizontal_offset = 0
 
 func add_card(card: Card):
 	if card is Card:

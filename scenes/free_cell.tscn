@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://5ua6yri85q8k" path="res://assets/cards/back07.png" id="2_gqg5f"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ep1xm"]
-size = Vector2(74, 101)
+size = Vector2(69, 101)
 
 [node name="FreeCell0" type="Control"]
 layout_mode = 3
@@ -14,15 +14,8 @@ script = ExtResource("1_pfu5x")
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 0
-offset_right = 72.0
+offset_right = 69.0
 offset_bottom = 100.0
-
-[node name="ColorRect" type="ColorRect" parent="."]
-visible = false
-layout_mode = 0
-offset_right = 74.0
-offset_bottom = 100.0
-color = Color(0.0392157, 0.0392157, 0.0392157, 0.521569)
 
 [node name="Back070" type="Sprite2D" parent="."]
 visible = false
@@ -33,7 +26,7 @@ centered = false
 [node name="Area2D" type="Area2D" parent="."]
 
 [node name="CollisionPolygon2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(37, 50.5)
+position = Vector2(34.5, 50.5)
 shape = SubResource("RectangleShape2D_ep1xm")
 debug_color = Color(0, 0.6, 0.701961, 0)
 
