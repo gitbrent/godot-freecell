@@ -21,3 +21,5 @@ func remove_card(card: Card):
 func remove_all_cards():
 	while cards.size() > 0:
 		remove_card(cards[0])
+
+# TODO: new signal for hovering over empty tableau

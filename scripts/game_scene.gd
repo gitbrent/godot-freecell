@@ -180,7 +180,7 @@ func _on_drag_in_progress(card, mouse_position):
 
 func _on_card_drag_ended(card):
 	var do_return_cards = false
-
+	print(card_target)
 	if card == card_dragged:
 		#print("..END drag: " + str(card.rank) +"-"+ str(card.suit) + " at " + str(card.z_index))
 		if card_target and CardUtils.can_place_on_card(card_dragged, card_target):
@@ -191,7 +191,6 @@ func _on_card_drag_ended(card):
 			move_card_sequence(null, hovered_free_cell, null)
 			hovered_free_cell = null
 		elif hovered_fnda_cell and dragging_cards.size() == 1:
-			print(hovered_fnda_cell.is_empty())
 			if hovered_fnda_cell.is_empty():
 				# If the foundation cell is empty, only an Ace can be placed
 				if card_dragged.rank == Enums.Rank.ACE:
@@ -211,6 +210,8 @@ func _on_card_drag_ended(card):
 				else:
 					print("Card cannot be placed here.")
 					do_return_cards = true
+		# TODO: tableau is empty & free cell count is okay
+		# elif: *NEW RULE* ^^^^
 		else:
 			do_return_cards = true
 		
