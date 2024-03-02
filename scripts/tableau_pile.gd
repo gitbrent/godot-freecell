@@ -1,6 +1,6 @@
 extends Control
 
-var cards = [] # Keep track of the cards in this pile
+var cards = []
 var vertical_offset = 40
 var horizontal_offset = 0
 
@@ -20,5 +20,4 @@ func remove_card(card: Card):
 
 func remove_all_cards():
 	while cards.size() > 0:
-		var card = cards[0]
-		remove_card(card)
+		remove_card(cards[0])

@@ -26,16 +26,20 @@ func get_top_card():
 
 func add_card(card: Card):
 	if card is Card:
-		add_child(card) # Add the card to this node
-		var card_position = Vector2(0, 0)
-		card.position = card_position
+		add_child(card)
+		card.position = Vector2(0, 0)
 		cards.append(card)
-		print("[Foundation-Cell] added card with position: ", card.position)
+		print("[Foundation-Cell] added card: ", Enums.human_readable_card(card))
 	else:
 		print("[ERR] attempted to add a non-Card node to the pile.")
 
-func remove_all():
-	cards.clear()
+func remove_card(card: Card):
+	remove_child(card)
+	cards.erase(card)
+
+func remove_all_cards():
+	while cards.size() > 0:
+		remove_card(cards[0])
 
 func _on_area_2d_area_entered(area):
 	# Emit signal

@@ -26,7 +26,7 @@ func get_curr_card():
 
 func add_card(card: Card):
 	if card is Card:
-		add_child(card) # Add the card to this node
+		add_child(card)
 		var card_position = Vector2(horizontal_offset, vertical_offset)
 		card.position = card_position
 		card_in_cell = card

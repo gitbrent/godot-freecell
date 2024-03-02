@@ -271,13 +271,17 @@ func reset_card_z_indices():
 		for j in range(pile.get_child_count()):
 			var card = pile.get_child(j)
 			card.z_index = j
-
+	
 	for i in range(free_cells.size()):
 		var pile = free_cells[i]
 		var card = pile.get_child(0)
 		card.z_index = 0
 	
-	# TODO: same for Founadtions??
+	for i in range(fnda_cells.size()):
+		var pile = fnda_cells[i]
+		for j in range(pile.get_child_count()):
+			var card = pile.get_child(j)
+			card.z_index = j
 
 func clear_deck():
 	card_deck = []
@@ -286,7 +290,7 @@ func clear_deck():
 	for i in range(free_cells.size()):
 		free_cells[i].remove_all()
 	for i in range(fnda_cells.size()):
-		fnda_cells[i].remove_all()
+		fnda_cells[i].remove_all_cards()
 
 func deal_cards():
 	var deck = []
