@@ -13,17 +13,13 @@ func _gui_input(event):
 		if event.pressed:
 			var current_time = Time.get_ticks_msec() / 1000.0  # Convert milliseconds to seconds
 			if current_time - last_click_time <= double_click_threshold:
-				_on_card_double_clicked()
+				emit_signal("request_move_to_freecell", get_parent())
 			else:
 				# Not a double-click, treat as a start drag or single click
 				emit_signal("card_drag_start", get_parent(), get_global_mouse_position())
 			last_click_time = current_time
 		else:
-			# Mouse button released, end drag
 			emit_signal("card_drag_ended", get_parent())
+			pass
 	elif event is InputEventMouseMotion:
 		emit_signal("drag_in_progress", get_parent(), event.global_position)
-
-func _on_card_double_clicked():
-	# Now call the function to attempt to move the card to a FreeCell
-	emit_signal("request_move_to_freecell", get_parent())

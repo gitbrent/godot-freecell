@@ -14,10 +14,9 @@ func add_card(card: Card):
 		print("[tableau] attempted to add a non-Card node to the pile.")
 
 func remove_card(card: Card):
-	print("[TABL] remove: ", Enums.human_readable_card(card))
+	#print("[TABL] remove: ", Enums.human_readable_card(card))
 	remove_child(card)
 	cards.erase(card)
-	print("[TABL] cards: ", cards.size())
 
 func remove_all_cards():
 	while cards.size() > 0:

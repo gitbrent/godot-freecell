@@ -41,7 +41,7 @@ func remove_all_cards():
 	while cards.size() > 0:
 		remove_card(cards[0])
 
-func _on_area_2d_area_entered(area):
+func _on_area_2d_area_entered(_area):
 	emit_signal("card_hover_fnda_start", self)
 
 func _on_area_2d_area_exited(_area):

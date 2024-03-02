@@ -228,9 +228,11 @@ func _on_card_drag_ended(card):
 		
 		if do_return_cards:
 			for card_in_sequence in dragging_cards:
-				var tween = get_tree().create_tween()
-				tween.tween_property(card_in_sequence, "global_position", card_in_sequence.original_position, 0.5)
-				tween.tween_callback(reset_card_z_indices)
+				# NOTE: only tween if position changed, otherwise, this kneecaps the dbl-click to move feature!
+				if card_in_sequence.global_position.distance_to(card_in_sequence.original_position) > 1:  # Using a tolerance of 1 pixel
+					var tween = get_tree().create_tween()
+					tween.tween_property(card_in_sequence, "global_position", card_in_sequence.original_position, 0.5)
+					tween.tween_callback(reset_card_z_indices)
 		
 		# Resets
 		dragging_cards.clear()
@@ -249,7 +251,7 @@ func _on_card_hover_start(src_card: Card, tgt_card: Card):
 	if card_target and CardUtils.can_place_on_card(src_card, card_target):
 		card_target.style_hovered_on()
 
-func _on_card_hover_ended(src_card: Card, tgt_card: Card):
+func _on_card_hover_ended(_src_card: Card, tgt_card: Card):
 	tgt_card.style_hovered_off()
 	
 	if card_target == tgt_card:
@@ -265,30 +267,26 @@ func _on_card_hover_free_ended(free_cell: FreeCell):
 		hovered_free_cell = null
 
 func _on_card_hover_fnda_start(fnda_cell: FoundationCell):
-	#print ("fnda_cell: ", fnda_cell)
-	fnda_cell.highlight(true)
 	# STEP 1: Store foundation cell
 	hovered_fnda_cell = fnda_cell
+	
+	# STEP 2:
+	# TODO: only highlight if valid!
+	fnda_cell.highlight(true)
 
 func _on_card_hover_fnda_ended(fnda_cell: FoundationCell):
 	hovered_fnda_cell = null
-
-	# STEP 1: Game logic
-	#	if card_dragged:  # Ensure there is a card being dragged
-	# TODO: highlight doesnt work yet
 	fnda_cell.highlight(false)
 
 func _on_request_move_to_freecell(card: Card):
+	print("_on_request_move_to_freecell")
 	# TODO: only topCard can be moved to free cell!!
-	# TODO: get tableua of clicked card, check against top card
+	# TODO: get tableau of clicked card, check against top card
 	
 	# Check for an available FreeCell
 	for free_cell in free_cells:
-		#print("free_cell: ", free_cell)
 		if free_cell.is_empty():
-			#print("[move-to-free] dbl-click = add card!")
-			#dragging_cards = [card]
-			dragging_cards = [card_deck[6]]
+			dragging_cards = [card]
 			move_card_sequence(null, free_cell, null)
 			return
 	
