@@ -144,6 +144,9 @@ func move_card_sequence(tgt_card: Card, free_cell: FreeCell, fnda_cell: Foundati
 	# Increment move counter
 	game_prop_moves += 1
 	update_game_props()
+	
+	# Check for win
+	check_for_win_condition()
 
 # =============================================================================
 
@@ -279,24 +282,41 @@ func _on_card_hover_fnda_ended(fnda_cell: FoundationCell):
 	fnda_cell.highlight(false)
 
 func _on_request_move_to_freecell(card: Card):
-	print("_on_request_move_to_freecell")
-	# TODO: only topCard can be moved to free cell!!
-	# TODO: get tableau of clicked card, check against top card
-	
-	# Check for an available FreeCell
-	for free_cell in free_cells:
-		if free_cell.is_empty():
-			dragging_cards = [card]
-			move_card_sequence(null, free_cell, null)
-			return
-	
-	# Nope, all full
-	print("[move-to-free] No available FreeCells")
+	var pile_index = identify_card_pile(card)
+	if pile_index >= 0:
+		var pile = tableau_piles[pile_index]
+		if card == pile.get_children().back():  # Using .back() to get the last card in the pile
+			for free_cell in free_cells:
+				if free_cell.is_empty():
+					dragging_cards = [card]
+					move_card_sequence(null, free_cell, null)
+					return  # Exit after moving the card to prevent checking other free cells
+			#print("[move-to-free] No available FreeCells")
+		else:
+			#print("[FYI] The card is not the top card of its pile and cannot be moved to a FreeCell.")
+			pass
+	else:
+		#print("[FYI] The card is not in a tableau pile.")
+		pass
 
 # =============================================================================
 
 func update_game_props():
-	score.text = str(game_prop_moves)	
+	score.text = str(game_prop_moves)
+
+func check_for_win_condition():
+	var total_cards_in_foundation = 0
+
+	# Iterate through each foundation cell to count the cards
+	for fnda_cell in fnda_cells:
+		total_cards_in_foundation += fnda_cell.get_card_count()
+
+	# Check if the total number of cards in foundation cells equals 52
+	if total_cards_in_foundation == 52:
+		print("[GAME] Congratulations! You've won the game!!")
+		# Implement any additional win logic here (e.g., displaying a win message, stopping the timer, etc.)
+	else:
+		print("[FYI] Keep going! Not all cards are in foundation cells yet. (" + str(52 - total_cards_in_foundation) + " left)")
 
 func reset_card_z_indices():
 	for i in range(tableau_piles.size()):

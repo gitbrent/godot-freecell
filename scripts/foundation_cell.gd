@@ -24,6 +24,9 @@ func get_top_card():
 	else:
 		return null
 
+func get_card_count():
+	return cards.size()
+
 func add_card(card: Card):
 	if card is Card:
 		add_child(card)
