@@ -251,6 +251,7 @@ func _on_card_hover_free_ended(free_cell: FreeCell):
 		hovered_free_cell = null
 
 func _on_card_hover_fnda_start(fnda_cell: FoundationCell):
+	#print ("fnda_cell: ", fnda_cell)
 	# STEP 1: Store foundation cell
 	hovered_fnda_cell = fnda_cell
 
