@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scripts/foundation_cell.gd" id="1_qcla2"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t16po"]
-bg_color = Color(0.0392157, 0.313726, 0.0392157, 0.388235)
+bg_color = Color(0.0392157, 0.0392157, 0.0392157, 0.521569)
 corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
@@ -19,6 +19,7 @@ mouse_filter = 1
 script = ExtResource("1_qcla2")
 
 [node name="PanelHover" type="Panel" parent="."]
+visible = false
 layout_mode = 0
 offset_right = 72.0
 offset_bottom = 100.0

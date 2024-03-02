@@ -1,3 +1,11 @@
+###
+### TODO:
+### - FIXME: free-cell cards z-index stuck at 1006 (reset_z_indexes has no affect!)
+### - use `tween` to move card to free-cell when using double-click
+### - implement drag onto empty tableau pile
+### - timer and score
+### - check for win condition (foundation cards = 52)
+
 extends Node2D
 
 # NODES
@@ -102,18 +110,22 @@ func move_card_sequence(tgt_card: Card, free_cell: FreeCell, fnda_cell: Foundati
 		var old_pile_index = identify_card_pile(src_card)
 		if old_pile_index > -1:
 			tableau_piles[old_pile_index].remove_card(src_card)
+			#print("[move] removed from TABL: " + Enums.human_readable_card(src_card))
 		else:
 			for cell in free_cells:
 				cell.remove_card(src_card)
-
-		# STEP 2: Move card to the new pile, if a target card is specified
+		
+		# STEP 2: Add card to its new pile
 		var new_pile_index = identify_card_pile(tgt_card)
 		if new_pile_index > -1:
 			tableau_piles[new_pile_index].add_card(src_card)
 		elif free_cell and free_cells.size() > 0:
-			# If moving to a free cell, ensure only one card is moved
 			if dragging_cards.size() == 1:
 				free_cell.add_card(src_card)
+				#print("FIXME: double-click only makes card vanish!")
+				var brent = free_cell.get_curr_card()
+				print("[FREE] card: ", Enums.human_readable_card(brent))
+				#print(brent.z_index)
 				break  # Since only one card can be moved to a free cell, break after moving
 			else:
 				print("ERROR: Cannot move more than one card to a Free Cell!")
@@ -192,8 +204,6 @@ func _on_card_drag_ended(card):
 			move_card_sequence(null, hovered_free_cell, null)
 			hovered_free_cell = null
 		elif hovered_fnda_cell and dragging_cards.size() == 1:
-			print("WTF")
-			print(hovered_fnda_cell.is_empty())
 			if hovered_fnda_cell.is_empty():
 				# If the foundation cell is empty, only an Ace can be placed
 				if card_dragged.rank == Enums.Rank.ACE:
@@ -235,7 +245,7 @@ func _on_card_hover_start(src_card: Card, tgt_card: Card):
 	if tgt_card and tgt_card == pile_tab.get_child(last_child_index):
 		#print("[HOVER]_on_card_hover_start: " + Enums.human_readable_card(tgt_card))
 		card_target = tgt_card
-
+	
 	if card_target and CardUtils.can_place_on_card(src_card, card_target):
 		card_target.style_hovered_on()
 
@@ -256,6 +266,7 @@ func _on_card_hover_free_ended(free_cell: FreeCell):
 
 func _on_card_hover_fnda_start(fnda_cell: FoundationCell):
 	#print ("fnda_cell: ", fnda_cell)
+	fnda_cell.highlight(true)
 	# STEP 1: Store foundation cell
 	hovered_fnda_cell = fnda_cell
 
@@ -268,18 +279,21 @@ func _on_card_hover_fnda_ended(fnda_cell: FoundationCell):
 	fnda_cell.highlight(false)
 
 func _on_request_move_to_freecell(card: Card):
-	print ("_on_request_move_to_freecell !!!!!")
+	# TODO: only topCard can be moved to free cell!!
+	# TODO: get tableua of clicked card, check against top card
+	
 	# Check for an available FreeCell
 	for free_cell in free_cells:
 		#print("free_cell: ", free_cell)
 		if free_cell.is_empty():
-			print("dbl-click = add card!")
-			#free_cell.add_card(card)
-			# FIXME: below
-			dragging_cards = [card]
-			move_card_sequence(null, hovered_free_cell, null)
+			#print("[move-to-free] dbl-click = add card!")
+			#dragging_cards = [card]
+			dragging_cards = [card_deck[6]]
+			move_card_sequence(null, free_cell, null)
 			return
-	print("No available FreeCells")
+	
+	# Nope, all full
+	print("[move-to-free] No available FreeCells")
 
 # =============================================================================
 
@@ -296,7 +310,7 @@ func reset_card_z_indices():
 	for i in range(free_cells.size()):
 		var pile = free_cells[i]
 		var card = pile.get_child(0)
-		card.z_index = 0
+		card.z_index = 1
 	
 	for i in range(fnda_cells.size()):
 		var pile = fnda_cells[i]

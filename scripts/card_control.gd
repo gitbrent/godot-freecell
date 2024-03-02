@@ -25,6 +25,5 @@ func _gui_input(event):
 		emit_signal("drag_in_progress", get_parent(), event.global_position)
 
 func _on_card_double_clicked():
-	print("[control] Card double-clicked!")
 	# Now call the function to attempt to move the card to a FreeCell
 	emit_signal("request_move_to_freecell", get_parent())

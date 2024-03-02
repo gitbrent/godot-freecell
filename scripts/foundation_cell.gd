@@ -42,15 +42,10 @@ func remove_all_cards():
 		remove_card(cards[0])
 
 func _on_area_2d_area_entered(area):
-	# Emit signal
 	emit_signal("card_hover_fnda_start", self)
 
 func _on_area_2d_area_exited(_area):
-	# Emit signal
 	emit_signal("card_hover_fnda_ended", self)
 
-func highlight(visible:bool):
-	# FIXME: this doesnt work at all :(
-	#print("[FNDA]: highlight = ", visible)
-	#$PanelHover.visible = visible
-	pass
+func highlight(isVisible:bool):
+	$PanelHover.visible = isVisible
