@@ -13,7 +13,8 @@ enum Suit {
 }
 
 enum Rank { 
-	TWO = 2,
+	ACE = 1,
+	TWO,
 	THREE,
 	FOUR,
 	FIVE,
@@ -24,8 +25,7 @@ enum Rank {
 	TEN,
 	JACK,
 	QUEEN,
-	KING,
-	ACE
+	KING
 }
 
 # Helper functions for converting enum values to strings
@@ -78,4 +78,4 @@ func are_suits_opposite_colors(suit1: int, suit2: int) -> bool:
 
 # [Brent]: Helper func
 func human_readable_card(card: Card) -> String:
-	return "" + rank_to_string(card.rank) +"/"+ suit_to_string(card.suit) +" (" + suitcolor_to_string(card.suit_color) +")"
+	return "" + rank_to_string(card.rank) +"/"+ suit_to_string(card.suit) +" (" + suitcolor_to_string(card.suit_color) +") (" + str(card.rank) + ")"

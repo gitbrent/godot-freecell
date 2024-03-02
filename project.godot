@@ -21,6 +21,7 @@ Enums="*res://scripts/enums.gd"
 
 [display]
 
+window/stretch/mode="viewport"
 window/canvas_textures/default_texture_filter=1
 
 [rendering]

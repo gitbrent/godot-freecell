@@ -4,14 +4,18 @@ extends Node2D
 @onready var score = $LeftControl/InfoRect/VBoxContainer/HBoxContMoves/Score
 
 # VARIABLES
+const Y_OFFSET : int = 40
 var drag_offset : Vector2 = Vector2()
-var tableau_piles = []
-var card_deck = []
+var tableau_piles : Array = []
+var card_deck : Array = []
 var free_cells : Array = []
+var fnda_cells : Array = []
 #
 var card_dragged : Card = null
+var dragging_cards : Array = []
 var card_target : Card = null
 var hovered_free_cell : FreeCell = null
+var hovered_fnda_cell : FoundationCell = null
 #
 var game_prop_moves : int = 0
 
@@ -33,35 +37,56 @@ func _ready():
 		free_cell.connect("card_hover_free_start", self._on_card_hover_free_start)
 		free_cell.connect("card_hover_free_ended", self._on_card_hover_free_ended)
 		free_cells.append(free_cell)
+	
+	# STEP 5: Init foundation-cell-pile
+	for i in 4:
+		var fnda_cell = get_node("TopContainer/FoundationPile/FoundationCell" + str(i))
+		fnda_cell.connect("card_hover_fnda_start", self._on_card_hover_fnda_start)
+		fnda_cell.connect("card_hover_fnda_ended", self._on_card_hover_fnda_ended)
+		fnda_cells.append(fnda_cell)
 
-func _on_drag_in_progress(card, mouse_position):
-	if card == card_dragged:  # Ensure this is the card you're currently dragging
-		var new_position = mouse_position - drag_offset
-		card.global_position = new_position
+# =============================================================================
 
 static func compare_cards_z_index(a, b):
 	return a.z_index < b.z_index
 
 func identify_card_pile(card: Card) -> int:
+	if not card:
+		return -1
+
+	# STEP 1: check tableau
 	for pile_index in range(tableau_piles.size()):
 		var pile = tableau_piles[pile_index]
-		for pile_card in pile.get_children():  # Assuming each pile is a parent node to its cards
+		for pile_card in pile.get_children():
 			if pile_card is Card and pile_card.suit == card.suit and pile_card.rank == card.rank:
-				return pile_index  # Return the index of the pile that contains the card
-	return -1  # Return -1 or any indicator to signify the card was not found in any pile
+				return pile_index
+	
+	# STEP 2: check free-cells
+	for free_cell in free_cells:
+		if free_cell.get_curr_card() == card:
+			return -2
+	
+	# STEP 3: check foundation-cells
+	for fnda_cell in fnda_cells:
+		if fnda_cell.get_top_card() == card:
+			return -3
+	
+	# LAST:
+	return -1
 
 func is_valid_drag_start(card: Card, card_pile_index: int) -> bool:
-	#print("Checking if valid drag start for: ", card.rank, card.suit, " in pile ", card_pile_index)
-
-	if card_pile_index == -1:
-		return true # (assumption is that this comes from free-cell)
-
+	# free cell index is -2
+	if card_pile_index == -2:
+		return true
+	elif card_pile_index == -3:
+		return false
+	
 	var card_pile = tableau_piles[card_pile_index].get_children()  # Assuming piles are parent nodes to cards.
-
+	
 	# Check if the card is the last in the pile.
 	if card == card_pile[card_pile.size() - 1]:
 		return true
-
+	
 	# Additional checks for valid sequences go here.
 	# Example sequence check (assuming descending sequence without suit check):
 	var card_index = card_pile.find(card)
@@ -71,42 +96,136 @@ func is_valid_drag_start(card: Card, card_pile_index: int) -> bool:
 	
 	return true  # Valid sequence
 
-func _on_card_drag_start(card, initial_mouse_position):
-	var card_pile_index = identify_card_pile(card)
+func move_card_sequence(tgt_card: Card, free_cell: FreeCell, fnda_cell: FoundationCell):
+	for src_card in dragging_cards:
+		# STEP 1: Remove card from its source pile
+		var old_pile_index = identify_card_pile(src_card)
+		if old_pile_index > -1:
+			tableau_piles[old_pile_index].remove_card(src_card)
+		elif free_cell:
+			for cell in free_cells:
+				cell.remove_card(src_card)
 
-	# Check if the card is the last one in its pile or part of a valid sequence.
+		# STEP 2: Move card to the new pile, if a target card is specified
+		var new_pile_index = identify_card_pile(tgt_card)
+		if new_pile_index > -1:
+			tableau_piles[new_pile_index].add_card(src_card)
+		elif free_cell and free_cells.size() > 0:
+			# If moving to a free cell, ensure only one card is moved
+			if dragging_cards.size() == 1:
+				free_cell.add_card(src_card)
+				break  # Since only one card can be moved to a free cell, break after moving
+			else:
+				print("ERROR: Cannot move more than one card to a Free Cell!")
+				break
+		elif fnda_cell and src_card:
+			#print("[move] to FNDA: " + Enums.human_readable_card(src_card))
+			fnda_cell.add_card(src_card)
+	
+	# Reset dragging cards array
+	dragging_cards.clear()
+	
+	# Reset z-indexes and other properties as needed
+	reset_card_z_indices()
+	
+	# Increment move counter
+	game_prop_moves += 1
+	update_game_props()
+
+# =============================================================================
+
+func get_draggable_sequence(card: Card) -> Array:
+	var cards:Array = []
+	var card_pile_index:int = identify_card_pile(card)
+
+	# Free Cells are index -2	
+	if card_pile_index == -2:
+		return [card]
+
+	var card_pile = tableau_piles[card_pile_index].get_children()
+	var start_index = card_pile.find(card)
+	
 	if is_valid_drag_start(card, card_pile_index):
-		#print("START drag: " + str(card.rank) + "-" + str(card.suit) + " at " + str(card.z_index))
+		for i in range(start_index, card_pile.size()):
+			var current_card = card_pile[i]
+			if current_card is Card:
+				cards.append(current_card)
+				# Optionally, add additional validation here if needed
+				# For example, checking if the sequence remains valid after the first card
+			else:
+				break  # Exit if we encounter a non-Card or invalid sequence	
+	
+	return cards
+
+func _on_card_drag_start(card:Card, initial_mouse_position):
+	var sequence = get_draggable_sequence(card)
+	if sequence.size() > 0:
 		drag_offset = initial_mouse_position - card.global_position
 		card_dragged = card
-		card.original_position = card.global_position
-		card.z_index = 1000  # Temporarily boost z_index for dragging visibility
+		dragging_cards = sequence
+		for card_in_sequence in dragging_cards:
+			card_in_sequence.original_position = card_in_sequence.global_position
+			card_in_sequence.z_index += 1000  # Temporarily increase z_index for visibility
 	else:
 		#print("[is_valid_drag_start]: Invalid card or sequence")
 		card_dragged = null  # Explicitly ensure dragging isn't started
 
+func _on_drag_in_progress(card, mouse_position):
+	if card == card_dragged:
+		var draggable_sequence = get_draggable_sequence(card)
+		var new_position = mouse_position - drag_offset
+		for each_card in draggable_sequence:
+			each_card.global_position = new_position + Vector2(0, draggable_sequence.find(each_card) * Y_OFFSET)
+			# Y_OFFSET is a constant that determines how much each subsequent card is offset vertically
+
 func _on_card_drag_ended(card):
-	# IMPORTANT: this method is trigged for all cards under the cursor
-	# e.g.: release mouse button over another card and *BOTH* will call this function!
+	var do_return_cards = false
+	print(card_target)
 	if card == card_dragged:
 		#print("..END drag: " + str(card.rank) +"-"+ str(card.suit) + " at " + str(card.z_index))
 		if card_target and CardUtils.can_place_on_card(card_dragged, card_target):
 			print("[TABL Valid Move]: ", Enums.human_readable_card(card_dragged), " onto ", Enums.human_readable_card(card_target))
-			move_card(card_dragged, card_target, null)
-		elif hovered_free_cell:
+			move_card_sequence(card_target, null, null)
+		elif hovered_free_cell and dragging_cards.size() == 1:
 			print("[FREE Valid Move]: ", Enums.human_readable_card(card_dragged), " onto FREE CELL")
-			move_card(card_dragged, null, hovered_free_cell)
+			move_card_sequence(null, hovered_free_cell, null)
 			hovered_free_cell = null
+		elif hovered_fnda_cell and dragging_cards.size() == 1:
+			if hovered_fnda_cell.is_empty():
+				# If the foundation cell is empty, only an Ace can be placed
+				if card_dragged.rank == Enums.Rank.ACE:
+					print("[FNDA valid] An Ace can be placed here.")
+					move_card_sequence(card_dragged, null, hovered_fnda_cell)
+					hovered_fnda_cell = null
+				else:
+					print("[FNDA--nope] Only an Ace can be placed on an empty foundation cell.")
+					do_return_cards = true
+			else:
+				# If the foundation cell is not empty, check if the card follows the suit and is in order
+				var top_card = hovered_fnda_cell.get_top_card()
+				if card_dragged.suit == top_card.suit and card_dragged.rank == top_card.rank + 1:
+					print("[FNDA valid] Card can be placed here.")
+					move_card_sequence(card_dragged, null, hovered_fnda_cell)
+					hovered_fnda_cell = null
+				else:
+					print("Card cannot be placed here.")
+					do_return_cards = true
+		# TODO: tableau is empty & free cell count is okay
+		# elif: *NEW RULE* ^^^^
 		else:
-			#print("Invalid move: ", Enums.human_readable_card(src_card), " onto ", Enums.human_readable_card(tgt_card))
-			var tween = get_tree().create_tween()
-			tween.tween_property(card, "global_position", card.original_position, 0.5)
-			tween.tween_callback(reset_card_z_indices)
-	
-	# Ensure to reset this regardless of condition to prevent stuck states
-	card_dragged = null
+			do_return_cards = true
+		
+		if do_return_cards:
+			for card_in_sequence in dragging_cards:
+				var tween = get_tree().create_tween()
+				tween.tween_property(card_in_sequence, "global_position", card_in_sequence.original_position, 0.5)
+				tween.tween_callback(reset_card_z_indices)
+		
+		# Clear
+		dragging_cards.clear()
+		card_dragged = null # Ensure to reset this regardless of condition to prevent stuck states
 
-func _on_card_hover_start(_src_card: Card, tgt_card: Card):
+func _on_card_hover_start(src_card: Card, tgt_card: Card):
 	# RULE: Only the top-most (the card completely visible) card is a valid target
 	var pile_tab = tableau_piles[identify_card_pile(tgt_card)]
 	var last_child_index = pile_tab.get_child_count() - 1
@@ -114,7 +233,12 @@ func _on_card_hover_start(_src_card: Card, tgt_card: Card):
 		#print("[HOVER]_on_card_hover_start: " + Enums.human_readable_card(tgt_card))
 		card_target = tgt_card
 
+	if card_target and CardUtils.can_place_on_card(src_card, card_target):
+		card_target.style_hovered_on()
+
 func _on_card_hover_ended(src_card: Card, tgt_card: Card):
+	tgt_card.style_hovered_off()
+	
 	if card_target == tgt_card:
 		#print("  [END]_on_card_hover_ended: " + Enums.human_readable_card(src_card))
 		card_target = null
@@ -125,35 +249,20 @@ func _on_card_hover_free_start(free_cell: FreeCell):
 
 func _on_card_hover_free_ended(free_cell: FreeCell):
 	if hovered_free_cell == free_cell:
-		#print('[HOVER] BYE BYE!!!')
 		hovered_free_cell = null
 
-func move_card(src_card: Card, tgt_card: Card, free_cell: FreeCell):
-	# STEP 1: Remove card from source pile
-	var old_pile = identify_card_pile(src_card)
-	if old_pile > -1:
-		tableau_piles[old_pile].remove_card(src_card)
-	else:
-		for i in range(free_cells.size()):
-			free_cells[i].remove_card(src_card)
-	
-	# STEP 2: Move card from one pile to another
-	if tgt_card:
-		var new_pile = identify_card_pile(tgt_card)
-		tableau_piles[new_pile].add_card(src_card)
-	elif free_cell:
-		src_card.z_index = 10
-		free_cell.add_card(src_card)
-	else:
-		print("ERROR: no move available!")
+func _on_card_hover_fnda_start(fnda_cell: FoundationCell):
+	#print ("fnda_cell: ", fnda_cell)
+	# STEP 1: Store foundation cell
+	hovered_fnda_cell = fnda_cell
 
-	# STEP 3: reset indexes
-	reset_card_z_indices()
+func _on_card_hover_fnda_ended(fnda_cell: FoundationCell):
+	# STEP 1: Game logic
+	#	if card_dragged:  # Ensure there is a card being dragged
+	# TODO: highlight doesnt work yet
+	fnda_cell.highlight(false)
 
-	# STEP 4: Increase moves
-	game_prop_moves = game_prop_moves + 1
-	update_game_props()
-	# TODO: other props too (eg: `Score`)
+# =============================================================================
 
 func update_game_props():
 	score.text = str(game_prop_moves)	
@@ -164,31 +273,46 @@ func reset_card_z_indices():
 		for j in range(pile.get_child_count()):
 			var card = pile.get_child(j)
 			card.z_index = j
-			#print("card.z_index: ", card.z_index)
+	
+	for i in range(free_cells.size()):
+		var pile = free_cells[i]
+		var card = pile.get_child(0)
+		card.z_index = 0
+	
+	for i in range(fnda_cells.size()):
+		var pile = fnda_cells[i]
+		for j in range(pile.get_child_count()):
+			var card = pile.get_child(j)
+			card.z_index = j
 
-func deal_cards():
-	var deck = []
-
-	# STEP 1: clear all cards
+func clear_deck():
 	card_deck = []
 	for i in range(tableau_piles.size()):
 		tableau_piles[i].remove_all_cards()
 	for i in range(free_cells.size()):
 		free_cells[i].remove_all()
-		
-	# STEP 1: Create the standard 52 playing cards
+	for i in range(fnda_cells.size()):
+		fnda_cells[i].remove_all_cards()
+
+func deal_cards():
+	var deck = []
+
+	# STEP 1: clear all cards
+	clear_deck()
+	
+	# STEP 2: Create the standard 52 playing cards
 	for suit in Enums.Suit.values():
 		for rank in Enums.Rank.values():
 			deck.append({"suit": suit, "rank": rank})
 	
-	# STEP 2: Shuffle the deck
+	# STEP 3: Shuffle the deck
 	deck.shuffle()
 	
-	# STEP 3: Setup for dealing cards to tableau piles according to FreeCell rules
+	# STEP 4: Setup for dealing cards to tableau piles according to FreeCell rules
 	var num_cards_in_columns = [7, 7, 7, 7, 6, 6, 6, 6]
 	var deck_index = 0
 	
-	# STEP 4: Deal
+	# STEP 5: Deal
 	for i in range(tableau_piles.size()):
 		var num_cards = num_cards_in_columns[i]
 		for j in range(num_cards):
@@ -212,10 +336,10 @@ func deal_cards():
 			else:
 				print("Error: The instantiated object is not a Card.")
 	
-	# STEP 5:
+	# STEP 6: Reset z-indexes
 	reset_card_z_indices()
 	
-	# STEP 6:
+	# STEP 6: Clear game props
 	game_prop_moves = 0
 	update_game_props()
 

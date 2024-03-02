@@ -1,0 +1,51 @@
+[gd_scene load_steps=4 format=3 uid="uid://diddbqdq5js1f"]
+
+[ext_resource type="Script" path="res://scripts/foundation_cell.gd" id="1_qcla2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t16po"]
+bg_color = Color(0.0392157, 0.313726, 0.0392157, 0.388235)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ep1xm"]
+size = Vector2(74, 101)
+
+[node name="FoundationCell0" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 1
+script = ExtResource("1_qcla2")
+
+[node name="PanelHover" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 72.0
+offset_bottom = 100.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_t16po")
+
+[node name="PanelNormal" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 72.0
+offset_bottom = 100.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_t16po")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_right = 72.0
+offset_bottom = 100.0
+theme_override_colors/font_color = Color(0.411765, 0.411765, 0.411765, 1)
+theme_override_font_sizes/font_size = 48
+text = "A"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(37, 50.5)
+shape = SubResource("RectangleShape2D_ep1xm")
+debug_color = Color(0, 0.6, 0.701961, 0)
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
+[connection signal="area_exited" from="Area2D" to="." method="_on_area_2d_area_exited"]
