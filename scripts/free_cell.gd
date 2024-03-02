@@ -1,18 +1,14 @@
 extends Control
 class_name FreeCell
 
-# Load the style resources
 var free_cell_hover_style = preload("res://styles/free_cell_hover.tres")
 var free_cell_normal_style = preload("res://styles/free_cell_normal.tres")
 
-# Signals
 signal card_hover_free_start(free_cell : FreeCell)
 signal card_hover_free_ended(free_cell : FreeCell)
 
-#@onready var color_rect = $ColorRect
 @onready var panel:Panel = $Panel
 
-# Vars
 var card_in_cell : Card = null
 var vertical_offset : int = 1
 var horizontal_offset : int = 1
@@ -21,6 +17,12 @@ func _ready():
 	# Create a theme for StyleBox
 	if $Panel.theme == null:
 		$Panel.theme = Theme.new()
+
+func get_curr_card():
+	if card_in_cell:
+		return card_in_cell
+	else:
+		return null
 
 func add_card(card: Card):
 	if card is Card:
@@ -45,7 +47,7 @@ func _on_area_2d_area_entered(area):
 	# Emit signal if a card can go here
 	if not card_in_cell:
 		emit_signal("card_hover_free_start", self)
-		
+	
 	# Apply hover style
 	$Panel.theme.set_stylebox("panel", "Panel", free_cell_hover_style)
 

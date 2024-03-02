@@ -1,23 +1,19 @@
 extends Control
 class_name FoundationCell
 
-# Load the style resources
 var free_cell_hover_style = preload("res://styles/free_cell_hover.tres")
 var free_cell_normal_style = preload("res://styles/free_cell_normal.tres")
 
-# Signals
 signal card_hover_fnda_start(fnda_cell : FoundationCell)
 signal card_hover_fnda_ended(fnda_cell : FoundationCell)
 
-@onready var panel:Panel = $Panel
-
-# Vars
+@onready var panel_hover:Panel = $PanelHover
 var cards : Array = []
 
+# =====================================
+
 func _ready():
-	# Create a theme for StyleBox
-	if $Panel.theme == null:
-		$Panel.theme = Theme.new()
+	$PanelHover.visible = false
 
 func is_empty():
 	return cards.size() == 0
@@ -44,15 +40,13 @@ func remove_all():
 func _on_area_2d_area_entered(area):
 	# Emit signal
 	emit_signal("card_hover_fnda_start", self)
-	# Apply hover style
-	$Panel.theme.set_stylebox("panel", "Panel", free_cell_hover_style)
 
 func _on_area_2d_area_exited(_area):
 	# Emit signal
 	emit_signal("card_hover_fnda_ended", self)
-	# Reset style
-	$Panel.theme.set_stylebox("panel", "Panel", free_cell_normal_style)
 
-func highlight(enable:bool):
-	# TODO:
-	print("[highlight]: ", enable)
+func highlight(visible:bool):
+	# FIXME: this doesnt work at all :(
+	#print("[FNDA]: highlight = ", visible)
+	#$PanelHover.visible = visible
+	pass
