@@ -27,16 +27,16 @@ offset_bottom = 648.0
 [node name="BtnPause" parent="LeftControl" instance=ExtResource("2_mvke8")]
 layout_mode = 2
 offset_left = 15.0
-offset_top = 30.0
+offset_top = 25.0
 offset_right = 280.0
-offset_bottom = 296.0
+offset_bottom = 291.0
 
 [node name="BtnDeal" parent="LeftControl" instance=ExtResource("4_pqekv")]
 layout_mode = 0
-offset_left = 111.0
-offset_top = 30.0
-offset_right = 377.0
-offset_bottom = 297.0
+offset_left = 98.0
+offset_top = 25.0
+offset_right = 364.0
+offset_bottom = 292.0
 
 [node name="InfoRect" type="ColorRect" parent="LeftControl"]
 layout_mode = 1
