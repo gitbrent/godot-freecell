@@ -216,13 +216,30 @@ func _on_card_hover_free_ended(free_cell: FreeCell):
 		hovered_free_cell = null
 
 func _on_card_hover_fnda_start(fnda_cell: FoundationCell):
-	print("[HOVER] fnda_cell ..... ", fnda_cell)
+	# STEP 1: Store foundation cell
 	hovered_fnda_cell = fnda_cell
 
 func _on_card_hover_fnda_ended(fnda_cell: FoundationCell):
-	if hovered_fnda_cell == fnda_cell:
-		print('[FNDA-HOVER] BYE BYE!!!')
-		hovered_fnda_cell = null
+	# STEP 1: Game logic
+	if card_dragged:  # Ensure there is a card being dragged
+		if fnda_cell.is_empty():
+			# If the foundation cell is empty, only an Ace can be placed
+			if card_dragged.rank == Enums.Rank.ACE:
+				print("An Ace can be placed here.")
+				# Optionally, highlight the foundation cell as a valid drop target
+				fnda_cell.highlight(true)  # Assuming 'highlight' is a method to visually indicate a valid move
+			else:
+				print("Only an Ace can be placed on an empty foundation cell.")
+				fnda_cell.highlight(false)
+		else:
+			# If the foundation cell is not empty, check if the card follows the suit and is in order
+			var top_card = fnda_cell.get_top_card()  # Assuming 'get_top_card' retrieves the top card in the foundation cell
+			if card_dragged.suit == top_card.suit and card_dragged.rank == top_card.rank + 1:
+				print("Card can be placed here.")
+				fnda_cell.highlight(true)
+			else:
+				print("Card cannot be placed here.")
+				fnda_cell.highlight(false)
 
 # =============================================================================
 

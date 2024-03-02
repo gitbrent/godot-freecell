@@ -6,51 +6,53 @@ var free_cell_hover_style = preload("res://styles/free_cell_hover.tres")
 var free_cell_normal_style = preload("res://styles/free_cell_normal.tres")
 
 # Signals
-signal card_hover_fnda_start(free_cell : FreeCell)
-signal card_hover_fnda_ended(free_cell : FreeCell)
+signal card_hover_fnda_start(fnda_cell : FoundationCell)
+signal card_hover_fnda_ended(fnda_cell : FoundationCell)
 
-#@onready var color_rect = $ColorRect
 @onready var panel:Panel = $Panel
 
 # Vars
-var card_in_cell : Card = null
-var vertical_offset : int = 1
-var horizontal_offset : int = 1
+var cards : Array = []
 
 func _ready():
 	# Create a theme for StyleBox
 	if $Panel.theme == null:
 		$Panel.theme = Theme.new()
 
+func is_empty():
+	return cards.size() == 0
+
+func get_top_card():
+	if cards.size() > 0:
+		return cards[cards.size() - 1]
+	else:
+		return null
+
 func add_card(card: Card):
 	if card is Card:
 		add_child(card) # Add the card to this node
-		var card_position = Vector2(horizontal_offset, vertical_offset)
+		var card_position = Vector2(0, 0)
 		card.position = card_position
-		card_in_cell = card
+		cards.append(card)
 		print("[Foundation-Cell] added card with position: ", card.position)
 	else:
 		print("[ERR] attempted to add a non-Card node to the pile.")
 
-func remove_card(card: Card):
-	if card == card_in_cell:
-		remove_child(card)
-		card_in_cell = null
-
 func remove_all():
-	if card_in_cell:
-		remove_card(card_in_cell)
+	cards.clear()
 
 func _on_area_2d_area_entered(area):
-	# Emit signal if a card can go here
-	if not card_in_cell:
-		emit_signal("card_hover_fnda_start", self)
-		
+	# Emit signal
+	emit_signal("card_hover_fnda_start", self)
 	# Apply hover style
 	$Panel.theme.set_stylebox("panel", "Panel", free_cell_hover_style)
 
 func _on_area_2d_area_exited(_area):
+	# Emit signal
 	emit_signal("card_hover_fnda_ended", self)
-	
 	# Reset style
 	$Panel.theme.set_stylebox("panel", "Panel", free_cell_normal_style)
+
+func highlight(enable:bool):
+	# TODO:
+	print("[highlight]: ", enable)
