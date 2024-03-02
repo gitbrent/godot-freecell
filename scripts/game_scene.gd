@@ -102,7 +102,7 @@ func move_card_sequence(tgt_card: Card, free_cell: FreeCell, fnda_cell: Foundati
 		var old_pile_index = identify_card_pile(src_card)
 		if old_pile_index > -1:
 			tableau_piles[old_pile_index].remove_card(src_card)
-		elif free_cell:
+		else:
 			for cell in free_cells:
 				cell.remove_card(src_card)
 
@@ -121,7 +121,8 @@ func move_card_sequence(tgt_card: Card, free_cell: FreeCell, fnda_cell: Foundati
 		elif fnda_cell and src_card:
 			#print("[move] to FNDA: " + Enums.human_readable_card(src_card))
 			fnda_cell.add_card(src_card)
-	
+			break
+		
 	# Reset dragging cards array
 	dragging_cards.clear()
 	
@@ -180,7 +181,7 @@ func _on_drag_in_progress(card, mouse_position):
 
 func _on_card_drag_ended(card):
 	var do_return_cards = false
-	print(card_target)
+	
 	if card == card_dragged:
 		#print("..END drag: " + str(card.rank) +"-"+ str(card.suit) + " at " + str(card.z_index))
 		if card_target and CardUtils.can_place_on_card(card_dragged, card_target):
@@ -191,12 +192,13 @@ func _on_card_drag_ended(card):
 			move_card_sequence(null, hovered_free_cell, null)
 			hovered_free_cell = null
 		elif hovered_fnda_cell and dragging_cards.size() == 1:
+			print("WTF")
+			print(hovered_fnda_cell.is_empty())
 			if hovered_fnda_cell.is_empty():
 				# If the foundation cell is empty, only an Ace can be placed
 				if card_dragged.rank == Enums.Rank.ACE:
 					print("[FNDA valid] An Ace can be placed here.")
 					move_card_sequence(card_dragged, null, hovered_fnda_cell)
-					hovered_fnda_cell = null
 				else:
 					print("[FNDA--nope] Only an Ace can be placed on an empty foundation cell.")
 					do_return_cards = true
@@ -206,7 +208,6 @@ func _on_card_drag_ended(card):
 				if card_dragged.suit == top_card.suit and card_dragged.rank == top_card.rank + 1:
 					print("[FNDA valid] Card can be placed here.")
 					move_card_sequence(card_dragged, null, hovered_fnda_cell)
-					hovered_fnda_cell = null
 				else:
 					print("Card cannot be placed here.")
 					do_return_cards = true
@@ -221,9 +222,11 @@ func _on_card_drag_ended(card):
 				tween.tween_property(card_in_sequence, "global_position", card_in_sequence.original_position, 0.5)
 				tween.tween_callback(reset_card_z_indices)
 		
-		# Clear
+		# Resets
 		dragging_cards.clear()
 		card_dragged = null # Ensure to reset this regardless of condition to prevent stuck states
+		hovered_fnda_cell = null
+		#??? reset_card_z_indices()
 
 func _on_card_hover_start(src_card: Card, tgt_card: Card):
 	# RULE: Only the top-most (the card completely visible) card is a valid target
@@ -257,10 +260,26 @@ func _on_card_hover_fnda_start(fnda_cell: FoundationCell):
 	hovered_fnda_cell = fnda_cell
 
 func _on_card_hover_fnda_ended(fnda_cell: FoundationCell):
+	hovered_fnda_cell = null
+
 	# STEP 1: Game logic
 	#	if card_dragged:  # Ensure there is a card being dragged
 	# TODO: highlight doesnt work yet
 	fnda_cell.highlight(false)
+
+func _on_request_move_to_freecell(card: Card):
+	print ("_on_request_move_to_freecell !!!!!")
+	# Check for an available FreeCell
+	for free_cell in free_cells:
+		#print("free_cell: ", free_cell)
+		if free_cell.is_empty():
+			print("dbl-click = add card!")
+			#free_cell.add_card(card)
+			# FIXME: below
+			dragging_cards = [card]
+			move_card_sequence(null, hovered_free_cell, null)
+			return
+	print("No available FreeCells")
 
 # =============================================================================
 
@@ -331,6 +350,7 @@ func deal_cards():
 				control_node.connect("card_drag_start", self._on_card_drag_start)
 				control_node.connect("drag_in_progress", self._on_drag_in_progress)
 				control_node.connect("card_drag_ended", self._on_card_drag_ended)
+				control_node.connect("request_move_to_freecell", self._on_request_move_to_freecell)
 				tableau_piles[i].add_card(card)
 				card_deck.append(card)
 			else:

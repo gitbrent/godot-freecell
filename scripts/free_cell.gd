@@ -18,11 +18,12 @@ func _ready():
 	if $Panel.theme == null:
 		$Panel.theme = Theme.new()
 
+func is_empty():
+	return not card_in_cell
+
 func get_curr_card():
-	if card_in_cell:
-		return card_in_cell
-	else:
-		return null
+	#print("[free_cell] card_in_cell: ", card_in_cell)
+	return card_in_cell
 
 func add_card(card: Card):
 	if card is Card:
