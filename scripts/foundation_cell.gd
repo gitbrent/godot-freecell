@@ -8,6 +8,8 @@ signal card_hover_fnda_start(fnda_cell : FoundationCell)
 signal card_hover_fnda_ended(fnda_cell : FoundationCell)
 
 @onready var panel_hover:Panel = $PanelHover
+@onready var panel_normal:Panel = $PanelNormal
+
 var cards : Array = []
 
 # =====================================
@@ -32,7 +34,7 @@ func add_card(card: Card):
 		add_child(card)
 		card.position = Vector2(0, 0)
 		cards.append(card)
-		print("[Foundation-Cell] added card: ", Enums.human_readable_card(card))
+		#print("[Foundation-Cell] added card: ", Enums.human_readable_card(card))
 	else:
 		print("[ERR] attempted to add a non-Card node to the pile.")
 
@@ -52,3 +54,4 @@ func _on_area_2d_area_exited(_area):
 
 func highlight(isVisible:bool):
 	$PanelHover.visible = isVisible
+	$PanelNormal.visible = !isVisible

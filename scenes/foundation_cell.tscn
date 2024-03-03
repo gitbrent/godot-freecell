@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://diddbqdq5js1f"]
+[gd_scene load_steps=5 format=3 uid="uid://diddbqdq5js1f"]
 
 [ext_resource type="Script" path="res://scripts/foundation_cell.gd" id="1_qcla2"]
+[ext_resource type="StyleBox" uid="uid://cy52sfse77lj0" path="res://styles/free_cell_hover.tres" id="2_bwo3i"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t16po"]
 bg_color = Color(0.0392157, 0.0392157, 0.0392157, 0.521569)
@@ -23,7 +24,7 @@ visible = false
 layout_mode = 0
 offset_right = 72.0
 offset_bottom = 100.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_t16po")
+theme_override_styles/panel = ExtResource("2_bwo3i")
 
 [node name="PanelNormal" type="Panel" parent="."]
 layout_mode = 0

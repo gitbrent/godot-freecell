@@ -4,12 +4,15 @@ class_name TableauPile
 signal card_hover_tabl_start(tabl_pile : TableauPile)
 signal card_hover_tabl_ended(tabl_pile : TableauPile)
 
-@onready var panel_hover = $PanelHover
-@onready var panel_normal = $PanelNormal
+@onready var panel_hover:Panel = $PanelHover
+@onready var panel_normal:Panel = $PanelNormal
 
 var cards = []
 var vertical_offset = 40
 var horizontal_offset = 0
+
+func get_card_count():
+	return cards.size()
 
 func add_card(card: Card):
 	if card is Card:
@@ -35,7 +38,6 @@ func _on_area_2d_area_entered(_area):
 func _on_area_2d_area_exited(_area):
 	emit_signal("card_hover_tabl_ended", self)
 
-# WIP: new signal for hovering over empty tableau
 func highlight(isVisible:bool):
 	$PanelHover.visible = isVisible
 	$PanelNormal.visible = !isVisible
