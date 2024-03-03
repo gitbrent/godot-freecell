@@ -1,8 +1,8 @@
 ###
 ### TODO:
+### - implement drag onto empty tableau pile
 ### - FIXME: free-cell cards z-index stuck at 1006 (reset_z_indexes has no affect!)
 ### - use `tween` to move card to free-cell when using double-click
-### - implement drag onto empty tableau pile
 ### - timer and score
 ### - check for win condition (foundation cards = 52)
 
@@ -14,8 +14,9 @@ extends Node2D
 # VARIABLES
 const Y_OFFSET : int = 40
 var drag_offset : Vector2 = Vector2()
-var tableau_piles : Array = []
+#
 var card_deck : Array = []
+var tableau_piles : Array = []
 var free_cells : Array = []
 var fnda_cells : Array = []
 #
@@ -32,27 +33,30 @@ func _ready():
 	# STEP 1: drag-n-drop
 	set_process_unhandled_input(true)
 
-	# STEP 2: Initialize tableau pile references
-	for i in range(0, 8): # Assuming you named them TableauPile0 through TableauPile7
-		tableau_piles.append(get_node("TableauPileCont/TableauPile" + str(i)))
-
-	# STEP 3: Deal all 52 cards onto tableau
-	deal_cards()
-	
-	# STEP 4: Init free-cell-pile
+	# STEP 2: Init free-cell-pile
 	for i in 4:
 		var free_cell = get_node("TopContainer/FreeCellPile/FreeCell" + str(i))
 		free_cell.connect("card_hover_free_start", self._on_card_hover_free_start)
 		free_cell.connect("card_hover_free_ended", self._on_card_hover_free_ended)
 		free_cells.append(free_cell)
 	
-	# STEP 5: Init foundation-cell-pile
+	# STEP 3: Init foundation-cell-pile
 	for i in 4:
 		var fnda_cell = get_node("TopContainer/FoundationPile/FoundationCell" + str(i))
 		fnda_cell.connect("card_hover_fnda_start", self._on_card_hover_fnda_start)
 		fnda_cell.connect("card_hover_fnda_ended", self._on_card_hover_fnda_ended)
 		fnda_cells.append(fnda_cell)
 
+	# STEP 4: Init tableau-piles
+	for i in range(0, 8): # Assuming you named them TableauPile0 through TableauPile7
+		var tabl_pile = get_node("TableauPileCont/TableauPile" + str(i))
+		tabl_pile.connect("card_hover_tabl_start", self._on_card_hover_tabl_start)
+		tabl_pile.connect("card_hover_tabl_ended", self._on_card_hover_tabl_ended)
+		tableau_piles.append(tabl_pile)
+
+	# STEP 5: Deal all 52 cards onto tableau
+	deal_cards()
+	
 # =============================================================================
 
 static func compare_cards_z_index(a, b):
@@ -199,7 +203,7 @@ func _on_card_drag_ended(card):
 	
 	if card == card_dragged:
 		print("[..END drag]: " + Enums.human_readable_card(card) + " at " + str(card.z_index))
-		print("[..END drag]: ", hovered_fnda_cell)
+		#print("[..END drag]: ", hovered_fnda_cell)
 		if card_target and CardUtils.can_place_on_card(card_dragged, card_target):
 			print("[TABL Valid Move]: ", Enums.human_readable_card(card_dragged), " onto ", Enums.human_readable_card(card_target))
 			move_card_sequence(card_target, null, null)
@@ -208,7 +212,6 @@ func _on_card_drag_ended(card):
 			move_card_sequence(null, hovered_free_cell, null)
 			hovered_free_cell = null
 		elif hovered_fnda_cell and dragging_cards.size() == 1:
-			print("BITCH!!!")
 			if hovered_fnda_cell.is_empty():
 				# If the foundation cell is empty, only an Ace can be placed
 				if card_dragged.rank == Enums.Rank.ACE:
@@ -301,6 +304,14 @@ func _on_request_move_to_freecell(card: Card):
 	else:
 		#print("[FYI] The card is not in a tableau pile.")
 		pass
+
+func _on_card_hover_tabl_start(pile: TableauPile):
+	print("_on_card_hover_tabl_start")
+	pile.highlight(true)
+
+func _on_card_hover_tabl_ended(pile: TableauPile):
+	print("_on_card_hover_tabl_ended")
+	pile.highlight(false)
 
 # =============================================================================
 
@@ -403,6 +414,8 @@ func _on_btn_deal_pressed():
 
 func _on_btn_pause_pressed():
 	sort_and_move_clubs_to_foundation()
+	#for pile in tableau_piles:
+	#	pile.highlight(true)
 
 # DEV/DEBUG TOOL
 func sort_and_move_clubs_to_foundation():

@@ -1,4 +1,11 @@
 extends Control
+class_name TableauPile
+
+signal card_hover_tabl_start(tabl_pile : TableauPile)
+signal card_hover_tabl_ended(tabl_pile : TableauPile)
+
+@onready var panel_hover = $PanelHover
+@onready var panel_normal = $PanelNormal
 
 var cards = []
 var vertical_offset = 40
@@ -22,4 +29,13 @@ func remove_all_cards():
 	while cards.size() > 0:
 		remove_card(cards[0])
 
-# TODO: new signal for hovering over empty tableau
+func _on_area_2d_area_entered(_area):
+	emit_signal("card_hover_tabl_start", self)
+
+func _on_area_2d_area_exited(_area):
+	emit_signal("card_hover_tabl_ended", self)
+
+# WIP: new signal for hovering over empty tableau
+func highlight(isVisible:bool):
+	$PanelHover.visible = isVisible
+	$PanelNormal.visible = !isVisible

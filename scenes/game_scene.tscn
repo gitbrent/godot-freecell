@@ -75,7 +75,7 @@ text = "Score	"
 [node name="Value" type="Label" parent="LeftControl/InfoRect/VBoxContainer/HBoxContScore"]
 layout_mode = 2
 size_flags_horizontal = 10
-text = "9999"
+text = "0"
 
 [node name="HBoxContMoves" type="HBoxContainer" parent="LeftControl/InfoRect/VBoxContainer"]
 layout_mode = 2
@@ -90,15 +90,15 @@ layout_mode = 2
 size_flags_horizontal = 10
 text = "0"
 
-[node name="HBoxContScore2" type="HBoxContainer" parent="LeftControl/InfoRect/VBoxContainer"]
+[node name="HBoxContElapsed" type="HBoxContainer" parent="LeftControl/InfoRect/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="LeftControl/InfoRect/VBoxContainer/HBoxContScore2"]
+[node name="Label" type="Label" parent="LeftControl/InfoRect/VBoxContainer/HBoxContElapsed"]
 layout_mode = 2
 theme = ExtResource("3_vv2if")
 text = "Elapsed"
 
-[node name="Value" type="Label" parent="LeftControl/InfoRect/VBoxContainer/HBoxContScore2"]
+[node name="Value" type="Label" parent="LeftControl/InfoRect/VBoxContainer/HBoxContElapsed"]
 layout_mode = 2
 size_flags_horizontal = 10
 text = "00:00"
@@ -129,6 +129,7 @@ layout_mode = 2
 [node name="Label" type="Label" parent="TopContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 1, 1, 0.435294)
 theme_override_font_sizes/font_size = 32
 text = "♠ ♥
 ♣ ♦"
