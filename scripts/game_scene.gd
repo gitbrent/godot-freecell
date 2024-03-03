@@ -1,15 +1,16 @@
 ###
 ### TODO:
-### - implement drag onto empty tableau pile
 ### - FIXME: free-cell cards z-index stuck at 1006 (reset_z_indexes has no affect!)
 ### - use `tween` to move card to free-cell when using double-click
 ### - timer and score
-### - check for win condition (foundation cards = 52)
+### - dbl-click moves card to Foundation (if possible), otherwise FreeCell
+### - ^^^ also: Add [OPTION] to auto-move cards to Foundation
 
 extends Node2D
 
 # NODES
-@onready var score = $LeftControl/InfoRect/VBoxContainer/HBoxContMoves/Score
+@onready var infobox_moves:Label = $LeftControl/InfoRect/VBoxContainer/HBoxContMoves/Value
+@onready var game_panel_winner:Node2D = $GamePanelWinner
 
 # VARIABLES
 const Y_OFFSET : int = 40
@@ -330,7 +331,7 @@ func _on_card_hover_tabl_ended(pile: TableauPile):
 # =============================================================================
 
 func update_game_props():
-	score.text = str(game_prop_moves)
+	infobox_moves.text = str(game_prop_moves)
 
 func check_for_win_condition():
 	var total_cards_in_foundation = 0
@@ -379,6 +380,7 @@ func deal_cards():
 
 	# STEP 1: clear all cards
 	clear_deck()
+	game_panel_winner.visible = false
 	
 	# STEP 2: Create the standard 52 playing cards
 	for suit in Enums.Suit.values():
@@ -428,29 +430,42 @@ func _on_btn_deal_pressed():
 	deal_cards()
 
 func _on_btn_pause_pressed():
-	# DEBUG: TEMP:
-	sort_and_move_clubs_to_foundation()
+	# TODO:
+	pass
 
 # DEV/DEBUG TOOL
-func sort_and_move_clubs_to_foundation():
+func sort_and_move_cards_to_foundation(move_suit:Enums.Suit):
+	var target_fnda:FoundationCell = null
+
 	# Filter all clubs from the deck
-	var clubs_cards = []
+	var move_cards = []
 	for card in card_deck:
-		if card.suit == Enums.Suit.CLUBS:
-			clubs_cards.append(card)
+		if card.suit == move_suit:
+			move_cards.append(card)
 	
-	# Sort the clubs by rank
-	clubs_cards.sort_custom(self.compare_ranks)
+	# Sort the cards by rank
+	move_cards.sort_custom(self.compare_ranks)
+	
+	# Find free fnda
+	for cell in fnda_cells:
+		if cell.is_empty():
+			target_fnda = cell
 	
 	# Assuming foundation[0] is designated for clubs and has an 'add_card' method
-	for club_card in clubs_cards:
-		#print("[DEBUG] moving club_card: ", Enums.human_readable_card(club_card))
-		dragging_cards = [club_card]
-		move_card_sequence(null, null, fnda_cells[0], null)
+	for move_card in move_cards:
+		#print("[DEBUG] moving move_card: ", Enums.human_readable_card(move_card))
+		dragging_cards = [move_card]
+		move_card_sequence(null, null, target_fnda, null)
 	
-	print("[DEV-TOOL] Moved all clubs to foundation[0] in sorted order.")
+	print("[DEV-TOOL] Moved all cards to foundation[0] in sorted order.")
 	reset_card_z_indices()
 
 # Custom comparison method for sorting
 func compare_ranks(a: Card, b: Card) -> bool:
 	return a.rank < b.rank
+
+func _on_btn_debug_pressed():
+	sort_and_move_cards_to_foundation(Enums.Suit.CLUBS)
+	sort_and_move_cards_to_foundation(Enums.Suit.DIAMONDS)
+	sort_and_move_cards_to_foundation(Enums.Suit.HEARTS)
+	game_panel_winner.visible = true
