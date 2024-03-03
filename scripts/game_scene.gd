@@ -198,7 +198,8 @@ func _on_card_drag_ended(card):
 	var do_return_cards = false
 	
 	if card == card_dragged:
-		#print("..END drag: " + str(card.rank) +"-"+ str(card.suit) + " at " + str(card.z_index))
+		print("[..END drag]: " + Enums.human_readable_card(card) + " at " + str(card.z_index))
+		print("[..END drag]: ", hovered_fnda_cell)
 		if card_target and CardUtils.can_place_on_card(card_dragged, card_target):
 			print("[TABL Valid Move]: ", Enums.human_readable_card(card_dragged), " onto ", Enums.human_readable_card(card_target))
 			move_card_sequence(card_target, null, null)
@@ -207,6 +208,7 @@ func _on_card_drag_ended(card):
 			move_card_sequence(null, hovered_free_cell, null)
 			hovered_free_cell = null
 		elif hovered_fnda_cell and dragging_cards.size() == 1:
+			print("BITCH!!!")
 			if hovered_fnda_cell.is_empty():
 				# If the foundation cell is empty, only an Ace can be placed
 				if card_dragged.rank == Enums.Rank.ACE:
@@ -278,7 +280,8 @@ func _on_card_hover_fnda_start(fnda_cell: FoundationCell):
 	fnda_cell.highlight(true)
 
 func _on_card_hover_fnda_ended(fnda_cell: FoundationCell):
-	hovered_fnda_cell = null
+	# NOTE: Dont do below (it'll be done in `_on_card_drag_ended()`
+	# hovered_fnda_cell = null
 	fnda_cell.highlight(false)
 
 func _on_request_move_to_freecell(card: Card):
@@ -397,3 +400,30 @@ func deal_cards():
 
 func _on_btn_deal_pressed():
 	deal_cards()
+
+func _on_btn_pause_pressed():
+	sort_and_move_clubs_to_foundation()
+
+# DEV/DEBUG TOOL
+func sort_and_move_clubs_to_foundation():
+	# Filter all clubs from the deck
+	var clubs_cards = []
+	for card in card_deck:
+		if card.suit == Enums.Suit.CLUBS:
+			clubs_cards.append(card)
+	
+	# Sort the clubs by rank
+	clubs_cards.sort_custom(self.compare_ranks)
+	
+	# Assuming foundation[0] is designated for clubs and has an 'add_card' method
+	for club_card in clubs_cards:
+		#print("[DEBUG] moving club_card: ", Enums.human_readable_card(club_card))
+		dragging_cards = [club_card]
+		move_card_sequence(null, null, fnda_cells[0])
+	
+	print("[DEV-TOOL] Moved all clubs to foundation[0] in sorted order.")
+	reset_card_z_indices()
+
+# Custom comparison method for sorting
+func compare_ranks(a: Card, b: Card) -> bool:
+	return a.rank < b.rank

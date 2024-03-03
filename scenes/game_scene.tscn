@@ -203,4 +203,5 @@ layout_mode = 2
 size_flags_horizontal = 1
 mouse_filter = 1
 
+[connection signal="pressed" from="LeftControl/BtnPause" to="." method="_on_btn_pause_pressed"]
 [connection signal="pressed" from="LeftControl/BtnDeal" to="." method="_on_btn_deal_pressed"]
