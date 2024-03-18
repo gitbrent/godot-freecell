@@ -61,7 +61,7 @@ func _ready():
 
 	# STEP 5: Deal all 52 cards onto tableau
 	deal_cards()
-	
+
 # =============================================================================
 
 static func compare_cards_z_index(a, b):
@@ -307,14 +307,27 @@ func _on_card_double_clicked(card: Card):
 	if pile_index >= 0:
 		var pile = tableau_piles[pile_index]
 		if card == pile.get_children().back():  # Using .back() to get the last card in the pile
-			# TODO: move to TABL if ace, or goes onto TABL in order
-			# if ace or goes onto TABL
-			# else
+			# Check for valid foundation moves
+			for fnda_cell in fnda_cells:
+				if fnda_cell.is_empty() and card.rank == Enums.Rank.ACE:
+					# Move Ace to empty foundation cell
+					dragging_cards = [card]
+					move_card_sequence(null, null, fnda_cell, null)
+					return
+				elif not fnda_cell.is_empty():
+					var top_fnda_card = fnda_cell.get_top_card()
+					if top_fnda_card.suit == card.suit and top_fnda_card.rank + 1 == card.rank:
+						# Sequentially correct card to non-empty foundation
+						dragging_cards = [card]
+						move_card_sequence(null, null, fnda_cell, null)
+						return
+
+			# If no foundation move is made, check for FreeCell move
 			for free_cell in free_cells:
 				if free_cell.is_empty():
 					dragging_cards = [card]
 					move_card_sequence(null, free_cell, null, null)
-					return  # Exit after moving the card to prevent checking other free cells
+					return
 			#print("[move-to-free] No available FreeCells")
 		else:
 			#print("[FYI] The card is not the top card of its pile and cannot be moved to a FreeCell.")
