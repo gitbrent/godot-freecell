@@ -9,8 +9,10 @@
 extends Node2D
 
 # NODES
-@onready var infobox_moves:Label = $LeftControl/InfoRect/VBoxContainer/HBoxContMoves/Value
 @onready var game_panel_winner:Node2D = $GamePanelWinner
+@onready var infobox_moves:Label = $LeftControl/InfoRect/VBoxContainer/HBoxContMoves/Value
+@onready var infobox_timer:Label = $LeftControl/InfoRect/VBoxContainer/HBoxContElapsed/Value
+@onready var timer = $Timer
 
 # VARIABLES
 const Y_OFFSET : int = 40
@@ -29,6 +31,7 @@ var hovered_fnda_cell : FoundationCell = null
 var hovered_tabl_pile : TableauPile = null
 #
 var game_prop_moves : int = 0
+var game_prop_timer : int = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -304,6 +307,9 @@ func _on_card_double_clicked(card: Card):
 	if pile_index >= 0:
 		var pile = tableau_piles[pile_index]
 		if card == pile.get_children().back():  # Using .back() to get the last card in the pile
+			# TODO: move to TABL if ace, or goes onto TABL in order
+			# if ace or goes onto TABL
+			# else
 			for free_cell in free_cells:
 				if free_cell.is_empty():
 					dragging_cards = [card]
@@ -332,6 +338,7 @@ func _on_card_hover_tabl_ended(pile: TableauPile):
 
 func update_game_props():
 	infobox_moves.text = str(game_prop_moves)
+	infobox_timer.text = "%02d:%02d" % [game_prop_timer / 60, game_prop_timer % 60]
 
 func check_for_win_condition():
 	var total_cards_in_foundation = 0
@@ -382,7 +389,7 @@ func deal_cards():
 	# STEP 1: clear all cards
 	clear_deck()
 	game_panel_winner.visible = false
-	
+		
 	# STEP 2: Create the standard 52 playing cards
 	for suit in Enums.Suit.values():
 		for rank in Enums.Rank.values():
@@ -424,6 +431,7 @@ func deal_cards():
 	reset_card_z_indices()
 	
 	# STEP 6: Clear game props
+	game_prop_timer = 0
 	game_prop_moves = 0
 	update_game_props()
 
@@ -469,3 +477,7 @@ func _on_btn_debug_pressed():
 	sort_and_move_cards_to_foundation(Enums.Suit.CLUBS)
 	sort_and_move_cards_to_foundation(Enums.Suit.DIAMONDS)
 	sort_and_move_cards_to_foundation(Enums.Suit.HEARTS)
+
+func _on_timer_timeout():
+	game_prop_timer += 1
+	update_game_props()

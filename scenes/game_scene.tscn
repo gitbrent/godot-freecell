@@ -20,6 +20,9 @@ offset_bottom = 648.0
 texture = ExtResource("1_86hx2")
 expand_mode = 3
 
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
 [node name="LeftControl" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
@@ -66,18 +69,18 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 20
 
-[node name="HBoxContScore" type="HBoxContainer" parent="LeftControl/InfoRect/VBoxContainer"]
+[node name="HBoxContElapsed" type="HBoxContainer" parent="LeftControl/InfoRect/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="LeftControl/InfoRect/VBoxContainer/HBoxContScore"]
+[node name="Label" type="Label" parent="LeftControl/InfoRect/VBoxContainer/HBoxContElapsed"]
 layout_mode = 2
 theme = ExtResource("3_vv2if")
-text = "Score	"
+text = "Elapsed"
 
-[node name="Value" type="Label" parent="LeftControl/InfoRect/VBoxContainer/HBoxContScore"]
+[node name="Value" type="Label" parent="LeftControl/InfoRect/VBoxContainer/HBoxContElapsed"]
 layout_mode = 2
 size_flags_horizontal = 10
-text = "0"
+text = "00:00"
 
 [node name="HBoxContMoves" type="HBoxContainer" parent="LeftControl/InfoRect/VBoxContainer"]
 layout_mode = 2
@@ -92,18 +95,18 @@ layout_mode = 2
 size_flags_horizontal = 10
 text = "0"
 
-[node name="HBoxContElapsed" type="HBoxContainer" parent="LeftControl/InfoRect/VBoxContainer"]
+[node name="HBoxContScore" type="HBoxContainer" parent="LeftControl/InfoRect/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="LeftControl/InfoRect/VBoxContainer/HBoxContElapsed"]
+[node name="Label" type="Label" parent="LeftControl/InfoRect/VBoxContainer/HBoxContScore"]
 layout_mode = 2
 theme = ExtResource("3_vv2if")
-text = "Elapsed"
+text = "Score	"
 
-[node name="Value" type="Label" parent="LeftControl/InfoRect/VBoxContainer/HBoxContElapsed"]
+[node name="Value" type="Label" parent="LeftControl/InfoRect/VBoxContainer/HBoxContScore"]
 layout_mode = 2
 size_flags_horizontal = 10
-text = "00:00"
+text = "0"
 
 [node name="BtnDebug" parent="LeftControl" instance=ExtResource("6_8unit")]
 layout_mode = 0
@@ -218,6 +221,7 @@ visible = false
 z_index = 1001
 position = Vector2(410, 219)
 
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="pressed" from="LeftControl/BtnPause" to="." method="_on_btn_pause_pressed"]
 [connection signal="pressed" from="LeftControl/BtnDeal" to="." method="_on_btn_deal_pressed"]
 [connection signal="pressed" from="LeftControl/BtnDebug" to="." method="_on_btn_debug_pressed"]
