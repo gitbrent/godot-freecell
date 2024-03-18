@@ -12,7 +12,7 @@ corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rxq62"]
-size = Vector2(70, 101)
+size = Vector2(69, 100)
 
 [node name="TableauPile0" type="Control"]
 layout_mode = 3
@@ -23,12 +23,12 @@ script = ExtResource("1_47fmm")
 [node name="PanelHover" type="Panel" parent="."]
 visible = false
 layout_mode = 0
-offset_right = 70.0
-offset_bottom = 102.0
+offset_right = 69.0
+offset_bottom = 100.0
 theme_override_styles/panel = ExtResource("2_02qfl")
 
 [node name="PanelNormal" type="Panel" parent="."]
-offset_right = 70.0
+offset_right = 69.0
 offset_bottom = 100.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_em6lg")
 
@@ -41,7 +41,7 @@ centered = false
 [node name="Area2D" type="Area2D" parent="."]
 
 [node name="CollisionPolygon2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(35, 50.5)
+position = Vector2(34.5, 50)
 shape = SubResource("RectangleShape2D_rxq62")
 debug_color = Color(0, 0.6, 0.701961, 0)
 

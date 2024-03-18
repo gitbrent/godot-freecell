@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://d36ntyouo8moq"]
+[gd_scene load_steps=4 format=3 uid="uid://d36ntyouo8moq"]
 
 [ext_resource type="FontFile" uid="uid://biaey3f3ia5n2" path="res://assets/fonts/kirifont/KiriFont.otf" id="1_ulpbs"]
+[ext_resource type="Texture2D" uid="uid://bc2n3phmju565" path="res://assets/buttons/ButtonText_Large_Green_Round.png" id="2_bwy3f"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s4yno"]
 bg_color = Color(0.0392157, 0.294118, 0.0392157, 0.521569)
@@ -17,20 +18,38 @@ corner_radius_bottom_left = 50
 [node name="you_won_scene" type="Node2D"]
 
 [node name="Panel" type="Panel" parent="."]
-offset_right = 400.0
-offset_bottom = 200.0
+offset_right = 500.0
+offset_bottom = 300.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_s4yno")
 
-[node name="CenterContainer" type="CenterContainer" parent="Panel"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 0
+offset_right = 1159.0
+offset_bottom = 410.0
 
-[node name="Label" type="Label" parent="Panel/CenterContainer"]
+[node name="CenterContainer" type="CenterContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="Panel/VBoxContainer/CenterContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("1_ulpbs")
 theme_override_font_sizes/font_size = 48
 text = "WINNER!"
+
+[node name="TextureButton" type="TextureButton" parent="Panel/VBoxContainer"]
+visible = false
+layout_mode = 2
+texture_normal = ExtResource("2_bwy3f")
+stretch_mode = 0
+
+[node name="CenterContainer2" type="CenterContainer" parent="Panel/VBoxContainer/TextureButton"]
+layout_mode = 2
+offset_top = -4.0
+offset_right = 1159.0
+offset_bottom = -4.0
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="Panel/VBoxContainer/TextureButton/CenterContainer2"]
+layout_mode = 2
+text = "Play Again"

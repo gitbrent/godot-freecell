@@ -11,7 +11,7 @@ corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ep1xm"]
-size = Vector2(72, 101)
+size = Vector2(71, 102)
 
 [node name="FoundationCell0" type="Control"]
 layout_mode = 3
