@@ -91,7 +91,7 @@ func identify_card_pile(card: Card) -> int:
 	# LAST:
 	return -1
 
-func is_valid_drag_start(card: Card, card_pile_index: int) -> bool:
+func is_valid_drag_start(card: Card, card_pile_index: int, sequence_length: int) -> bool:
 	# free cell index is -2
 	if card_pile_index == -2:
 		return true
@@ -105,6 +105,15 @@ func is_valid_drag_start(card: Card, card_pile_index: int) -> bool:
 		return true
 	
 	# Additional checks for valid sequences go here.
+	var available_spaces = 0
+	for free_cell in free_cells:
+		if free_cell.is_empty():
+			available_spaces += 1
+	
+	# Ensure there's enough space to move the sequence.
+	if sequence_length > available_spaces + 1:
+		return false
+	
 	# Example sequence check (assuming descending sequence without suit check):
 	var card_index = card_pile.find(card)
 	for i in range(card_index, card_pile.size() - 1):
@@ -167,7 +176,7 @@ func get_draggable_sequence(card: Card) -> Array:
 	var card_pile = tableau_piles[card_pile_index].get_children()
 	var start_index = card_pile.find(card)
 	
-	if is_valid_drag_start(card, card_pile_index):
+	if is_valid_drag_start(card, card_pile_index, range(start_index, card_pile.size()).size()):
 		for i in range(start_index, card_pile.size()):
 			var current_card = card_pile[i]
 			if current_card is Card:
@@ -321,7 +330,7 @@ func _on_card_double_clicked(card: Card):
 						dragging_cards = [card]
 						move_card_sequence(null, null, fnda_cell, null)
 						return
-
+			
 			# If no foundation move is made, check for FreeCell move
 			for free_cell in free_cells:
 				if free_cell.is_empty():
