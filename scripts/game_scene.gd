@@ -299,7 +299,7 @@ func _on_card_hover_fnda_ended(fnda_cell: FoundationCell):
 	# hovered_fnda_cell = null
 	fnda_cell.highlight(false)
 
-func _on_request_move_to_freecell(card: Card):
+func _on_card_double_clicked(card: Card):
 	var pile_index = identify_card_pile(card)
 	if pile_index >= 0:
 		var pile = tableau_piles[pile_index]
@@ -342,6 +342,7 @@ func check_for_win_condition():
 
 	# Check if the total number of cards in foundation cells equals 52
 	if total_cards_in_foundation == 52:
+		game_panel_winner.visible = true
 		print("[GAME] Congratulations! You've won the game!!")
 		# Implement any additional win logic here (e.g., displaying a win message, stopping the timer, etc.)
 	else:
@@ -413,7 +414,7 @@ func deal_cards():
 				control_node.connect("card_drag_start", self._on_card_drag_start)
 				control_node.connect("drag_in_progress", self._on_drag_in_progress)
 				control_node.connect("card_drag_ended", self._on_card_drag_ended)
-				control_node.connect("request_move_to_freecell", self._on_request_move_to_freecell)
+				control_node.connect("card_double_clicked", self._on_card_double_clicked)
 				tableau_piles[i].add_card(card)
 				card_deck.append(card)
 			else:
@@ -468,4 +469,3 @@ func _on_btn_debug_pressed():
 	sort_and_move_cards_to_foundation(Enums.Suit.CLUBS)
 	sort_and_move_cards_to_foundation(Enums.Suit.DIAMONDS)
 	sort_and_move_cards_to_foundation(Enums.Suit.HEARTS)
-	game_panel_winner.visible = true
