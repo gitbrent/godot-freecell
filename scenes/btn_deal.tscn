@@ -8,7 +8,7 @@ offset_left = 112.0
 offset_top = 157.0
 offset_right = 162.0
 offset_bottom = 207.0
-scale = Vector2(0.2, 0.2)
+scale = Vector2(0.25, 0.25)
 texture_normal = ExtResource("1_7qakd")
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
@@ -16,6 +16,7 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_bottom = -1.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -24,3 +25,5 @@ layout_mode = 2
 theme_override_fonts/font = ExtResource("2_glbdr")
 theme_override_font_sizes/font_size = 48
 text = "Deal"
+horizontal_alignment = 1
+vertical_alignment = 1

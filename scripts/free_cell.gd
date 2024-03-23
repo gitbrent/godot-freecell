@@ -10,27 +10,25 @@ signal card_hover_free_ended(free_cell : FreeCell)
 @onready var panel:Panel = $Panel
 
 var card_in_cell : Card = null
-var vertical_offset : int = 1
-var horizontal_offset : int = 1
 
 func _ready():
 	# Create a theme for StyleBox
 	if $Panel.theme == null:
 		$Panel.theme = Theme.new()
 
+func is_empty():
+	return not card_in_cell
+
 func get_curr_card():
-	if card_in_cell:
-		return card_in_cell
-	else:
-		return null
+	#print("[free_cell] card_in_cell: ", card_in_cell)
+	return card_in_cell
 
 func add_card(card: Card):
 	if card is Card:
+		#print("[FreeCell] added card: {" + Enums.human_readable_card(card_in_cell) + "} with position: ", card.position)
 		add_child(card)
-		var card_position = Vector2(horizontal_offset, vertical_offset)
-		card.position = card_position
+		card.position = Vector2(0, 0)
 		card_in_cell = card
-		#print("[FreeCell] added card with position: ", card.position)
 	else:
 		print("[tableau] attempted to add a non-Card node to the pile.")
 
@@ -43,7 +41,7 @@ func remove_all():
 	if card_in_cell:
 		remove_card(card_in_cell)
 
-func _on_area_2d_area_entered(area):
+func _on_area_2d_area_entered(_area):
 	# Emit signal if a card can go here
 	if not card_in_cell:
 		emit_signal("card_hover_free_start", self)
