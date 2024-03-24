@@ -123,46 +123,70 @@ func is_valid_drag_start(card: Card, card_pile_index: int, sequence_length: int)
 
 func move_card_sequence(tgt_card: Card, free_cell: FreeCell, fnda_cell: FoundationCell, tabl_pile: TableauPile):
 	for src_card in dragging_cards:
-		# STEP 1: Remove card from its source pile
-		var old_pile_index = identify_card_pile(src_card)
-		if old_pile_index > -1:
-			tableau_piles[old_pile_index].remove_card(src_card)
-			#print("[move] removed from TABL: " + Enums.human_readable_card(src_card))
-		else:
-			for cell in free_cells:
-				cell.remove_card(src_card)
-		
-		# STEP 2: Add card to its new pile
-		var new_pile_index = identify_card_pile(tgt_card)
-		if new_pile_index > -1:
-			tableau_piles[new_pile_index].add_card(src_card)
+		var target_position = Vector2() # Calculate the target global position for the card based on the destination
+		if free_cell:
+			target_position = free_cell.global_position # Assuming free_cell has a property for its position
+		elif fnda_cell:
+			target_position = fnda_cell.global_position # Similar for foundation cells
 		elif tabl_pile:
-			tabl_pile.add_card(src_card)
-		elif free_cell and free_cells.size() > 0:
-			if dragging_cards.size() == 1:
-				free_cell.add_card(src_card)
-				game_prop_score += 10
-				break  # Since only one card can be moved to a free cell, break after moving
-			else:
-				print("ERROR: Cannot move more than one card to a Free Cell!")
-				break
-		elif fnda_cell and src_card:
-			fnda_cell.add_card(src_card)
-			game_prop_score += 100
-			break
-		
-	# Reset dragging cards array
-	dragging_cards.clear()
+			# For tableau piles, you might want to consider the vertical offset for stacking cards
+			#var last_card = tabl_pile.get_last_card() # Assuming there's a method to get the last card
+			#target_position = last_card.global_position + Vector2(0, 0) if last_card else tabl_pile.global_position
+			#target_position = null
+			pass
+		elif tgt_card:
+			# Similar logic as for tabl_pile
+			#var last_card_position = get_global_position_of_last_card_in_pile(tgt_card) # You need to implement this
+			#target_position = last_card_position + Vector2(0, 0)
+			#target_position = null
+			pass
+
+		# Now that you have the target position, create and configure the tween
+		if (target_position.x + target_position.y > 0):
+			var tween = get_tree().create_tween()
+			tween.tween_property(src_card, "global_position", target_position, 0.5)
+			tween.tween_callback(_on_move_card_seq_tween_completed.bind(src_card, tgt_card, free_cell, fnda_cell, tabl_pile))
+		else:
+			_on_move_card_seq_tween_completed(src_card, tgt_card, free_cell, fnda_cell, tabl_pile)
+
+func _on_move_card_seq_tween_completed(src_card, tgt_card, free_cell, fnda_cell, tabl_pile):
+	# STEP 1: Remove card from its source pile
+	var old_pile_index = identify_card_pile(src_card)
+	if old_pile_index > -1:
+		tableau_piles[old_pile_index].remove_card(src_card)
+		#print("[move] removed from TABL: " + Enums.human_readable_card(src_card))
+	else:
+		for cell in free_cells:
+			cell.remove_card(src_card)
 	
-	# Reset z-indexes and other properties as needed
-	reset_card_z_indices()
+	# STEP 2: Add card to its new pile
+	var new_pile_index = identify_card_pile(tgt_card)
+	if new_pile_index > -1:
+		tableau_piles[new_pile_index].add_card(src_card)
+		game_prop_score += 10
+	elif tabl_pile:
+		tabl_pile.add_card(src_card)
+		game_prop_score += 10
+	elif free_cell and free_cells.size() > 0:
+		if dragging_cards.size() == 1:
+			free_cell.add_card(src_card)
+			game_prop_score += 10
+			#break  # Since only one card can be moved to a free cell, break after moving
+		else:
+			print("ERROR: Cannot move more than one card to a Free Cell!")
+			#break
+	elif fnda_cell and src_card:
+		fnda_cell.add_card(src_card)
+		game_prop_score += 100
+		#break
 	
-	# Increment move counter
-	game_prop_moves += 1
-	update_game_props()
-	
-	# Check for win
-	check_for_win_condition()
+	# If moving the last card in the sequence, reset the dragging cards array and other properties
+	if src_card == dragging_cards.back():
+		dragging_cards.clear()
+		reset_card_z_indices()
+		game_prop_moves += 1
+		update_game_props()
+		check_for_win_condition()
 
 # =============================================================================
 
@@ -240,6 +264,7 @@ func _on_card_drag_ended(card):
 					move_card_sequence(card_dragged, null, hovered_fnda_cell, null)
 				else:
 					print("Card cannot be placed here.")
+					print("hovered_fnda_cell: ", hovered_fnda_cell)
 					do_return_cards = true
 		elif hovered_tabl_pile:
 			if hovered_tabl_pile.get_card_count() == 0:
@@ -271,7 +296,6 @@ func _on_card_drag_ended(card):
 		card_dragged = null # Ensure to reset this regardless of condition to prevent stuck states
 		hovered_fnda_cell = null
 		hovered_tabl_pile = null
-		#??? reset_card_z_indices()
 
 func _on_card_hover_start(src_card: Card, tgt_card: Card):
 	# RULE: Only the top-most (the card completely visible) card is a valid target
