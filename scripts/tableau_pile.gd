@@ -42,6 +42,7 @@ func highlight(isVisible:bool):
 	$PanelHover.visible = isVisible
 	$PanelNormal.visible = !isVisible
 
+# DEBUG: called from debug button in `game_scene`
 func reset_card_positions_in_pile():
 	for i in range(cards.size()):
 		var card = cards[i]

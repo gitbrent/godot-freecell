@@ -1,10 +1,7 @@
-###
 ### TODO:
-### - FIXME: free-cell cards z-index stuck at 1006 (reset_z_indexes has no affect!)
 ### - use `tween` to move card to free-cell when using double-click
-### - timer and score
-### - dbl-click moves card to Foundation (if possible), otherwise FreeCell
-### - ^^^ also: Add [OPTION] to auto-move cards to Foundation
+### - Add "Score"
+### - Add [OPTION] to auto-move cards to Foundation
 
 extends Node2D
 
