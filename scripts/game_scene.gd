@@ -15,13 +15,13 @@ extends Node2D
 const Y_OFFSET : int = 40
 var drag_offset : Vector2 = Vector2()
 #
-var card_deck : Array = []
+var card_deck: Array[Card] = []
 var tableau_piles : Array = []
 var free_cells : Array = []
 var fnda_cells : Array = []
 #
+var dragging_cards: Array[Card] = []
 var card_dragged : Card = null
-var dragging_cards : Array = []
 var card_target : Card = null
 var hovered_free_cell : FreeCell = null
 var hovered_fnda_cell : FoundationCell = null
@@ -162,8 +162,8 @@ func move_card_sequence(tgt_card: Card, free_cell: FreeCell, fnda_cell: Foundati
 
 # =============================================================================
 
-func get_draggable_sequence(card: Card) -> Array:
-	var cards:Array = []
+func get_draggable_sequence(card: Card) -> Array[Card]:
+	var cards:Array[Card] = []
 	var card_pile_index:int = identify_card_pile(card)
 
 	# Free Cells are index -2	
