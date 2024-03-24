@@ -16,9 +16,9 @@ const Y_OFFSET : int = 40
 var drag_offset : Vector2 = Vector2()
 #
 var card_deck: Array[Card] = []
-var tableau_piles : Array = []
-var free_cells : Array = []
-var fnda_cells : Array = []
+var tableau_piles: Array[TableauPile] = []
+var free_cells: Array[FreeCell] = []
+var fnda_cells: Array[FoundationCell] = []
 #
 var dragging_cards: Array[Card] = []
 var card_dragged : Card = null
@@ -37,21 +37,21 @@ func _ready():
 
 	# STEP 2: Init free-cell-pile
 	for i in 4:
-		var free_cell = get_node("TopContainer/FreeCellPile/FreeCell" + str(i))
+		var free_cell:FreeCell = get_node("TopContainer/FreeCellPile/FreeCell" + str(i))
 		free_cell.connect("card_hover_free_start", self._on_card_hover_free_start)
 		free_cell.connect("card_hover_free_ended", self._on_card_hover_free_ended)
 		free_cells.append(free_cell)
 	
 	# STEP 3: Init foundation-cell-pile
 	for i in 4:
-		var fnda_cell = get_node("TopContainer/FoundationPile/FoundationCell" + str(i))
+		var fnda_cell:FoundationCell = get_node("TopContainer/FoundationPile/FoundationCell" + str(i))
 		fnda_cell.connect("card_hover_fnda_start", self._on_card_hover_fnda_start)
 		fnda_cell.connect("card_hover_fnda_ended", self._on_card_hover_fnda_ended)
 		fnda_cells.append(fnda_cell)
 
 	# STEP 4: Init tableau-piles
 	for i in range(0, 8): # Assuming you named them TableauPile0 through TableauPile7
-		var tabl_pile = get_node("TableauPileCont/TableauPile" + str(i))
+		var tabl_pile:TableauPile = get_node("TableauPileCont/TableauPile" + str(i))
 		tabl_pile.connect("card_hover_tabl_start", self._on_card_hover_tabl_start)
 		tabl_pile.connect("card_hover_tabl_ended", self._on_card_hover_tabl_ended)
 		tableau_piles.append(tabl_pile)
