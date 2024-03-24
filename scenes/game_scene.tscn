@@ -217,9 +217,8 @@ size_flags_horizontal = 1
 mouse_filter = 1
 
 [node name="GamePanelWinner" parent="." instance=ExtResource("10_c7eam")]
-visible = false
 z_index = 1001
-position = Vector2(410, 219)
+position = Vector2(357, 156)
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="pressed" from="LeftControl/BtnPause" to="." method="_on_btn_pause_pressed"]
