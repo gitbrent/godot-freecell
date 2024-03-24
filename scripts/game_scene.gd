@@ -9,6 +9,7 @@ extends Node2D
 @onready var game_panel_winner:Node2D = $GamePanelWinner
 @onready var infobox_moves:Label = $LeftControl/InfoRect/VBoxContainer/HBoxContMoves/Value
 @onready var infobox_timer:Label = $LeftControl/InfoRect/VBoxContainer/HBoxContElapsed/Value
+@onready var infobox_score:Label = $LeftControl/InfoRect/VBoxContainer/HBoxContScore/Value
 @onready var timer = $Timer
 
 # VARIABLES
@@ -29,6 +30,7 @@ var hovered_tabl_pile : TableauPile = null
 #
 var game_prop_moves : int = 0
 var game_prop_timer : int = 0
+var game_prop_score : int = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -139,12 +141,14 @@ func move_card_sequence(tgt_card: Card, free_cell: FreeCell, fnda_cell: Foundati
 		elif free_cell and free_cells.size() > 0:
 			if dragging_cards.size() == 1:
 				free_cell.add_card(src_card)
+				game_prop_score += 10
 				break  # Since only one card can be moved to a free cell, break after moving
 			else:
 				print("ERROR: Cannot move more than one card to a Free Cell!")
 				break
 		elif fnda_cell and src_card:
 			fnda_cell.add_card(src_card)
+			game_prop_score += 100
 			break
 		
 	# Reset dragging cards array
@@ -358,6 +362,7 @@ func _on_card_hover_tabl_ended(pile: TableauPile):
 func update_game_props():
 	infobox_moves.text = str(game_prop_moves)
 	infobox_timer.text = "%02d:%02d" % [game_prop_timer / 60, game_prop_timer % 60]
+	infobox_score.text = str(game_prop_score)
 
 func check_for_win_condition():
 	var total_cards_in_foundation = 0
@@ -452,6 +457,7 @@ func deal_cards():
 	# STEP 6: Clear game props
 	game_prop_timer = 0
 	game_prop_moves = 0
+	game_prop_score = 0
 	update_game_props()
 
 func _on_btn_deal_pressed():
