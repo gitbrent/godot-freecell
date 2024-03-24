@@ -28,6 +28,7 @@ offset_bottom = 100.0
 theme_override_styles/panel = ExtResource("2_02qfl")
 
 [node name="PanelNormal" type="Panel" parent="."]
+layout_mode = 0
 offset_right = 69.0
 offset_bottom = 100.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_em6lg")

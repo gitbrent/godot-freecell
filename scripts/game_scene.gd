@@ -499,6 +499,8 @@ func _on_btn_debug_pressed():
 	sort_and_move_cards_to_foundation(Enums.Suit.CLUBS)
 	sort_and_move_cards_to_foundation(Enums.Suit.DIAMONDS)
 	sort_and_move_cards_to_foundation(Enums.Suit.HEARTS)
+	for pile in tableau_piles:
+		pile.reset_card_positions_in_pile()
 
 func _on_timer_timeout():
 	game_prop_timer += 1
