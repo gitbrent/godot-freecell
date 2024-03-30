@@ -8,7 +8,6 @@ signal card_hover_tabl_ended(tabl_pile : TableauPile)
 @onready var panel_normal:Panel = $PanelNormal
 
 var cards: Array[Card]
-var vertical_offset = 40
 var horizontal_offset = 0
 
 func get_card_count():
@@ -18,7 +17,7 @@ func add_card(card: Card):
 	if card is Card:
 		#print("[TABL] added card: {" + Enums.human_readable_card(card) + "} with position: ", card.position)
 		add_child(card)
-		card.position = Vector2(horizontal_offset, cards.size() * vertical_offset)
+		card.position = Vector2(horizontal_offset, cards.size() * Enums.Y_OFFSET)
 		cards.append(card)
 	else:
 		print("[tableau] attempted to add a non-Card node to the pile.")
@@ -46,4 +45,4 @@ func highlight(isVisible:bool):
 func reset_card_positions_in_pile():
 	for i in range(cards.size()):
 		var card = cards[i]
-		card.position = Vector2(horizontal_offset, i * vertical_offset)
+		card.position = Vector2(horizontal_offset, i * Enums.Y_OFFSET)

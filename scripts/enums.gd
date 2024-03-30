@@ -1,5 +1,7 @@
 extends Node
 
+const Y_OFFSET : int = 45
+
 enum SuitColor {
 	RED,
 	BLACK
