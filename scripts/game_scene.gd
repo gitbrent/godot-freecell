@@ -1,6 +1,3 @@
-### TODO:
-### - Add [OPTION] to auto-move cards to Foundation
-
 extends Node2D
 
 # NODES
@@ -291,7 +288,6 @@ func _on_card_drag_ended(card):
 					tween.tween_callback(reset_card_z_indices)
 #
 		# Resets
-		dragging_cards.clear()
 		card_dragged = null # Ensure to reset this regardless of condition to prevent stuck states
 		hovered_fnda_cell = null
 		hovered_tabl_pile = null
