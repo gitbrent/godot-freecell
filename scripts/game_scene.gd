@@ -1,10 +1,7 @@
-###
 ### TODO:
-### - FIXME: free-cell cards z-index stuck at 1006 (reset_z_indexes has no affect!)
 ### - use `tween` to move card to free-cell when using double-click
-### - timer and score
-### - dbl-click moves card to Foundation (if possible), otherwise FreeCell
-### - ^^^ also: Add [OPTION] to auto-move cards to Foundation
+### - Add "Score"
+### - Add [OPTION] to auto-move cards to Foundation
 
 extends Node2D
 
@@ -12,19 +9,20 @@ extends Node2D
 @onready var game_panel_winner:Node2D = $GamePanelWinner
 @onready var infobox_moves:Label = $LeftControl/InfoRect/VBoxContainer/HBoxContMoves/Value
 @onready var infobox_timer:Label = $LeftControl/InfoRect/VBoxContainer/HBoxContElapsed/Value
+@onready var infobox_score:Label = $LeftControl/InfoRect/VBoxContainer/HBoxContScore/Value
 @onready var timer = $Timer
 
 # VARIABLES
 const Y_OFFSET : int = 40
 var drag_offset : Vector2 = Vector2()
 #
-var card_deck : Array = []
-var tableau_piles : Array = []
-var free_cells : Array = []
-var fnda_cells : Array = []
+var card_deck: Array[Card] = []
+var tableau_piles: Array[TableauPile] = []
+var free_cells: Array[FreeCell] = []
+var fnda_cells: Array[FoundationCell] = []
 #
+var dragging_cards: Array[Card] = []
 var card_dragged : Card = null
-var dragging_cards : Array = []
 var card_target : Card = null
 var hovered_free_cell : FreeCell = null
 var hovered_fnda_cell : FoundationCell = null
@@ -32,6 +30,7 @@ var hovered_tabl_pile : TableauPile = null
 #
 var game_prop_moves : int = 0
 var game_prop_timer : int = 0
+var game_prop_score : int = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -40,21 +39,21 @@ func _ready():
 
 	# STEP 2: Init free-cell-pile
 	for i in 4:
-		var free_cell = get_node("TopContainer/FreeCellPile/FreeCell" + str(i))
+		var free_cell:FreeCell = get_node("TopContainer/FreeCellPile/FreeCell" + str(i))
 		free_cell.connect("card_hover_free_start", self._on_card_hover_free_start)
 		free_cell.connect("card_hover_free_ended", self._on_card_hover_free_ended)
 		free_cells.append(free_cell)
 	
 	# STEP 3: Init foundation-cell-pile
 	for i in 4:
-		var fnda_cell = get_node("TopContainer/FoundationPile/FoundationCell" + str(i))
+		var fnda_cell:FoundationCell = get_node("TopContainer/FoundationPile/FoundationCell" + str(i))
 		fnda_cell.connect("card_hover_fnda_start", self._on_card_hover_fnda_start)
 		fnda_cell.connect("card_hover_fnda_ended", self._on_card_hover_fnda_ended)
 		fnda_cells.append(fnda_cell)
 
 	# STEP 4: Init tableau-piles
 	for i in range(0, 8): # Assuming you named them TableauPile0 through TableauPile7
-		var tabl_pile = get_node("TableauPileCont/TableauPile" + str(i))
+		var tabl_pile:TableauPile = get_node("TableauPileCont/TableauPile" + str(i))
 		tabl_pile.connect("card_hover_tabl_start", self._on_card_hover_tabl_start)
 		tabl_pile.connect("card_hover_tabl_ended", self._on_card_hover_tabl_ended)
 		tableau_piles.append(tabl_pile)
@@ -124,49 +123,75 @@ func is_valid_drag_start(card: Card, card_pile_index: int, sequence_length: int)
 
 func move_card_sequence(tgt_card: Card, free_cell: FreeCell, fnda_cell: FoundationCell, tabl_pile: TableauPile):
 	for src_card in dragging_cards:
-		# STEP 1: Remove card from its source pile
-		var old_pile_index = identify_card_pile(src_card)
-		if old_pile_index > -1:
-			tableau_piles[old_pile_index].remove_card(src_card)
-			#print("[move] removed from TABL: " + Enums.human_readable_card(src_card))
-		else:
-			for cell in free_cells:
-				cell.remove_card(src_card)
-		
-		# STEP 2: Add card to its new pile
-		var new_pile_index = identify_card_pile(tgt_card)
-		if new_pile_index > -1:
-			tableau_piles[new_pile_index].add_card(src_card)
+		var target_position = Vector2() # Calculate the target global position for the card based on the destination
+		if free_cell:
+			target_position = free_cell.global_position # Assuming free_cell has a property for its position
+		elif fnda_cell:
+			target_position = fnda_cell.global_position # Similar for foundation cells
 		elif tabl_pile:
-			tabl_pile.add_card(src_card)
-		elif free_cell and free_cells.size() > 0:
-			if dragging_cards.size() == 1:
-				free_cell.add_card(src_card)
-				break  # Since only one card can be moved to a free cell, break after moving
-			else:
-				print("ERROR: Cannot move more than one card to a Free Cell!")
-				break
-		elif fnda_cell and src_card:
-			fnda_cell.add_card(src_card)
-			break
-		
-	# Reset dragging cards array
-	dragging_cards.clear()
+			# For tableau piles, you might want to consider the vertical offset for stacking cards
+			#var last_card = tabl_pile.get_last_card() # Assuming there's a method to get the last card
+			#target_position = last_card.global_position + Vector2(0, 0) if last_card else tabl_pile.global_position
+			#target_position = null
+			pass
+		elif tgt_card:
+			# Similar logic as for tabl_pile
+			#var last_card_position = get_global_position_of_last_card_in_pile(tgt_card) # You need to implement this
+			#target_position = last_card_position + Vector2(0, 0)
+			#target_position = null
+			pass
+
+		# Now that you have the target position, create and configure the tween
+		if (target_position.x + target_position.y > 0):
+			var tween = get_tree().create_tween()
+			tween.tween_property(src_card, "global_position", target_position, 0.5)
+			tween.tween_callback(_on_move_card_seq_tween_completed.bind(src_card, tgt_card, free_cell, fnda_cell, tabl_pile))
+		else:
+			_on_move_card_seq_tween_completed(src_card, tgt_card, free_cell, fnda_cell, tabl_pile)
+
+func _on_move_card_seq_tween_completed(src_card, tgt_card, free_cell, fnda_cell, tabl_pile):
+	# STEP 1: Remove card from its source pile
+	var old_pile_index = identify_card_pile(src_card)
+	if old_pile_index > -1:
+		tableau_piles[old_pile_index].remove_card(src_card)
+		#print("[move] removed from TABL: " + Enums.human_readable_card(src_card))
+	else:
+		for cell in free_cells:
+			cell.remove_card(src_card)
 	
-	# Reset z-indexes and other properties as needed
-	reset_card_z_indices()
+	# STEP 2: Add card to its new pile
+	var new_pile_index = identify_card_pile(tgt_card)
+	if new_pile_index > -1:
+		tableau_piles[new_pile_index].add_card(src_card)
+		game_prop_score += 10
+	elif tabl_pile:
+		tabl_pile.add_card(src_card)
+		game_prop_score += 10
+	elif free_cell and free_cells.size() > 0:
+		if dragging_cards.size() == 1:
+			free_cell.add_card(src_card)
+			game_prop_score += 10
+			#break  # Since only one card can be moved to a free cell, break after moving
+		else:
+			print("ERROR: Cannot move more than one card to a Free Cell!")
+			#break
+	elif fnda_cell and src_card:
+		fnda_cell.add_card(src_card)
+		game_prop_score += 100
+		#break
 	
-	# Increment move counter
-	game_prop_moves += 1
-	update_game_props()
-	
-	# Check for win
-	check_for_win_condition()
+	# If moving the last card in the sequence, reset the dragging cards array and other properties
+	if src_card == dragging_cards.back():
+		dragging_cards.clear()
+		reset_card_z_indices()
+		game_prop_moves += 1
+		update_game_props()
+		check_for_win_condition()
 
 # =============================================================================
 
-func get_draggable_sequence(card: Card) -> Array:
-	var cards:Array = []
+func get_draggable_sequence(card: Card) -> Array[Card]:
+	var cards:Array[Card] = []
 	var card_pile_index:int = identify_card_pile(card)
 
 	# Free Cells are index -2	
@@ -239,6 +264,7 @@ func _on_card_drag_ended(card):
 					move_card_sequence(card_dragged, null, hovered_fnda_cell, null)
 				else:
 					print("Card cannot be placed here.")
+					print("hovered_fnda_cell: ", hovered_fnda_cell)
 					do_return_cards = true
 		elif hovered_tabl_pile:
 			if hovered_tabl_pile.get_card_count() == 0:
@@ -270,7 +296,6 @@ func _on_card_drag_ended(card):
 		card_dragged = null # Ensure to reset this regardless of condition to prevent stuck states
 		hovered_fnda_cell = null
 		hovered_tabl_pile = null
-		#??? reset_card_z_indices()
 
 func _on_card_hover_start(src_card: Card, tgt_card: Card):
 	# RULE: Only the top-most (the card completely visible) card is a valid target
@@ -361,6 +386,7 @@ func _on_card_hover_tabl_ended(pile: TableauPile):
 func update_game_props():
 	infobox_moves.text = str(game_prop_moves)
 	infobox_timer.text = "%02d:%02d" % [game_prop_timer / 60, game_prop_timer % 60]
+	infobox_score.text = str(game_prop_score)
 
 func check_for_win_condition():
 	var total_cards_in_foundation = 0
@@ -455,6 +481,7 @@ func deal_cards():
 	# STEP 6: Clear game props
 	game_prop_timer = 0
 	game_prop_moves = 0
+	game_prop_score = 0
 	update_game_props()
 
 func _on_btn_deal_pressed():
@@ -499,6 +526,8 @@ func _on_btn_debug_pressed():
 	sort_and_move_cards_to_foundation(Enums.Suit.CLUBS)
 	sort_and_move_cards_to_foundation(Enums.Suit.DIAMONDS)
 	sort_and_move_cards_to_foundation(Enums.Suit.HEARTS)
+	for pile in tableau_piles:
+		pile.reset_card_positions_in_pile()
 
 func _on_timer_timeout():
 	game_prop_timer += 1

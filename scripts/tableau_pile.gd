@@ -7,7 +7,7 @@ signal card_hover_tabl_ended(tabl_pile : TableauPile)
 @onready var panel_hover:Panel = $PanelHover
 @onready var panel_normal:Panel = $PanelNormal
 
-var cards = []
+var cards: Array[Card]
 var vertical_offset = 40
 var horizontal_offset = 0
 
@@ -41,3 +41,9 @@ func _on_area_2d_area_exited(_area):
 func highlight(isVisible:bool):
 	$PanelHover.visible = isVisible
 	$PanelNormal.visible = !isVisible
+
+# DEBUG: called from debug button in `game_scene`
+func reset_card_positions_in_pile():
+	for i in range(cards.size()):
+		var card = cards[i]
+		card.position = Vector2(horizontal_offset, i * vertical_offset)
