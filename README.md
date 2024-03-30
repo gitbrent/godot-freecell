@@ -1,8 +1,3 @@
-# godot-freecell
-Godot FreeCell Solitaire
-![GodotFreecell_01](https://github.com/gitbrent/godot-freecell/assets/7218970/057257a2-b1cc-4b30-9ebe-5b9aa400e7d6)
-![GodotFreecell_00](https://github.com/gitbrent/godot-freecell/assets/7218970/09f48fa5-eaea-4831-afb7-f8b2be458ae9)
-
 # Godot Freecell
 
 ## ℹ️ About
@@ -11,12 +6,12 @@ Godot Freecell is a classic solitaire card game built with the Godot Engine, des
 
 <p align="center">
   <a href="https://github.com/gitbrent/godot-freecell/">
-    <img alt="Freecell Solitaire Gameplay on iPad" title="Freecell Solitaire Gameplay" src="https://github.com/gitbrent/godot-freecell/assets/7218970/057257a2-b1cc-4b30-9ebe-5b9aa400e7d6"/>
+    <img alt="Freecell Solitaire Gameplay on iPad" title="Freecell Solitaire Gameplay" src="https://github.com/gitbrent/godot-freecell/assets/7218970/09f48fa5-eaea-4831-afb7-f8b2be458ae9"/>
   </a>
 </p>
 <p align="center">
   <a href="https://github.com/gitbrent/godot-freecell/">
-    <img alt="Freecell Solitaire Gameplay on iPad" title="Freecell Solitaire Gameplay" src="https://github.com/gitbrent/godot-freecell/assets/7218970/09f48fa5-eaea-4831-afb7-f8b2be458ae9"/>
+    <img alt="Freecell Solitaire Gameplay on iPad" title="Freecell Solitaire Gameplay" src="https://github.com/gitbrent/godot-freecell/assets/7218970/057257a2-b1cc-4b30-9ebe-5b9aa400e7d6"/>
   </a>
 </p>
 <br/>
@@ -38,6 +33,7 @@ To export the game to iOS, please follow the [official Godot documentation](http
 - Start the game from the main menu by clicking "Play."
 - Move cards according to the classic solitaire rules.
 - The objective is to move all cards to the foundation piles, sorting them by suit and in ascending order.
+- More detailed rules and history of the game can be found on [wikipedia](https://en.wikipedia.org/wiki/FreeCell)
 
 ## 📜 License
 
