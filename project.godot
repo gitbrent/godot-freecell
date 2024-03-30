@@ -10,7 +10,6 @@ config_version=5
 
 [application]
 
-config/name="Godot Freecell"
 run/main_scene="res://scenes/main_node.tscn"
 config/features=PackedStringArray("4.2", "Mobile")
 config/icon="res://icon.svg"
@@ -21,6 +20,8 @@ Enums="*res://scripts/enums.gd"
 
 [display]
 
+window/size/viewport_width=1080
+window/size/viewport_height=810
 window/stretch/mode="viewport"
 window/handheld/orientation=4
 window/canvas_textures/default_texture_filter=1

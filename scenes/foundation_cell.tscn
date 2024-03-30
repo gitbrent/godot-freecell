@@ -11,7 +11,7 @@ corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ep1xm"]
-size = Vector2(69, 100)
+size = Vector2(88, 127)
 
 [node name="FoundationCell0" type="Control"]
 layout_mode = 3
@@ -22,20 +22,20 @@ script = ExtResource("1_qcla2")
 [node name="PanelHover" type="Panel" parent="."]
 visible = false
 layout_mode = 0
-offset_right = 69.0
-offset_bottom = 100.0
+offset_right = 88.0
+offset_bottom = 128.0
 theme_override_styles/panel = ExtResource("2_bwo3i")
 
 [node name="PanelNormal" type="Panel" parent="."]
 layout_mode = 0
-offset_right = 69.0
-offset_bottom = 100.0
+offset_right = 88.0
+offset_bottom = 128.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_t16po")
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 0
-offset_right = 72.0
-offset_bottom = 100.0
+offset_right = 88.0
+offset_bottom = 128.0
 theme_override_colors/font_color = Color(0.411765, 0.411765, 0.411765, 1)
 theme_override_font_sizes/font_size = 48
 text = "A"
@@ -45,7 +45,7 @@ vertical_alignment = 1
 [node name="Area2D" type="Area2D" parent="."]
 
 [node name="CollisionPolygon2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(34.5, 50)
+position = Vector2(44, 63)
 shape = SubResource("RectangleShape2D_ep1xm")
 debug_color = Color(0, 0.6, 0.701961, 0)
 

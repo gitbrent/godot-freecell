@@ -1,19 +1,16 @@
 ### TODO:
-### - use `tween` to move card to free-cell when using double-click
-### - Add "Score"
 ### - Add [OPTION] to auto-move cards to Foundation
 
 extends Node2D
 
 # NODES
-@onready var game_panel_winner:Node2D = $GamePanelWinner
-@onready var infobox_moves:Label = $LeftControl/InfoRect/VBoxContainer/HBoxContMoves/Value
-@onready var infobox_timer:Label = $LeftControl/InfoRect/VBoxContainer/HBoxContElapsed/Value
-@onready var infobox_score:Label = $LeftControl/InfoRect/VBoxContainer/HBoxContScore/Value
 @onready var timer = $Timer
+@onready var game_panel_winner:Node2D = $GamePanelWinner
+@onready var infobox_moves:Label = $InfoRect/HBoxContainer/HBoxContMoves/Value
+@onready var infobox_timer:Label = $InfoRect/HBoxContainer/HBoxContElapsed/Value
+@onready var infobox_score:Label = $InfoRect/HBoxContainer/HBoxContScore/Value
 
 # VARIABLES
-const Y_OFFSET : int = 40
 var drag_offset : Vector2 = Vector2()
 #
 var card_deck: Array[Card] = []
@@ -174,6 +171,8 @@ func _on_move_card_seq_tween_completed(src_card, tgt_card, free_cell, fnda_cell,
 			#break  # Since only one card can be moved to a free cell, break after moving
 		else:
 			print("ERROR: Cannot move more than one card to a Free Cell!")
+			#print("free_cells", free_cells)
+			#print("dragging_cards", dragging_cards)
 			#break
 	elif fnda_cell and src_card:
 		fnda_cell.add_card(src_card)
@@ -231,7 +230,7 @@ func _on_drag_in_progress(card, mouse_position):
 		var draggable_sequence = get_draggable_sequence(card)
 		var new_position = mouse_position - drag_offset
 		for each_card in draggable_sequence:
-			each_card.global_position = new_position + Vector2(0, draggable_sequence.find(each_card) * Y_OFFSET)
+			each_card.global_position = new_position + Vector2(0, draggable_sequence.find(each_card) * Enums.Y_OFFSET)
 			# Y_OFFSET is a constant that determines how much each subsequent card is offset vertically
 
 func _on_card_drag_ended(card):
@@ -290,7 +289,7 @@ func _on_card_drag_ended(card):
 					var tween = get_tree().create_tween()
 					tween.tween_property(card_in_sequence, "global_position", card_in_sequence.original_position, 0.5)
 					tween.tween_callback(reset_card_z_indices)
-		
+#
 		# Resets
 		dragging_cards.clear()
 		card_dragged = null # Ensure to reset this regardless of condition to prevent stuck states

@@ -18,7 +18,7 @@ corner_radius_bottom_left = 5
 script = ExtResource("1_7ifcu")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.195, 0.195)
+scale = Vector2(0.25, 0.25)
 texture = ExtResource("2_ylvg2")
 centered = false
 
@@ -29,15 +29,16 @@ position = Vector2(176.923, 256.41)
 shape = SubResource("RectangleShape2D_2jll5")
 
 [node name="Panel" type="Panel" parent="."]
-offset_right = 69.0
-offset_bottom = 100.0
+visible = false
+offset_right = 88.0
+offset_bottom = 128.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_bba84")
 
 [node name="CardControl" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 69.0
-offset_bottom = 100.0
+offset_right = 88.0
+offset_bottom = 128.0
 script = ExtResource("3_lrmxn")
 
 [connection signal="area_entered" from="Sprite2D/Area2D" to="." method="_on_area_2d_area_entered"]

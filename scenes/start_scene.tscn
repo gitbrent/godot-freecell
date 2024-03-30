@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://dkej8f56i2pty"]
 
 [ext_resource type="Script" path="res://scripts/start_screen.gd" id="1_54cyh"]
-[ext_resource type="Texture2D" uid="uid://2non5yojsj8q" path="res://assets/background_green felt.jpg" id="1_p6www"]
+[ext_resource type="Texture2D" uid="uid://co0anj3n2fyhc" path="res://assets/background_green_felt.png" id="2_ibqng"]
 [ext_resource type="Texture2D" uid="uid://bc1cb5najykmp" path="res://assets/start_screen/Banner_Orange.svg" id="2_ppja0"]
 [ext_resource type="Texture2D" uid="uid://c71jvatphm1fc" path="res://assets/buttons/UI-7.png" id="4_xs1ld"]
 [ext_resource type="Texture2D" uid="uid://cid7a2p8kpokp" path="res://assets/buttons/UI-8.png" id="5_qrdwh"]
@@ -25,11 +25,11 @@ Button/styles/normal = SubResource("StyleBoxFlat_ed4aq")
 script = ExtResource("1_54cyh")
 
 [node name="Background" type="TextureRect" parent="."]
-offset_right = 1152.0
-offset_bottom = 648.0
+offset_right = 1080.0
+offset_bottom = 810.0
 size_flags_vertical = 4
-texture = ExtResource("1_p6www")
-expand_mode = 3
+texture = ExtResource("2_ibqng")
+expand_mode = 1
 
 [node name="BannerOrange" type="Sprite2D" parent="."]
 visible = false
@@ -39,7 +39,7 @@ texture = ExtResource("2_ppja0")
 
 [node name="Title" type="RichTextLabel" parent="."]
 offset_top = 135.0
-offset_right = 1152.0
+offset_right = 1080.0
 offset_bottom = 280.0
 size_flags_horizontal = 4
 theme_override_colors/default_color = Color(1, 0, 0, 1)
@@ -59,9 +59,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 383.0
+offset_left = 352.0
 offset_top = 385.0
-offset_right = 1176.0
+offset_right = 1152.0
 offset_bottom = 591.0
 grow_horizontal = 2
 grow_vertical = 2
