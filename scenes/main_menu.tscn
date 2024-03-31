@@ -1,0 +1,179 @@
+[gd_scene load_steps=8 format=3 uid="uid://bbpy3wvistfke"]
+
+[ext_resource type="Script" path="res://scripts/main_menu.gd" id="1_c3rpj"]
+[ext_resource type="FontFile" uid="uid://biaey3f3ia5n2" path="res://assets/fonts/kirifont/KiriFont.otf" id="2_o0mxb"]
+[ext_resource type="Texture2D" uid="uid://byvxnhl3iurym" path="res://assets/buttons/CGB02-red_L_btn.png" id="3_5tamp"]
+[ext_resource type="Texture2D" uid="uid://b8h63uhssjmqe" path="res://assets/buttons/CGB02-purple_L_btn.png" id="4_d8fkf"]
+[ext_resource type="Texture2D" uid="uid://unkd2it6qk62" path="res://assets/buttons/CGB02-orange_L_btn.png" id="5_4wq4h"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_buyta"]
+bg_color = Color(0, 0, 0, 0.392157)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_er5im"]
+bg_color = Color(0, 0.486275, 0, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 25
+corner_radius_top_right = 25
+corner_radius_bottom_right = 25
+corner_radius_bottom_left = 25
+
+[node name="main_menu" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_c3rpj")
+
+[node name="Panel-Overlay" type="Panel" parent="."]
+offset_right = 1080.0
+offset_bottom = 810.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_buyta")
+
+[node name="Panel-Menu" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 101.0
+offset_top = 203.0
+offset_right = 981.0
+offset_bottom = 613.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_er5im")
+
+[node name="HBoxCont-head" type="HBoxContainer" parent="Panel-Menu"]
+layout_mode = 1
+offset_left = 10.0
+offset_top = 25.0
+offset_right = 870.0
+offset_bottom = 61.0
+
+[node name="Label1" type="Label" parent="Panel-Menu/HBoxCont-head"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_o0mxb")
+theme_override_font_sizes/font_size = 36
+text = "Game"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="Panel-Menu/HBoxCont-head"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_o0mxb")
+theme_override_font_sizes/font_size = 36
+text = "Options"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxCont-main" type="HBoxContainer" parent="Panel-Menu"]
+layout_mode = 1
+offset_left = 10.0
+offset_top = 80.0
+offset_right = 870.0
+offset_bottom = 380.0
+
+[node name="VBoxContainer-L" type="VBoxContainer" parent="Panel-Menu/HBoxCont-main"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Control1" type="Control" parent="Panel-Menu/HBoxCont-main/VBoxContainer-L"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="BtnNewGame" type="TextureButton" parent="Panel-Menu/HBoxCont-main/VBoxContainer-L/Control1"]
+layout_mode = 2
+offset_left = 62.0
+offset_right = 574.0
+offset_bottom = 140.0
+scale = Vector2(0.6, 0.6)
+texture_normal = ExtResource("3_5tamp")
+
+[node name="Label" type="Label" parent="Panel-Menu/HBoxCont-main/VBoxContainer-L/Control1/BtnNewGame"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 48
+text = "New Game"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Control2" type="Control" parent="Panel-Menu/HBoxCont-main/VBoxContainer-L"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="BtnDebug" type="TextureButton" parent="Panel-Menu/HBoxCont-main/VBoxContainer-L/Control2"]
+layout_mode = 2
+offset_left = 62.0
+offset_right = 574.0
+offset_bottom = 140.0
+scale = Vector2(0.6, 0.6)
+texture_normal = ExtResource("4_d8fkf")
+
+[node name="Label" type="Label" parent="Panel-Menu/HBoxCont-main/VBoxContainer-L/Control2/BtnDebug"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.980392, 0.635294, 0.964706, 1)
+theme_override_font_sizes/font_size = 48
+text = "(Debug)"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Control3" type="Control" parent="Panel-Menu/HBoxCont-main/VBoxContainer-L"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="BtnResume" type="TextureButton" parent="Panel-Menu/HBoxCont-main/VBoxContainer-L/Control3"]
+layout_mode = 2
+offset_left = 62.0
+offset_right = 574.0
+offset_bottom = 140.0
+scale = Vector2(0.6, 0.6)
+texture_normal = ExtResource("5_4wq4h")
+
+[node name="Label" type="Label" parent="Panel-Menu/HBoxCont-main/VBoxContainer-L/Control3/BtnResume"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 48
+text = "Resume"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VBoxContainer-R" type="VBoxContainer" parent="Panel-Menu/HBoxCont-main"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="Panel-Menu/HBoxCont-main/VBoxContainer-R"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.729412, 0.729412, 0.729412, 1)
+theme_override_font_sizes/font_size = 32
+text = "[X] Sound         "
+horizontal_alignment = 1
+
+[node name="Label2" type="Label" parent="Panel-Menu/HBoxCont-main/VBoxContainer-R"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.729412, 0.729412, 0.729412, 1)
+theme_override_font_sizes/font_size = 32
+text = "[X] Show Stats"
+horizontal_alignment = 1
+
+[connection signal="pressed" from="Panel-Menu/HBoxCont-main/VBoxContainer-L/Control1/BtnNewGame" to="." method="_on_btn_newgame_pressed"]
+[connection signal="pressed" from="Panel-Menu/HBoxCont-main/VBoxContainer-L/Control2/BtnDebug" to="." method="_on_btn_debug_pressed"]
+[connection signal="pressed" from="Panel-Menu/HBoxCont-main/VBoxContainer-L/Control3/BtnResume" to="." method="_on_btn_resume_pressed"]

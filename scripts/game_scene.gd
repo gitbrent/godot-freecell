@@ -6,6 +6,7 @@ extends Node2D
 @onready var infobox_moves:Label = $InfoRect/HBoxContainer/HBoxContMoves/Value
 @onready var infobox_timer:Label = $InfoRect/HBoxContainer/HBoxContElapsed/Value
 @onready var infobox_score:Label = $InfoRect/HBoxContainer/HBoxContScore/Value
+@onready var main_menu:MainMenu = $MainMenu
 
 # VARIABLES
 var drag_offset : Vector2 = Vector2()
@@ -30,7 +31,7 @@ var game_prop_score : int = 0
 func _ready():
 	# STEP 1: drag-n-drop
 	set_process_unhandled_input(true)
-
+	
 	# STEP 2: Init free-cell-pile
 	for i in 4:
 		var free_cell:FreeCell = get_node("TopContainer/FreeCellPile/FreeCell" + str(i))
@@ -44,15 +45,19 @@ func _ready():
 		fnda_cell.connect("card_hover_fnda_start", self._on_card_hover_fnda_start)
 		fnda_cell.connect("card_hover_fnda_ended", self._on_card_hover_fnda_ended)
 		fnda_cells.append(fnda_cell)
-
+	
 	# STEP 4: Init tableau-piles
 	for i in range(0, 8): # Assuming you named them TableauPile0 through TableauPile7
 		var tabl_pile:TableauPile = get_node("TableauPileCont/TableauPile" + str(i))
 		tabl_pile.connect("card_hover_tabl_start", self._on_card_hover_tabl_start)
 		tabl_pile.connect("card_hover_tabl_ended", self._on_card_hover_tabl_ended)
 		tableau_piles.append(tabl_pile)
-
-	# STEP 5: Deal all 52 cards onto tableau
+	
+	# STEP 5: Connect menu buttons
+	main_menu.connect("button_pressed_newgame", self.deal_cards)
+	main_menu.connect("button_pressed_debug", self._on_btn_debug_pressed)
+	
+	# STEP 6: Deal all 52 cards onto tableau
 	deal_cards()
 
 # =============================================================================
@@ -487,9 +492,7 @@ func _on_btn_pause_pressed():
 	pass
 
 # DEV/DEBUG TOOL
-func sort_and_move_cards_to_foundation(move_suit:Enums.Suit):
-	var target_fnda:FoundationCell = null
-
+func sort_and_move_cards_to_foundation(move_suit:Enums.Suit, target_fnda:FoundationCell):
 	# Filter all clubs from the deck
 	var move_cards = []
 	for card in card_deck:
@@ -499,31 +502,29 @@ func sort_and_move_cards_to_foundation(move_suit:Enums.Suit):
 	# Sort the cards by rank
 	move_cards.sort_custom(self.compare_ranks)
 	
-	# Find free fnda
-	for cell in fnda_cells:
-		if cell.is_empty():
-			target_fnda = cell
-	
 	# Assuming foundation[0] is designated for clubs and has an 'add_card' method
 	for move_card in move_cards:
 		#print("[DEBUG] moving move_card: ", Enums.human_readable_card(move_card))
 		dragging_cards = [move_card]
 		move_card_sequence(null, null, target_fnda, null)
 	
-	print("[DEV-TOOL] Moved all cards to foundation[0] in sorted order.")
-	reset_card_z_indices()
+	print("[DEV-TOOL] Moved all cards to foundation in sorted order.", target_fnda)
 
 # Custom comparison method for sorting
 func compare_ranks(a: Card, b: Card) -> bool:
 	return a.rank < b.rank
 
 func _on_btn_debug_pressed():
-	sort_and_move_cards_to_foundation(Enums.Suit.CLUBS)
-	sort_and_move_cards_to_foundation(Enums.Suit.DIAMONDS)
-	sort_and_move_cards_to_foundation(Enums.Suit.HEARTS)
+	sort_and_move_cards_to_foundation(Enums.Suit.CLUBS, fnda_cells[1])
+	sort_and_move_cards_to_foundation(Enums.Suit.DIAMONDS, fnda_cells[2])
+	sort_and_move_cards_to_foundation(Enums.Suit.HEARTS, fnda_cells[3])
+	await get_tree().create_timer(1.5).timeout
 	for pile in tableau_piles:
 		pile.reset_card_positions_in_pile()
 
 func _on_timer_timeout():
 	game_prop_timer += 1
 	update_game_props()
+
+func _on_btn_main_menu_pressed():
+	$MainMenu.visible = true

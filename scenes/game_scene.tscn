@@ -1,15 +1,20 @@
-[gd_scene load_steps=11 format=3 uid="uid://yk1wyekngt53"]
+[gd_scene load_steps=15 format=3 uid="uid://yk1wyekngt53"]
 
 [ext_resource type="Script" path="res://scripts/game_scene.gd" id="1_6cyku"]
 [ext_resource type="Texture2D" uid="uid://co0anj3n2fyhc" path="res://assets/background_green_felt.png" id="2_cuyih"]
 [ext_resource type="PackedScene" uid="uid://cdti6c0vnval3" path="res://scenes/btn_pause.tscn" id="2_mvke8"]
 [ext_resource type="Theme" uid="uid://b3nw8ski1k4dn" path="res://styles/control_label_theme.tres" id="3_vv2if"]
+[ext_resource type="Texture2D" uid="uid://ptpw6pfsh3ip" path="res://assets/buttons/CGB02-green_M_btn.png" id="4_ktaa6"]
 [ext_resource type="PackedScene" uid="uid://pmwtogh2qbp7" path="res://scenes/btn_deal.tscn" id="4_pqekv"]
+[ext_resource type="FontFile" uid="uid://b8wlkh3hxbgdn" path="res://assets/fonts/kirifont/KiriFont.ttf" id="5_eiujg"]
 [ext_resource type="PackedScene" uid="uid://chwprjvrdjihp" path="res://scenes/free_cell.tscn" id="6_4qpkg"]
 [ext_resource type="PackedScene" uid="uid://c0pu0eykvwo1i" path="res://scenes/btn_debug.tscn" id="6_8unit"]
 [ext_resource type="PackedScene" uid="uid://diddbqdq5js1f" path="res://scenes/foundation_cell.tscn" id="7_iqgb2"]
 [ext_resource type="PackedScene" uid="uid://d36ntyouo8moq" path="res://scenes/you_won_scene.tscn" id="10_c7eam"]
 [ext_resource type="PackedScene" uid="uid://cxf5h1ul17kl" path="res://scenes/tableau_pile.tscn" id="10_xpokh"]
+[ext_resource type="PackedScene" uid="uid://bbpy3wvistfke" path="res://scenes/main_menu.tscn" id="13_y7q6w"]
+
+[sub_resource type="SystemFont" id="SystemFont_t88bg"]
 
 [node name="GameScene" type="Node2D"]
 script = ExtResource("1_6cyku")
@@ -33,6 +38,7 @@ offset_left = 40.0
 offset_top = 40.0
 offset_right = 1040.0
 offset_bottom = 168.0
+theme_override_constants/separation = 15
 
 [node name="FreeCellPile" type="HBoxContainer" parent="TopContainer"]
 custom_minimum_size = Vector2(420, 0)
@@ -51,14 +57,47 @@ layout_mode = 2
 [node name="FreeCell3" parent="TopContainer/FreeCellPile" instance=ExtResource("6_4qpkg")]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="TopContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="TopContainer"]
+custom_minimum_size = Vector2(130, 0)
 layout_mode = 2
-size_flags_horizontal = 3
-theme_override_colors/font_color = Color(1, 1, 1, 0.435294)
-theme_override_font_sizes/font_size = 42
-text = "♠ ♥
-♣ ♦"
+theme_override_constants/separation = 0
+
+[node name="Control" type="Control" parent="TopContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 65)
+layout_mode = 2
+
+[node name="BtnMainMenu" type="TextureButton" parent="TopContainer/VBoxContainer/Control"]
+layout_mode = 2
+offset_left = 15.0
+offset_top = 10.0
+offset_right = 271.0
+offset_bottom = 150.0
+scale = Vector2(0.4, 0.4)
+texture_normal = ExtResource("4_ktaa6")
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="TopContainer/VBoxContainer/Control/BtnMainMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("5_eiujg")
+theme_override_font_sizes/font_size = 36
+text = "MENU"
 horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label" type="Label" parent="TopContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(1, 1, 1, 0.435294)
+theme_override_fonts/font = SubResource("SystemFont_t88bg")
+theme_override_font_sizes/font_size = 24
+text = "♠ ♥ ♣ ♦"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="FoundationPile" type="HBoxContainer" parent="TopContainer"]
 custom_minimum_size = Vector2(420, 0)
@@ -190,6 +229,7 @@ size_flags_horizontal = 10
 text = "0"
 
 [node name="BtnContainer" type="HBoxContainer" parent="."]
+visible = false
 anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
@@ -240,7 +280,12 @@ visible = false
 z_index = 1001
 position = Vector2(296, 189)
 
+[node name="MainMenu" parent="." instance=ExtResource("13_y7q6w")]
+visible = false
+z_index = 1001
+
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="pressed" from="TopContainer/VBoxContainer/Control/BtnMainMenu" to="." method="_on_btn_main_menu_pressed"]
 [connection signal="pressed" from="BtnContainer/Control1/BtnPause" to="." method="_on_btn_pause_pressed"]
 [connection signal="pressed" from="BtnContainer/Control2/BtnDeal" to="." method="_on_btn_deal_pressed"]
 [connection signal="pressed" from="BtnContainer/Control3/BtnDebug" to="." method="_on_btn_debug_pressed"]
