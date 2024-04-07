@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://k2nqjfbk42ux"]
+
+[sub_resource type="Gradient" id="Gradient_uosrx"]
+colors = PackedColorArray(0, 0.807843, 0, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_3xtdk"]
+gradient = SubResource("Gradient_uosrx")
+width = 25
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_lycpn"]
+particle_flag_disable_z = true
+gravity = Vector3(0, 0, 0)
+scale_max = 3.0
+color_ramp = SubResource("GradientTexture1D_3xtdk")
+
+[node name="PulsatingGlow" type="Node2D"]
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+process_material = SubResource("ParticleProcessMaterial_lycpn")
+visibility_rect = Rect2(0, 0, 0, 0)

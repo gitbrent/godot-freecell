@@ -1,0 +1,78 @@
+[gd_scene load_steps=8 format=3 uid="uid://cww3m4owalmpu"]
+
+[ext_resource type="Texture2D" uid="uid://cwn4hyg7h0ugb" path="res://assets/cards/a_card_108x148.png" id="1_vtqnd"]
+[ext_resource type="Shader" path="res://effects/chatgpt_shader.gdshader" id="3_02s3w"]
+[ext_resource type="Script" path="res://effects/Card.gd" id="3_6b3rg"]
+[ext_resource type="Texture2D" uid="uid://bc2n3phmju565" path="res://assets/buttons/ButtonText_Large_Green_Round.png" id="4_opf8r"]
+[ext_resource type="FontFile" uid="uid://b8wlkh3hxbgdn" path="res://assets/fonts/kirifont/KiriFont.ttf" id="5_7mrtu"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_85xvr"]
+particle_flag_disable_z = true
+emission_shape = 2
+emission_sphere_radius = 128.0
+gravity = Vector3(-20, 20, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ed62n"]
+shader = ExtResource("3_02s3w")
+shader_parameter/line_color = Color(0, 0.7, 0, 1)
+shader_parameter/line_thickness = 1.0
+shader_parameter/pulse_time = 1.0
+shader_parameter/delta_time = 0.5
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Background" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 44.0
+offset_top = 64.0
+offset_right = 44.0
+offset_bottom = 64.0
+
+[node name="ColorRect" type="ColorRect" parent="Background"]
+offset_left = -44.0
+offset_top = -64.0
+offset_right = 132.0
+offset_bottom = 236.0
+color = Color(0, 0, 0, 1)
+
+[node name="Label" type="Label" parent="Background"]
+offset_top = -57.0
+offset_right = 90.0
+offset_bottom = -34.0
+theme_override_font_sizes/font_size = 12
+text = "Test Effect"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="Background"]
+position = Vector2(45, 64)
+amount = 12
+process_material = SubResource("ParticleProcessMaterial_85xvr")
+
+[node name="TextureButton" type="TextureButton" parent="."]
+offset_left = 32.0
+offset_top = 236.0
+offset_right = 1191.0
+offset_bottom = 594.0
+scale = Vector2(0.1, 0.1)
+texture_normal = ExtResource("4_opf8r")
+
+[node name="Label" type="Label" parent="TextureButton"]
+layout_mode = 0
+offset_right = 1170.0
+offset_bottom = 370.0
+theme_override_fonts/font = ExtResource("5_7mrtu")
+theme_override_font_sizes/font_size = 96
+text = "EFFECT"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Card" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_ed62n")
+position = Vector2(38, 58)
+texture = ExtResource("1_vtqnd")
+centered = false
+script = ExtResource("3_6b3rg")
+
+[connection signal="pressed" from="TextureButton" to="Card" method="_on_texture_button_pressed"]
