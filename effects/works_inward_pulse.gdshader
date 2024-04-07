@@ -1,6 +1,6 @@
 shader_type canvas_item;
 
-uniform vec4 line_color: source_color = vec4(0.0, 0.7, 0.0, 0.9);
+uniform vec4 line_color: source_color = vec4(0.0, 0.7, 0.0, 1.0);
 uniform float line_thickness : hint_range(0.0, 10.0) = 1.0;
 uniform float pulse_time: hint_range(0.1, 10.0) = 1.0;
 uniform float delta_time : hint_range(0.1, 10.0) = 1.0;
@@ -21,11 +21,13 @@ float pulse_outward(float time, float duration, float max_distance, vec2 my_uv) 
 void fragment() {
   vec2 pixel_size = 1.0 / vec2(88.0, 128.0);  // Compute pixel size from texture size
   vec2 size = pixel_size * line_thickness;
-  float max_distance = 2.0;  // Adjust for max pulse distance in pixels
+  float max_distance = 5.0;  // Adjust for max pulse distance in pixels
   float outline = pulse_outward(delta_time, pulse_time, max_distance, UV);
 
   vec4 color = texture(TEXTURE, UV);
 
-  vec4 final_color = mix(color, line_color, outline * (1.0 - color.a));
-  COLOR = final_color;
+  // Apply the pulse effect based on the original color's alpha.
+  // This makes the effect more prominent in opaque areas while leaving transparent areas mostly unaffected.
+  vec4 pulse_color = mix(color, line_color, outline);
+  COLOR = vec4(pulse_color.rgb, color.a); // Keep original alpha
 }

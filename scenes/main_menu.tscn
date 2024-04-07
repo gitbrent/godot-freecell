@@ -27,6 +27,7 @@ anchors_preset = 0
 script = ExtResource("1_c3rpj")
 
 [node name="Panel-Overlay" type="Panel" parent="."]
+layout_mode = 0
 offset_right = 1080.0
 offset_bottom = 810.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_buyta")
