@@ -26,6 +26,8 @@ var hovered_tabl_pile : TableauPile = null
 var game_prop_moves : int = 0
 var game_prop_timer : int = 0
 var game_prop_score : int = 0
+#
+var pulsating_glow_effect = preload("res://effects/pulsating_glow.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
