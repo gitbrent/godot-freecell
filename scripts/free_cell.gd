@@ -1,22 +1,12 @@
 extends Control
 class_name FreeCell
 
-var free_cell_hover_style = preload("res://styles/free_cell_hover.tres")
-var free_cell_normal_style = preload("res://styles/free_cell_normal.tres")
-
 signal card_hover_free_start(free_cell : FreeCell)
 signal card_hover_free_ended(free_cell : FreeCell)
 
 @onready var glow_card:Sprite2D = $GlowCard
-@onready var panel:Panel = $Panel
 
 var card_in_cell : Card = null
-
-func _ready():
-	# Create a theme for StyleBox
-	#if $Panel.theme == null:
-	#	$Panel.theme = Theme.new()
-	pass
 
 func is_empty():
 	return not card_in_cell
@@ -29,8 +19,9 @@ func add_card(card: Card):
 	if card is Card:
 		#print("[FreeCell] added card: {" + Enums.human_readable_card(card_in_cell) + "} with position: ", card.position)
 		add_child(card)
-		card.position = Vector2(0, 0)
+		card.position = Enums.CARD_POSITION
 		card_in_cell = card
+		glow_card.visible = false
 	else:
 		print("[tableau] attempted to add a non-Card node to the pile.")
 
@@ -44,19 +35,10 @@ func remove_all():
 		remove_card(card_in_cell)
 
 func _on_area_2d_area_entered(_area):
-	# Emit signal if a card can go here
 	if not card_in_cell:
 		emit_signal("card_hover_free_start", self)
-	
-	# Apply hover style
-	#$Panel.theme.set_stylebox("panel", "Panel", free_cell_hover_style)
-	#material.set_shader_parameter("on", true)
-	glow_card.visible = true
+		glow_card.visible = true
 
 func _on_area_2d_area_exited(_area):
 	emit_signal("card_hover_free_ended", self)
-	
-	# Reset style
-	#$Panel.theme.set_stylebox("panel", "Panel", free_cell_normal_style)
-	#material.set_shader_parameter("on", false)
 	glow_card.visible = false

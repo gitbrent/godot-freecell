@@ -20,13 +20,13 @@ mouse_filter = 1
 script = ExtResource("1_qcla2")
 
 [node name="PanelHover" type="Panel" parent="."]
+visible = false
 layout_mode = 0
 offset_right = 88.0
 offset_bottom = 128.0
 theme_override_styles/panel = ExtResource("2_bwo3i")
 
 [node name="PanelNormal" type="Panel" parent="."]
-visible = false
 layout_mode = 0
 offset_right = 88.0
 offset_bottom = 128.0

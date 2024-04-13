@@ -41,7 +41,7 @@ offset_bottom = 168.0
 theme_override_constants/separation = 15
 
 [node name="FreeCellPile" type="HBoxContainer" parent="TopContainer"]
-custom_minimum_size = Vector2(420, 0)
+custom_minimum_size = Vector2(420, 130)
 layout_mode = 2
 theme_override_constants/separation = 110
 

@@ -1,19 +1,18 @@
 extends Node
 
+const CARD_POSITION = Vector2(3, 3)
 const Y_OFFSET : int = 45
 
 enum SuitColor {
 	RED,
 	BLACK
 }
-
 enum Suit {
 	HEARTS,		# RED
 	DIAMONDS,	# RED
 	CLUBS, 		# BLACK
 	SPADES 		# BLACK
 }
-
 enum Rank { 
 	ACE = 1,
 	TWO,
