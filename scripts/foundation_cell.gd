@@ -32,7 +32,7 @@ func get_card_count():
 func add_card(card: Card):
 	if card is Card:
 		add_child(card)
-		card.position = Vector2(0, 0)
+		card.position = Enums.CARD_POSITION
 		cards.append(card)
 		#print("[Foundation-Cell] added card: ", Enums.human_readable_card(card))
 	else:

@@ -1,18 +1,20 @@
-[gd_scene load_steps=7 format=3 uid="uid://chwprjvrdjihp"]
+[gd_scene load_steps=8 format=3 uid="uid://chwprjvrdjihp"]
 
 [ext_resource type="Script" path="res://scripts/free_cell.gd" id="1_pfu5x"]
 [ext_resource type="Texture2D" uid="uid://5ua6yri85q8k" path="res://assets/cards/back07.png" id="2_gqg5f"]
 [ext_resource type="Shader" path="res://effects/gdai_00.gdshader" id="3_jke44"]
-[ext_resource type="Texture2D" uid="uid://d25jtmb5nlg77" path="res://assets/cards/a_free_big.png" id="4_77587"]
+[ext_resource type="StyleBox" uid="uid://c54keensvf1q3" path="res://styles/free_cell_border.tres" id="4_hcx6b"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2yimw"]
 shader = ExtResource("3_jke44")
-shader_parameter/light_green = Color(0.5, 1, 0.5, 1)
-shader_parameter/dark_green = Color(0, 0.5, 0, 1)
-shader_parameter/pulse_time = 3.0
+shader_parameter/light_green = Color(0, 0.509804, 0, 1)
+shader_parameter/dark_green = Color(0, 0.392157, 0, 1)
+shader_parameter/pulse_time = 1.5
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_4cbb1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ep1xm"]
-size = Vector2(88, 128)
+size = Vector2(94, 134)
 
 [node name="FreeCell0" type="Control"]
 layout_mode = 3
@@ -20,27 +22,31 @@ anchors_preset = 0
 mouse_filter = 1
 script = ExtResource("1_pfu5x")
 
-[node name="Panel" type="Panel" parent="."]
-layout_mode = 0
-offset_right = 88.0
-offset_bottom = 128.0
-
-[node name="Back070" type="Sprite2D" parent="."]
+[node name="GlowCard" type="Sprite2D" parent="."]
 visible = false
-scale = Vector2(0.25, 0.25)
-texture = ExtResource("2_gqg5f")
+material = SubResource("ShaderMaterial_2yimw")
+position = Vector2(3, 3)
+scale = Vector2(88, 128)
+texture = SubResource("CanvasTexture_4cbb1")
 centered = false
 
-[node name="GlowCard" type="Sprite2D" parent="."]
-material = SubResource("ShaderMaterial_2yimw")
-scale = Vector2(0.24, 0.24)
-texture = ExtResource("4_77587")
+[node name="PanelBorder" type="Panel" parent="."]
+offset_right = 94.0
+offset_bottom = 134.0
+theme_override_styles/panel = ExtResource("4_hcx6b")
+
+[node name="Test_Back070" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(3, 3)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("2_gqg5f")
 centered = false
 
 [node name="Area2D" type="Area2D" parent="."]
 position = Vector2(44, 64)
 
 [node name="CollisionPolygon2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(3, 3)
 shape = SubResource("RectangleShape2D_ep1xm")
 debug_color = Color(0, 0.6, 0.701961, 0)
 

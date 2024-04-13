@@ -1,9 +1,9 @@
 shader_type canvas_item;
 
 // Define uniforms for the color transition
-uniform vec4 light_green : source_color = vec4(0.5, 1.0, 0.5, 0.2); // Light green
-uniform vec4 dark_green : source_color = vec4(0.0, 0.5, 0.0, 0.2); // Dark green
-uniform float pulse_time : hint_range(1.0, 10.0) = 3.0; // Time in seconds for one full pulse
+uniform vec4 light_green : source_color = vec4(0.0, 0.78, 0.0, 1.0); // Light green
+uniform vec4 dark_green : source_color = vec4(0.0, 0.5, 0.0, 1.0); // Dark green
+uniform float pulse_time : hint_range(1.0, 10.0) = 1.5; // Time in seconds for one full pulse
 
 void fragment() {
     // Calculate the oscillation factor using a sinusoidal wave

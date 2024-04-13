@@ -1,17 +1,12 @@
-[gd_scene load_steps=5 format=3 uid="uid://diddbqdq5js1f"]
+[gd_scene load_steps=6 format=3 uid="uid://diddbqdq5js1f"]
 
 [ext_resource type="Script" path="res://scripts/foundation_cell.gd" id="1_qcla2"]
 [ext_resource type="StyleBox" uid="uid://cy52sfse77lj0" path="res://styles/free_cell_hover.tres" id="2_bwo3i"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t16po"]
-bg_color = Color(0.0392157, 0.0392157, 0.0392157, 0.521569)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
+[ext_resource type="StyleBox" uid="uid://c54keensvf1q3" path="res://styles/free_cell_border.tres" id="2_s253y"]
+[ext_resource type="Texture2D" uid="uid://5ua6yri85q8k" path="res://assets/cards/back07.png" id="3_gv8xv"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ep1xm"]
-size = Vector2(88, 127)
+size = Vector2(94, 132.5)
 
 [node name="FoundationCell0" type="Control"]
 layout_mode = 3
@@ -20,32 +15,39 @@ mouse_filter = 1
 script = ExtResource("1_qcla2")
 
 [node name="PanelHover" type="Panel" parent="."]
+visible = false
 layout_mode = 0
-offset_right = 88.0
-offset_bottom = 128.0
+offset_right = 94.0
+offset_bottom = 134.0
 theme_override_styles/panel = ExtResource("2_bwo3i")
 
 [node name="PanelNormal" type="Panel" parent="."]
-visible = false
 layout_mode = 0
-offset_right = 88.0
-offset_bottom = 128.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_t16po")
+offset_right = 94.0
+offset_bottom = 134.0
+theme_override_styles/panel = ExtResource("2_s253y")
 
 [node name="Label" type="Label" parent="."]
 layout_mode = 0
-offset_right = 88.0
-offset_bottom = 128.0
+offset_right = 94.0
+offset_bottom = 134.0
 theme_override_colors/font_color = Color(0.411765, 0.411765, 0.411765, 1)
 theme_override_font_sizes/font_size = 48
 text = "A"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="Test_Back070" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(3, 3)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("3_gv8xv")
+centered = false
+
 [node name="Area2D" type="Area2D" parent="."]
 
 [node name="CollisionPolygon2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(44, 64)
+position = Vector2(47, 67)
 shape = SubResource("RectangleShape2D_ep1xm")
 debug_color = Color(0, 0.6, 0.701961, 0)
 
