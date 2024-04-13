@@ -7,15 +7,17 @@ var free_cell_normal_style = preload("res://styles/free_cell_normal.tres")
 signal card_hover_fnda_start(fnda_cell : FoundationCell)
 signal card_hover_fnda_ended(fnda_cell : FoundationCell)
 
-@onready var panel_hover:Panel = $PanelHover
-@onready var panel_normal:Panel = $PanelNormal
+@onready var panel_hover : Panel = $PanelHover
+@onready var panel_normal : Panel = $PanelNormal
 
 var cards : Array = []
+var card_added : Card
 
 # =====================================
 
 func _ready():
 	$PanelHover.visible = false
+	$PanelNormal.visible = true
 
 func is_empty():
 	return cards.size() == 0
@@ -34,6 +36,7 @@ func add_card(card: Card):
 		add_child(card)
 		card.position = Enums.CARD_POSITION
 		cards.append(card)
+		card_added = card
 		#print("[Foundation-Cell] added card: ", Enums.human_readable_card(card))
 	else:
 		print("[ERR] attempted to add a non-Card node to the pile.")
@@ -47,7 +50,10 @@ func remove_all_cards():
 		remove_card(cards[0])
 
 func _on_area_2d_area_entered(_area):
-	emit_signal("card_hover_fnda_start", self)
+	if not card_added:
+		emit_signal("card_hover_fnda_start", self)
+	else:
+		card_added = null
 
 func _on_area_2d_area_exited(_area):
 	emit_signal("card_hover_fnda_ended", self)

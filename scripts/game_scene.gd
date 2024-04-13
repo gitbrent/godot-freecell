@@ -326,10 +326,14 @@ func _on_card_hover_free_ended(free_cell: FreeCell):
 		hovered_free_cell = null
 
 func _on_card_hover_fnda_start(fnda_cell: FoundationCell):
-	# STEP 1: Store foundation cell
+	# STEP 1: Un-highlight previous cell if any (prevent highlighting of *two* cells if user holds cover over both, etc.)
+	if hovered_fnda_cell:
+		hovered_fnda_cell.highlight(false)
+
+	# STEP 2: Store foundation cell
 	hovered_fnda_cell = fnda_cell
 	
-	# STEP 2:
+	# STEP 3:
 	# TODO: only highlight if valid!
 	fnda_cell.highlight(true)
 
