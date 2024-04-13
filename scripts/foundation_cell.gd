@@ -16,8 +16,7 @@ var card_added : Card
 # =====================================
 
 func _ready():
-	$PanelHover.visible = false
-	$PanelNormal.visible = true
+	highlight(false)
 
 func is_empty():
 	return cards.size() == 0
@@ -59,5 +58,5 @@ func _on_area_2d_area_exited(_area):
 	emit_signal("card_hover_fnda_ended", self)
 
 func highlight(isVisible:bool):
-	$PanelHover.visible = isVisible
-	$PanelNormal.visible = !isVisible
+	panel_hover.visible = isVisible
+	panel_normal.visible = !isVisible
