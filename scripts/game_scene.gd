@@ -27,7 +27,7 @@ var game_prop_moves : int = 0
 var game_prop_timer : int = 0
 var game_prop_score : int = 0
 #
-var pulsating_glow_effect = preload("res://effects/pulsating_glow.tscn")
+var is_tween_running : bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -144,6 +144,7 @@ func move_card_sequence(tgt_card: Card, free_cell: FreeCell, fnda_cell: Foundati
 
 		# Now that you have the target position, create and configure the tween
 		if (target_position.x + target_position.y > 0):
+			is_tween_running = true
 			var tween = get_tree().create_tween()
 			tween.tween_property(src_card, "global_position", target_position, 0.5)
 			tween.tween_callback(_on_move_card_seq_tween_completed.bind(src_card, tgt_card, free_cell, fnda_cell, tabl_pile))
@@ -151,6 +152,8 @@ func move_card_sequence(tgt_card: Card, free_cell: FreeCell, fnda_cell: Foundati
 			_on_move_card_seq_tween_completed(src_card, tgt_card, free_cell, fnda_cell, tabl_pile)
 
 func _on_move_card_seq_tween_completed(src_card, tgt_card, free_cell, fnda_cell, tabl_pile):
+	is_tween_running = false
+
 	# STEP 1: Remove card from its source pile
 	var old_pile_index = identify_card_pile(src_card)
 	if old_pile_index > -1:
@@ -317,6 +320,10 @@ func _on_card_hover_ended(_src_card: Card, tgt_card: Card):
 		card_target = null
 
 func _on_card_hover_free_start(free_cell: FreeCell):
+	# STEP 0: Bail; dont highlight cells if tween animation is the trigger
+	if is_tween_running:
+		return
+
 	# STEP 1: Un-highlight previous cell if any (prevent highlighting of *two* cells if user holds cover over both, etc.)
 	if hovered_free_cell:
 		hovered_free_cell.highlight(false)
@@ -334,6 +341,10 @@ func _on_card_hover_free_ended(free_cell: FreeCell):
 		free_cell.highlight(false)
 
 func _on_card_hover_fnda_start(fnda_cell: FoundationCell):
+	# STEP 0: Bail; dont highlight cells if tween animation is the trigger
+	if is_tween_running:
+		return
+
 	# STEP 1: Un-highlight previous cell if any (prevent highlighting of *two* cells if user holds cover over both, etc.)
 	if hovered_fnda_cell:
 		hovered_fnda_cell.highlight(false)
