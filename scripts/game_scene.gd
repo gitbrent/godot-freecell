@@ -228,6 +228,7 @@ func _on_card_drag_start(card:Card, initial_mouse_position):
 		for card_in_sequence in dragging_cards:
 			card_in_sequence.original_position = card_in_sequence.global_position
 			card_in_sequence.z_index += 1000  # Temporarily increase z_index for visibility
+			#print("[card_in_sequence.z_index]: " + Enums.human_readable_card(card_in_sequence) + " at `" + str(card_in_sequence.z_index) + "`")
 	else:
 		#print("[is_valid_drag_start]: Invalid card or sequence")
 		card_dragged = null  # Explicitly ensure dragging isn't started
@@ -437,9 +438,10 @@ func reset_card_z_indices():
 			card.z_index = j
 	
 	for i in range(free_cells.size()):
-		var pile = free_cells[i]
-		var card = pile.get_child(0)
-		card.z_index = 1
+		var pile:FreeCell = free_cells[i]
+		var card:Card = pile.get_curr_card()
+		if card:
+			card.z_index = 1
 	
 	for i in range(fnda_cells.size()):
 		var pile = fnda_cells[i]
