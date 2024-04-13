@@ -266,8 +266,7 @@ func _on_card_drag_ended(card):
 					print("[FNDA valid] Card can be placed here.")
 					move_card_sequence(card_dragged, null, hovered_fnda_cell, null)
 				else:
-					print("Card cannot be placed here.")
-					print("hovered_fnda_cell: ", hovered_fnda_cell)
+					print("Card cannot be placed here: ", hovered_fnda_cell)
 					do_return_cards = true
 		elif hovered_tabl_pile:
 			if hovered_tabl_pile.get_card_count() == 0:
@@ -318,12 +317,21 @@ func _on_card_hover_ended(_src_card: Card, tgt_card: Card):
 		card_target = null
 
 func _on_card_hover_free_start(free_cell: FreeCell):
-	#print("[HOVER] free_cell ..... ", free_cell)
+	# STEP 1: Un-highlight previous cell if any (prevent highlighting of *two* cells if user holds cover over both, etc.)
+	if hovered_free_cell:
+		hovered_free_cell.highlight(false)
+
+	# STEP 2: Store foundation cell
 	hovered_free_cell = free_cell
+	
+	# STEP 3:
+	# NOTE: No logic needed to decide if this highlight is valid (the free_cell script only emits hover if unoccupied!)
+	free_cell.highlight(true)
 
 func _on_card_hover_free_ended(free_cell: FreeCell):
 	if hovered_free_cell == free_cell:
 		hovered_free_cell = null
+		free_cell.highlight(false)
 
 func _on_card_hover_fnda_start(fnda_cell: FoundationCell):
 	# STEP 1: Un-highlight previous cell if any (prevent highlighting of *two* cells if user holds cover over both, etc.)

@@ -37,8 +37,9 @@ func remove_all():
 func _on_area_2d_area_entered(_area):
 	if not card_in_cell:
 		emit_signal("card_hover_free_start", self)
-		glow_card.visible = true
 
 func _on_area_2d_area_exited(_area):
 	emit_signal("card_hover_free_ended", self)
-	glow_card.visible = false
+
+func highlight(isVisible:bool):
+	glow_card.visible = isVisible
