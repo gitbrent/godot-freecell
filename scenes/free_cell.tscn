@@ -7,9 +7,9 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2yimw"]
 shader = ExtResource("3_jke44")
-shader_parameter/light_green = Color(0, 0.76, 0, 1)
-shader_parameter/dark_green = Color(0, 0.5, 0, 1)
-shader_parameter/pulse_time = 2.0
+shader_parameter/light_green = Color(0, 0.509804, 0, 1)
+shader_parameter/dark_green = Color(0, 0.392157, 0, 1)
+shader_parameter/pulse_time = 1.5
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_4cbb1"]
 

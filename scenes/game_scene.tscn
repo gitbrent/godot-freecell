@@ -41,7 +41,7 @@ offset_bottom = 168.0
 theme_override_constants/separation = 15
 
 [node name="FreeCellPile" type="HBoxContainer" parent="TopContainer"]
-custom_minimum_size = Vector2(420, 130)
+custom_minimum_size = Vector2(424, 134)
 layout_mode = 2
 theme_override_constants/separation = 110
 
@@ -58,19 +58,19 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="TopContainer"]
-custom_minimum_size = Vector2(130, 0)
+custom_minimum_size = Vector2(120, 134)
 layout_mode = 2
 theme_override_constants/separation = 0
 
 [node name="Control" type="Control" parent="TopContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 65)
+custom_minimum_size = Vector2(0, 74)
 layout_mode = 2
 
 [node name="BtnMainMenu" type="TextureButton" parent="TopContainer/VBoxContainer/Control"]
 layout_mode = 2
-offset_left = 15.0
+offset_left = 7.0
 offset_top = 10.0
-offset_right = 271.0
+offset_right = 267.0
 offset_bottom = 150.0
 scale = Vector2(0.4, 0.4)
 texture_normal = ExtResource("4_ktaa6")
@@ -100,7 +100,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="FoundationPile" type="HBoxContainer" parent="TopContainer"]
-custom_minimum_size = Vector2(420, 0)
+custom_minimum_size = Vector2(424, 134)
 layout_mode = 2
 theme_override_constants/separation = 110
 
