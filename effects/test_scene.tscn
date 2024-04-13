@@ -1,8 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://cww3m4owalmpu"]
+[gd_scene load_steps=7 format=3 uid="uid://cww3m4owalmpu"]
 
 [ext_resource type="Texture2D" uid="uid://cwn4hyg7h0ugb" path="res://assets/cards/a_card_108x148.png" id="1_vtqnd"]
 [ext_resource type="Script" path="res://effects/Card.gd" id="3_6b3rg"]
-[ext_resource type="Shader" path="res://effects/a_works_glow.gdshader" id="3_e6mpv"]
 [ext_resource type="Texture2D" uid="uid://bc2n3phmju565" path="res://assets/buttons/ButtonText_Large_Green_Round.png" id="4_opf8r"]
 [ext_resource type="FontFile" uid="uid://b8wlkh3hxbgdn" path="res://assets/fonts/kirifont/KiriFont.ttf" id="5_7mrtu"]
 
@@ -13,13 +12,6 @@ emission_sphere_radius = 128.0
 gravity = Vector3(-20, 20, 0)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ed62n"]
-shader = ExtResource("3_e6mpv")
-shader_parameter/Smooth = true
-shader_parameter/on = true
-shader_parameter/width = 40.0
-shader_parameter/outline_color = Color(0, 1, 0, 0.866667)
-shader_parameter/pixel_size = 10
-shader_parameter/width_speed = 5.0
 
 [node name="Node2D" type="Node2D"]
 

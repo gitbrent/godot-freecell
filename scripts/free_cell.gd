@@ -7,14 +7,16 @@ var free_cell_normal_style = preload("res://styles/free_cell_normal.tres")
 signal card_hover_free_start(free_cell : FreeCell)
 signal card_hover_free_ended(free_cell : FreeCell)
 
+@onready var glow_card:Sprite2D = $GlowCard
 @onready var panel:Panel = $Panel
 
 var card_in_cell : Card = null
 
 func _ready():
 	# Create a theme for StyleBox
-	if $Panel.theme == null:
-		$Panel.theme = Theme.new()
+	#if $Panel.theme == null:
+	#	$Panel.theme = Theme.new()
+	pass
 
 func is_empty():
 	return not card_in_cell
@@ -47,10 +49,14 @@ func _on_area_2d_area_entered(_area):
 		emit_signal("card_hover_free_start", self)
 	
 	# Apply hover style
-	$Panel.theme.set_stylebox("panel", "Panel", free_cell_hover_style)
+	#$Panel.theme.set_stylebox("panel", "Panel", free_cell_hover_style)
+	#material.set_shader_parameter("on", true)
+	glow_card.visible = true
 
 func _on_area_2d_area_exited(_area):
 	emit_signal("card_hover_free_ended", self)
 	
 	# Reset style
-	$Panel.theme.set_stylebox("panel", "Panel", free_cell_normal_style)
+	#$Panel.theme.set_stylebox("panel", "Panel", free_cell_normal_style)
+	#material.set_shader_parameter("on", false)
+	glow_card.visible = false

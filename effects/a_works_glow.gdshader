@@ -4,14 +4,14 @@ render_mode unshaded;
 
 uniform bool Smooth = true;
 uniform bool on = true;
-uniform float width : hint_range(0.0, 64) = 20.0;
-uniform vec4 outline_color : source_color = vec4(0.0, 1.0, 0.0, 1.0);
+uniform float width : hint_range(0.0, 64.0) = 64.0;
+uniform vec4 outline_color : source_color = vec4(0.0, 1.0, 0.0, 0.8);
 uniform int pixel_size : hint_range(1, 10) = 10;
 uniform float width_speed :hint_range(0.1, 10) = 5;
 
 void fragment() {
 	if (on == true) {
-		float _width = width + ((sin(TIME*width_speed) + 1.0f) -2.0f) * 10.0f;
+		float _width = width + ((sin(TIME*width_speed) + 1.0f) -2.0f) * 0.0f;
 		vec2 unit = (1.0/float(pixel_size) ) / vec2(textureSize(TEXTURE, 0));
 		vec4 pixel_color = texture(TEXTURE, UV);
 		if (pixel_color.a == 0.0) {

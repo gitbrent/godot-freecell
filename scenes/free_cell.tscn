@@ -1,10 +1,18 @@
-[gd_scene load_steps=4 format=3 uid="uid://chwprjvrdjihp"]
+[gd_scene load_steps=7 format=3 uid="uid://chwprjvrdjihp"]
 
 [ext_resource type="Script" path="res://scripts/free_cell.gd" id="1_pfu5x"]
 [ext_resource type="Texture2D" uid="uid://5ua6yri85q8k" path="res://assets/cards/back07.png" id="2_gqg5f"]
+[ext_resource type="Shader" path="res://effects/gdai_00.gdshader" id="3_jke44"]
+[ext_resource type="Texture2D" uid="uid://d25jtmb5nlg77" path="res://assets/cards/a_free_big.png" id="4_77587"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2yimw"]
+shader = ExtResource("3_jke44")
+shader_parameter/light_green = Color(0.5, 1, 0.5, 1)
+shader_parameter/dark_green = Color(0, 0.5, 0, 1)
+shader_parameter/pulse_time = 3.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ep1xm"]
-size = Vector2(87, 126)
+size = Vector2(88, 128)
 
 [node name="FreeCell0" type="Control"]
 layout_mode = 3
@@ -23,10 +31,16 @@ scale = Vector2(0.25, 0.25)
 texture = ExtResource("2_gqg5f")
 centered = false
 
+[node name="GlowCard" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_2yimw")
+scale = Vector2(0.24, 0.24)
+texture = ExtResource("4_77587")
+centered = false
+
 [node name="Area2D" type="Area2D" parent="."]
+position = Vector2(44, 64)
 
 [node name="CollisionPolygon2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(43.5, 63)
 shape = SubResource("RectangleShape2D_ep1xm")
 debug_color = Color(0, 0.6, 0.701961, 0)
 
