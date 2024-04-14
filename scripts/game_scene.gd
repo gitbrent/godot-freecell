@@ -7,6 +7,8 @@ extends Node2D
 @onready var infobox_timer:Label = $InfoRect/HBoxContainer/HBoxContElapsed/Value
 @onready var infobox_score:Label = $InfoRect/HBoxContainer/HBoxContScore/Value
 @onready var main_menu:MainMenu = $MainMenu
+@onready var audio_stream_shuffle:AudioStreamPlayer = $AudioStreamShuffle
+@onready var audio_stream_card_flip:AudioStreamPlayer = $AudioStreamCardFlip
 
 # VARIABLES
 var drag_offset : Vector2 = Vector2()
@@ -58,9 +60,6 @@ func _ready():
 	# STEP 5: Connect menu buttons
 	main_menu.connect("button_pressed_newgame", self.deal_cards)
 	main_menu.connect("button_pressed_debug", self._on_btn_debug_pressed)
-	
-	# STEP 6: Deal all 52 cards onto tableau
-	deal_cards()
 
 # =============================================================================
 
@@ -169,15 +168,18 @@ func _on_move_card_seq_tween_completed(src_card, tgt_card, free_cell, fnda_cell,
 		tableau_piles[new_pile_index].add_card(src_card)
 		game_prop_score += 10
 		src_card.show_points(10)
+		audio_stream_card_flip.play()
 	elif tabl_pile:
 		tabl_pile.add_card(src_card)
 		game_prop_score += 10
 		src_card.show_points(10)
+		audio_stream_card_flip.play()
 	elif free_cell and free_cells.size() > 0:
 		if dragging_cards.size() == 1:
 			free_cell.add_card(src_card)
 			game_prop_score += 10
 			src_card.show_points(10)
+			audio_stream_card_flip.play()
 			#break  # Since only one card can be moved to a free cell, break after moving
 		else:
 			print("ERROR: Cannot move more than one card to a Free Cell!")
@@ -188,6 +190,7 @@ func _on_move_card_seq_tween_completed(src_card, tgt_card, free_cell, fnda_cell,
 		fnda_cell.add_card(src_card)
 		game_prop_score += 100
 		src_card.show_points(100)
+		audio_stream_card_flip.play()
 		#break
 	
 	# If moving the last card in the sequence, reset the dragging cards array and other properties
@@ -464,6 +467,9 @@ func clear_deck():
 
 func deal_cards():
 	var deck = []
+	
+	# STEP 1: audio
+	audio_stream_shuffle.play()
 
 	# STEP 1: clear all cards
 	clear_deck()
