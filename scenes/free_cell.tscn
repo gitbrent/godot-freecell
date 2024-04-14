@@ -1,9 +1,15 @@
-[gd_scene load_steps=8 format=3 uid="uid://chwprjvrdjihp"]
+[gd_scene load_steps=9 format=3 uid="uid://chwprjvrdjihp"]
 
 [ext_resource type="Script" path="res://scripts/free_cell.gd" id="1_pfu5x"]
 [ext_resource type="Texture2D" uid="uid://5ua6yri85q8k" path="res://assets/cards/back07.png" id="2_gqg5f"]
 [ext_resource type="Shader" path="res://effects/gdai_00.gdshader" id="3_jke44"]
 [ext_resource type="StyleBox" uid="uid://c54keensvf1q3" path="res://styles/free_cell_border.tres" id="4_hcx6b"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ascgy"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(88, 10, 1)
+gravity = Vector3(0, 98, 0)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2yimw"]
 shader = ExtResource("3_jke44")
@@ -22,6 +28,11 @@ anchors_preset = 0
 mouse_filter = 1
 script = ExtResource("1_pfu5x")
 
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+visible = false
+position = Vector2(47, 0)
+process_material = SubResource("ParticleProcessMaterial_ascgy")
+
 [node name="GlowCard" type="Sprite2D" parent="."]
 visible = false
 material = SubResource("ShaderMaterial_2yimw")
@@ -37,7 +48,6 @@ offset_bottom = 134.0
 theme_override_styles/panel = ExtResource("4_hcx6b")
 
 [node name="Test_Back070" type="Sprite2D" parent="."]
-visible = false
 position = Vector2(3, 3)
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("2_gqg5f")
