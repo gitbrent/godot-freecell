@@ -4,11 +4,16 @@ class_name TableauPile
 signal card_hover_tabl_start(tabl_pile : TableauPile)
 signal card_hover_tabl_ended(tabl_pile : TableauPile)
 
-@onready var panel_hover:Panel = $PanelHover
-@onready var panel_normal:Panel = $PanelNormal
+@onready var panel_hover : Panel = $PanelHover
+@onready var panel_normal : Panel = $PanelNormal
 
 var cards: Array[Card]
 var horizontal_offset = 0
+
+# =====================================
+
+func _ready():
+	highlight(false)
 
 func get_card_count():
 	return cards.size()
@@ -38,8 +43,8 @@ func _on_area_2d_area_exited(_area):
 	emit_signal("card_hover_tabl_ended", self)
 
 func highlight(isVisible:bool):
-	$PanelHover.visible = isVisible
-	$PanelNormal.visible = !isVisible
+	panel_hover.visible = isVisible
+	panel_normal.visible = !isVisible
 
 # DEBUG: called from debug button in `game_scene`
 func reset_card_positions_in_pile():
