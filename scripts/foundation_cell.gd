@@ -9,6 +9,7 @@ signal card_hover_fnda_ended(fnda_cell : FoundationCell)
 
 @onready var panel_hover : Panel = $PanelHover
 @onready var panel_normal : Panel = $PanelNormal
+@onready var border_animation = $BorderAnimation
 
 var cards : Array = []
 var card_added : Card
@@ -59,4 +60,5 @@ func _on_area_2d_area_exited(_area):
 
 func highlight(isVisible:bool):
 	panel_hover.visible = isVisible
+	border_animation.visible = isVisible
 	panel_normal.visible = !isVisible
