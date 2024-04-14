@@ -9,6 +9,7 @@ func _on_btn_resume_pressed():
 
 func _on_btn_newgame_pressed():
 	emit_signal("button_pressed_newgame")
+	visible = false
 
 func _on_btn_debug_pressed():
 	emit_signal("button_pressed_debug")
