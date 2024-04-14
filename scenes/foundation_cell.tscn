@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://5ua6yri85q8k" path="res://assets/cards/back07.png" id="3_gv8xv"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ep1xm"]
-size = Vector2(94, 132.5)
+size = Vector2(94, 134)
 
 [node name="FoundationCell0" type="Control"]
 layout_mode = 3
