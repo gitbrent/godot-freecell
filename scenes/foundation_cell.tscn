@@ -6,9 +6,6 @@
 [ext_resource type="Texture2D" uid="uid://5ua6yri85q8k" path="res://assets/cards/back07.png" id="3_gv8xv"]
 [ext_resource type="Texture2D" uid="uid://41l4333w4nhu" path="res://assets/effects/02-borders-only-big.png" id="6_0q2ww"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ep1xm"]
-size = Vector2(94, 134)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_2tx2i"]
 atlas = ExtResource("6_0q2ww")
 region = Rect2(0, 0, 32, 32)
@@ -50,6 +47,9 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ep1xm"]
+size = Vector2(94, 134)
+
 [node name="FoundationCell0" type="Control"]
 layout_mode = 3
 anchors_preset = 0
@@ -79,6 +79,15 @@ text = "A"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="BorderAnimation" type="AnimatedSprite2D" parent="."]
+visible = false
+position = Vector2(47.5, 68)
+scale = Vector2(3.15625, 4.4375)
+sprite_frames = SubResource("SpriteFrames_884n6")
+animation = &"border_cycle"
+autoplay = "border_cycle"
+frame_progress = 0.407563
+
 [node name="Test_Back070" type="Sprite2D" parent="."]
 visible = false
 position = Vector2(3, 3)
@@ -92,16 +101,6 @@ centered = false
 position = Vector2(47, 67)
 shape = SubResource("RectangleShape2D_ep1xm")
 debug_color = Color(0, 0.6, 0.701961, 0)
-
-[node name="BorderAnimation" type="AnimatedSprite2D" parent="."]
-visible = false
-position = Vector2(47.5, 68)
-scale = Vector2(3.15625, 4.4375)
-sprite_frames = SubResource("SpriteFrames_884n6")
-animation = &"border_cycle"
-autoplay = "border_cycle"
-frame = 1
-frame_progress = 0.232091
 
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
 [connection signal="area_exited" from="Area2D" to="." method="_on_area_2d_area_exited"]

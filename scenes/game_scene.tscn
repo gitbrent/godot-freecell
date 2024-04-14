@@ -297,7 +297,7 @@ stream = ExtResource("14_okyee")
 
 [node name="AudioStreamCardFlip" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("15_h031i")
-volume_db = 6.9
+volume_db = 4.13
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="pressed" from="TopContainer/VBoxContainer/Control/BtnMainMenu" to="." method="_on_btn_main_menu_pressed"]
