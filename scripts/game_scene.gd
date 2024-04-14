@@ -168,13 +168,16 @@ func _on_move_card_seq_tween_completed(src_card, tgt_card, free_cell, fnda_cell,
 	if new_pile_index > -1:
 		tableau_piles[new_pile_index].add_card(src_card)
 		game_prop_score += 10
+		src_card.show_points(10)
 	elif tabl_pile:
 		tabl_pile.add_card(src_card)
 		game_prop_score += 10
+		src_card.show_points(10)
 	elif free_cell and free_cells.size() > 0:
 		if dragging_cards.size() == 1:
 			free_cell.add_card(src_card)
 			game_prop_score += 10
+			src_card.show_points(10)
 			#break  # Since only one card can be moved to a free cell, break after moving
 		else:
 			print("ERROR: Cannot move more than one card to a Free Cell!")
@@ -184,6 +187,7 @@ func _on_move_card_seq_tween_completed(src_card, tgt_card, free_cell, fnda_cell,
 	elif fnda_cell and src_card:
 		fnda_cell.add_card(src_card)
 		game_prop_score += 100
+		src_card.show_points(100)
 		#break
 	
 	# If moving the last card in the sequence, reset the dragging cards array and other properties
