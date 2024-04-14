@@ -5,7 +5,7 @@ var direction = 1  # 1 for right, -1 for left
 var angle = 0.0  # Current rotation angle in radians
 var parent_width = 0
 var sprite:Sprite2D
-var sprite_width = 75
+var sprite_width = 100+88
 
 func _ready():
 	parent_width = get_parent().get_size().x
@@ -19,6 +19,7 @@ func _process(delta):
 	# Check if reached edge and change direction
 	var minX = 0 + sprite_width / 2
 	var maxX = position.x + sprite_width / 2
+	print("maxX: ", sprite_width / 2)
 
 	if position.x < minX or maxX > parent_width:
 		direction *= -1

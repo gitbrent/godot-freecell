@@ -1,10 +1,12 @@
-[gd_scene load_steps=13 format=3 uid="uid://cs02n06c7qb41"]
+[gd_scene load_steps=15 format=3 uid="uid://cs02n06c7qb41"]
 
 [ext_resource type="Texture2D" uid="uid://2non5yojsj8q" path="res://assets/background.jpg" id="1_jssrt"]
 [ext_resource type="Script" path="res://scenes/start_scene_new.gd" id="1_rm5e3"]
 [ext_resource type="FontFile" uid="uid://bo10p827dpevb" path="res://assets/fonts/LiberationSerif-Regular.ttf" id="2_2aa4l"]
 [ext_resource type="Texture2D" uid="uid://bwo4udgrflhao" path="res://assets/buttons/red_button11.png" id="3_w88dj"]
+[ext_resource type="Texture2D" uid="uid://c71jvatphm1fc" path="res://assets/buttons/UI-7.png" id="4_buha6"]
 [ext_resource type="Texture2D" uid="uid://dwqlsmbe6bsv" path="res://assets/buttons/red_button12.png" id="4_l5kvs"]
+[ext_resource type="Texture2D" uid="uid://cid7a2p8kpokp" path="res://assets/buttons/UI-8.png" id="5_bt2mm"]
 [ext_resource type="FontFile" uid="uid://b8wlkh3hxbgdn" path="res://assets/fonts/kirifont/KiriFont.ttf" id="5_kmbjq"]
 [ext_resource type="Texture2D" uid="uid://c0i3yjwwyr23w" path="res://assets/cards/clubs_ace.png" id="7_fbiee"]
 [ext_resource type="Script" path="res://scripts/CardTopLeft.gd" id="7_mxw17"]
@@ -23,9 +25,9 @@ texture = ExtResource("1_jssrt")
 expand_mode = 1
 
 [node name="Title" type="RichTextLabel" parent="."]
-offset_top = 161.0
-offset_right = 1154.0
-offset_bottom = 311.0
+offset_top = 166.0
+offset_right = 1152.0
+offset_bottom = 316.0
 theme_override_colors/default_color = Color(0.6, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.2)
 theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
@@ -34,9 +36,48 @@ theme_override_constants/shadow_offset_y = 5
 theme_override_constants/shadow_outline_size = 5
 theme_override_constants/outline_size = 5
 theme_override_fonts/normal_font = ExtResource("2_2aa4l")
-theme_override_font_sizes/normal_font_size = 132
+theme_override_font_sizes/normal_font_size = 144
 bbcode_enabled = true
 text = "[center]FreeCell Solitaire[/center]"
+autowrap_mode = 0
+
+[node name="HBoxContainer" type="MarginContainer" parent="."]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1152.0
+offset_bottom = 400.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+
+[node name="Control" type="Control" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="TextureButton" type="TextureButton" parent="HBoxContainer/Control"]
+layout_mode = 0
+offset_right = 792.0
+offset_bottom = 189.0
+scale = Vector2(0.5, 0.5)
+texture_normal = ExtResource("5_bt2mm")
+texture_pressed = ExtResource("4_buha6")
+
+[node name="CenterContainer" type="CenterContainer" parent="HBoxContainer/Control/TextureButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/Control/TextureButton/CenterContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_kmbjq")
+theme_override_font_sizes/font_size = 42
+text = "START"
 
 [node name="StartButton" type="TextureButton" parent="."]
 offset_left = 398.0
@@ -72,13 +113,13 @@ grow_horizontal = 2
 
 [node name="CardL" type="Sprite2D" parent="ContTop"]
 position = Vector2(75, 90)
-scale = Vector2(0.2, 0.2)
+scale = Vector2(0.25, 0.25)
 texture = ExtResource("7_fbiee")
 script = ExtResource("7_mxw17")
 
 [node name="CardR" type="Sprite2D" parent="ContTop"]
-position = Vector2(1083, 94)
-scale = Vector2(0.2, 0.2)
+position = Vector2(1077, 94)
+scale = Vector2(0.25, 0.25)
 texture = ExtResource("9_of62o")
 script = ExtResource("9_o68e0")
 
@@ -88,22 +129,21 @@ anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 4.0
 offset_top = 469.0
-offset_right = 1156.0
+offset_right = 1152.0
 offset_bottom = 649.0
 grow_horizontal = 2
 grow_vertical = 0
 
 [node name="CardL" type="Sprite2D" parent="ContBtm"]
 position = Vector2(75, 90)
-scale = Vector2(0.2, 0.2)
+scale = Vector2(0.25, 0.25)
 texture = ExtResource("11_04y4u")
 script = ExtResource("7_mxw17")
 
 [node name="CardR" type="Sprite2D" parent="ContBtm"]
-position = Vector2(1083, 94)
-scale = Vector2(0.2, 0.2)
+position = Vector2(1077, 94)
+scale = Vector2(0.25, 0.25)
 texture = ExtResource("12_0onm5")
 script = ExtResource("9_o68e0")
 
