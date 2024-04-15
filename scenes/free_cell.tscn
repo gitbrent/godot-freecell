@@ -155,7 +155,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"border_cycle",
-"speed": 12.0
+"speed": 10.0
 }, {
 "frames": [],
 "loop": true,
@@ -199,7 +199,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_2ctfa")
 }],
-"loop": true,
+"loop": false,
 "name": &"stars_explode",
 "speed": 10.0
 }]
@@ -246,30 +246,41 @@ shape = SubResource("RectangleShape2D_ep1xm")
 debug_color = Color(0, 0.6, 0.701961, 0)
 
 [node name="BorderAnimation1" type="AnimatedSprite2D" parent="."]
+visible = false
 position = Vector2(27, -16)
 scale = Vector2(1.25, 1)
 sprite_frames = SubResource("SpriteFrames_eyxvd")
 animation = &"border_cycle"
 autoplay = "border_cycle"
-frame_progress = 0.973886
+frame_progress = 0.416274
 
 [node name="BorderAnimation2" type="AnimatedSprite2D" parent="."]
+visible = false
 position = Vector2(66, -16)
 scale = Vector2(1.25, 1)
 sprite_frames = SubResource("SpriteFrames_eyxvd")
 animation = &"border_cycle"
 autoplay = "border_cycle"
-frame_progress = 0.468107
+frame_progress = 0.910498
 
-[node name="AnimationGreenStar" type="AnimatedSprite2D" parent="."]
+[node name="BorderAnimationFireT" type="AnimatedSprite2D" parent="."]
 visible = false
-position = Vector2(-10, 10)
-scale = Vector2(0.5, 0.5)
+position = Vector2(48, -16)
+scale = Vector2(2.5, 1.013)
 sprite_frames = SubResource("SpriteFrames_eyxvd")
-animation = &"stars_explode"
-autoplay = "stars_explode"
-frame = 5
-frame_progress = 0.628234
+animation = &"border_cycle"
+autoplay = "border_cycle"
+frame_progress = 0.905327
+
+[node name="BorderAnimationFireR" type="AnimatedSprite2D" parent="."]
+visible = false
+position = Vector2(111, 66.7048)
+rotation = 1.5708
+scale = Vector2(3.78869, 1.013)
+sprite_frames = SubResource("SpriteFrames_eyxvd")
+animation = &"border_cycle"
+autoplay = "border_cycle"
+frame_progress = 0.988802
 
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
 [connection signal="area_exited" from="Area2D" to="." method="_on_area_2d_area_exited"]
