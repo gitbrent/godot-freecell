@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://6ykkdeunbek6"]
+[gd_scene load_steps=14 format=3 uid="uid://6ykkdeunbek6"]
 
 [ext_resource type="Script" path="res://scripts/card.gd" id="1_7ifcu"]
 [ext_resource type="Texture2D" uid="uid://5ua6yri85q8k" path="res://assets/cards/back07.png" id="2_ylvg2"]
 [ext_resource type="Script" path="res://scripts/card_control.gd" id="3_lrmxn"]
+[ext_resource type="Texture2D" uid="uid://41l4333w4nhu" path="res://assets/effects/02-borders-only-big.png" id="4_wqppd"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2jll5"]
 size = Vector2(312.821, 482.051)
@@ -52,6 +53,47 @@ _data = {
 "show_points": SubResource("Animation_04dup")
 }
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_2tx2i"]
+atlas = ExtResource("4_wqppd")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0eqsw"]
+atlas = ExtResource("4_wqppd")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yu647"]
+atlas = ExtResource("4_wqppd")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3li3i"]
+atlas = ExtResource("4_wqppd")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8y15i"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2tx2i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0eqsw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yu647")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3li3i")
+}],
+"loop": true,
+"name": &"border_cycle",
+"speed": 10.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
 [node name="Card" type="Node2D"]
 script = ExtResource("1_7ifcu")
 
@@ -93,10 +135,20 @@ text = "+100"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="LabelAnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_tf4mn")
 }
+
+[node name="BorderAnimation" type="AnimatedSprite2D" parent="."]
+visible = false
+position = Vector2(44.5, 65)
+scale = Vector2(2.96875, 4.25)
+sprite_frames = SubResource("SpriteFrames_8y15i")
+animation = &"border_cycle"
+autoplay = "border_cycle"
+frame = 1
+frame_progress = 0.0407379
 
 [connection signal="area_entered" from="Sprite2D/Area2D" to="." method="_on_area_2d_area_entered"]
 [connection signal="area_exited" from="Sprite2D/Area2D" to="." method="_on_area_2d_area_exited"]
