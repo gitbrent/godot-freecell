@@ -10,15 +10,15 @@ signal card_hover_ended(card_dragged, target_card)
 @onready var sprite : Sprite2D = $Sprite2D # card image
 @onready var panel_hover : Panel = $PanelHover
 @onready var label_points : Label = $LabelPoints
-@onready var animation_player: AnimationPlayer = $LabelAnimationPlayer
-@onready var border_animation = $BorderAnimation
+@onready var animation_player : AnimationPlayer = $LabelAnimationPlayer
+@onready var border_animation : AnimationPlayer = $BorderAnimation
 
 # Card properties
-var suit: Enums.Suit
-var rank: Enums.Rank
-var suit_color#: Enums.SuitColor
-var location: Vector2  # Current pile/cell position
-var currently_dragging_card: Card = null
+var suit : Enums.Suit
+var rank : Enums.Rank
+var suit_color #: Enums.SuitColor
+var location : Vector2  # Current pile/cell position
+var currently_dragging_card : Card = null
 # Following are set by game_scene
 var original_position = Vector2()
 
