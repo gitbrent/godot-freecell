@@ -267,7 +267,7 @@ scale = Vector2(3.15625, 4.4375)
 sprite_frames = SubResource("SpriteFrames_884n6")
 animation = &"border_cycle"
 autoplay = "border_cycle"
-frame_progress = 0.000944324
+frame_progress = 0.660092
 
 [node name="Test_Back070" type="Sprite2D" parent="."]
 visible = false
