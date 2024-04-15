@@ -11,7 +11,7 @@ signal card_hover_ended(card_dragged, target_card)
 @onready var panel_hover : Panel = $PanelHover
 @onready var label_points : Label = $LabelPoints
 @onready var animation_player : AnimationPlayer = $LabelAnimationPlayer
-@onready var border_animation : AnimationPlayer = $BorderAnimation
+@onready var border_animation : AnimatedSprite2D = $BorderAnimation
 
 # Card properties
 var suit : Enums.Suit
