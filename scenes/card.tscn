@@ -156,15 +156,16 @@ scale = Vector2(2.98438, 4.1875)
 sprite_frames = SubResource("SpriteFrames_8y15i")
 animation = &"border_cycle"
 autoplay = "border_cycle"
-frame_progress = 0.778458
+frame_progress = 0.740075
 
 [node name="BorderAnimation3" type="AnimatedSprite2D" parent="."]
+visible = false
 position = Vector2(44, 64)
 scale = Vector2(0.888889, 0.918919)
 sprite_frames = SubResource("SpriteFrames_8y15i")
 animation = &"border_cycle"
 autoplay = "border_cycle"
-frame_progress = 0.778458
+frame_progress = 0.740075
 
 [connection signal="area_entered" from="Sprite2D/Area2D" to="." method="_on_area_2d_area_entered"]
 [connection signal="area_exited" from="Sprite2D/Area2D" to="." method="_on_area_2d_area_exited"]
