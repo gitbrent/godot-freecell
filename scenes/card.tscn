@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scripts/card.gd" id="1_7ifcu"]
 [ext_resource type="Texture2D" uid="uid://5ua6yri85q8k" path="res://assets/cards/back07.png" id="2_ylvg2"]
 [ext_resource type="Script" path="res://scripts/card_control.gd" id="3_lrmxn"]
-[ext_resource type="Texture2D" uid="uid://41l4333w4nhu" path="res://assets/effects/02-borders-only-big.png" id="4_wqppd"]
+[ext_resource type="Texture2D" uid="uid://ktc86ygau5ll" path="res://assets/effects/rainbow-border-sprite-2.png" id="4_yi6hy"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2jll5"]
 size = Vector2(312.821, 482.051)
@@ -53,36 +53,36 @@ _data = {
 "show_points": SubResource("Animation_04dup")
 }
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_2tx2i"]
-atlas = ExtResource("4_wqppd")
-region = Rect2(0, 0, 32, 32)
+[sub_resource type="AtlasTexture" id="AtlasTexture_vh0yb"]
+atlas = ExtResource("4_yi6hy")
+region = Rect2(0, 0, 108, 148)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_0eqsw"]
-atlas = ExtResource("4_wqppd")
-region = Rect2(32, 0, 32, 32)
+[sub_resource type="AtlasTexture" id="AtlasTexture_hkf5f"]
+atlas = ExtResource("4_yi6hy")
+region = Rect2(108, 0, 108, 148)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_yu647"]
-atlas = ExtResource("4_wqppd")
-region = Rect2(64, 0, 32, 32)
+[sub_resource type="AtlasTexture" id="AtlasTexture_sjgyt"]
+atlas = ExtResource("4_yi6hy")
+region = Rect2(216, 0, 108, 148)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_3li3i"]
-atlas = ExtResource("4_wqppd")
-region = Rect2(96, 0, 32, 32)
+[sub_resource type="AtlasTexture" id="AtlasTexture_sj5sk"]
+atlas = ExtResource("4_yi6hy")
+region = Rect2(324, 0, 108, 148)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_8y15i"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_2tx2i")
+"texture": SubResource("AtlasTexture_vh0yb")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_0eqsw")
+"texture": SubResource("AtlasTexture_hkf5f")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_yu647")
+"texture": SubResource("AtlasTexture_sjgyt")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_3li3i")
+"texture": SubResource("AtlasTexture_sj5sk")
 }],
 "loop": true,
 "name": &"border_cycle",
@@ -142,13 +142,29 @@ libraries = {
 
 [node name="BorderAnimation" type="AnimatedSprite2D" parent="."]
 visible = false
-position = Vector2(44.5, 65)
-scale = Vector2(2.96875, 4.25)
+position = Vector2(44.25, 65)
+scale = Vector2(2.984, 4.271)
 sprite_frames = SubResource("SpriteFrames_8y15i")
 animation = &"border_cycle"
 autoplay = "border_cycle"
-frame = 1
 frame_progress = 0.0407379
+
+[node name="BorderAnimation2" type="AnimatedSprite2D" parent="."]
+visible = false
+position = Vector2(44.25, 64)
+scale = Vector2(2.98438, 4.1875)
+sprite_frames = SubResource("SpriteFrames_8y15i")
+animation = &"border_cycle"
+autoplay = "border_cycle"
+frame_progress = 0.778458
+
+[node name="BorderAnimation3" type="AnimatedSprite2D" parent="."]
+position = Vector2(44, 64)
+scale = Vector2(0.888889, 0.918919)
+sprite_frames = SubResource("SpriteFrames_8y15i")
+animation = &"border_cycle"
+autoplay = "border_cycle"
+frame_progress = 0.778458
 
 [connection signal="area_entered" from="Sprite2D/Area2D" to="." method="_on_area_2d_area_entered"]
 [connection signal="area_exited" from="Sprite2D/Area2D" to="." method="_on_area_2d_area_exited"]
