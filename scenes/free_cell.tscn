@@ -331,7 +331,7 @@ scale = Vector2(3.125, 4.40625)
 sprite_frames = SubResource("SpriteFrames_xvonv")
 animation = &"border_cycle"
 autoplay = "border_cycle"
-frame_progress = 0.383257
+frame_progress = 0.905412
 
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
 [connection signal="area_exited" from="Area2D" to="." method="_on_area_2d_area_exited"]
