@@ -39,7 +39,7 @@ tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/path = NodePath("LabelPoints:position")
-tracks/1/interp = 2
+tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0, 2),
@@ -122,11 +122,10 @@ offset_bottom = 128.0
 script = ExtResource("3_lrmxn")
 
 [node name="LabelPoints" type="Label" parent="."]
-visible = false
-modulate = Color(0, 1, 0, 1)
-offset_top = -30.0
+modulate = Color(0, 1, 0, 0)
+offset_top = -50.0
 offset_right = 88.0
-offset_bottom = 9.0
+offset_bottom = -11.0
 theme_override_colors/font_color = Color(0, 1, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 1
@@ -165,7 +164,7 @@ scale = Vector2(0.888889, 0.918919)
 sprite_frames = SubResource("SpriteFrames_8y15i")
 animation = &"border_cycle"
 autoplay = "border_cycle"
-frame_progress = 0.899127
+frame_progress = 0.802372
 
 [connection signal="area_entered" from="Sprite2D/Area2D" to="." method="_on_area_2d_area_entered"]
 [connection signal="area_exited" from="Sprite2D/Area2D" to="." method="_on_area_2d_area_exited"]
