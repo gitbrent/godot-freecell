@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://chwprjvrdjihp"]
+[gd_scene load_steps=42 format=3 uid="uid://chwprjvrdjihp"]
 
 [ext_resource type="Script" path="res://scripts/free_cell.gd" id="1_pfu5x"]
 [ext_resource type="Texture2D" uid="uid://5ua6yri85q8k" path="res://assets/cards/back07.png" id="2_gqg5f"]
@@ -7,6 +7,7 @@
 [ext_resource type="StyleBox" uid="uid://c54keensvf1q3" path="res://styles/free_cell_border.tres" id="4_hcx6b"]
 [ext_resource type="Texture2D" uid="uid://bmx78t1wkh1ry" path="res://assets/effects/05-flames-border.png" id="6_6443v"]
 [ext_resource type="Texture2D" uid="uid://dkreatwqopy3y" path="res://assets/effects/16-green-star.png" id="7_ciyjd"]
+[ext_resource type="Texture2D" uid="uid://41l4333w4nhu" path="res://assets/effects/02-borders-only-big.png" id="8_ykgt1"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_2cupl"]
 particle_flag_disable_z = true
@@ -204,6 +205,47 @@ animations = [{
 "speed": 10.0
 }]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_2tx2i"]
+atlas = ExtResource("8_ykgt1")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0eqsw"]
+atlas = ExtResource("8_ykgt1")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yu647"]
+atlas = ExtResource("8_ykgt1")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3li3i"]
+atlas = ExtResource("8_ykgt1")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_xvonv"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2tx2i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0eqsw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yu647")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3li3i")
+}],
+"loop": true,
+"name": &"border_cycle",
+"speed": 10.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
 [node name="FreeCell0" type="Control"]
 layout_mode = 3
 anchors_preset = 0
@@ -281,6 +323,15 @@ sprite_frames = SubResource("SpriteFrames_eyxvd")
 animation = &"border_cycle"
 autoplay = "border_cycle"
 frame_progress = 0.988802
+
+[node name="BorderAnimGr16bit" type="AnimatedSprite2D" parent="."]
+visible = false
+position = Vector2(47, 67.5)
+scale = Vector2(3.125, 4.40625)
+sprite_frames = SubResource("SpriteFrames_xvonv")
+animation = &"border_cycle"
+autoplay = "border_cycle"
+frame_progress = 0.383257
 
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
 [connection signal="area_exited" from="Area2D" to="." method="_on_area_2d_area_exited"]
