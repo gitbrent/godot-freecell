@@ -21,6 +21,9 @@ var card_added : Card
 
 func _ready():
 	highlight(false)
+	# Set to last (empty) frame, so all we have to do is call `play` whenever needed and thats it!
+	animation_green_star_l.frame = 11
+	animation_green_star_r.frame = 11
 
 func is_empty():
 	return cards.size() == 0
