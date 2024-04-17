@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=3 uid="uid://chwprjvrdjihp"]
+[gd_scene load_steps=46 format=3 uid="uid://chwprjvrdjihp"]
 
 [ext_resource type="Script" path="res://scripts/free_cell.gd" id="1_pfu5x"]
 [ext_resource type="Texture2D" uid="uid://5ua6yri85q8k" path="res://assets/cards/back07.png" id="2_gqg5f"]
@@ -7,7 +7,7 @@
 [ext_resource type="StyleBox" uid="uid://c54keensvf1q3" path="res://styles/free_cell_border.tres" id="4_hcx6b"]
 [ext_resource type="Texture2D" uid="uid://bmx78t1wkh1ry" path="res://assets/effects/05-flames-border.png" id="6_6443v"]
 [ext_resource type="Texture2D" uid="uid://dkreatwqopy3y" path="res://assets/effects/16-green-star.png" id="7_ciyjd"]
-[ext_resource type="Texture2D" uid="uid://41l4333w4nhu" path="res://assets/effects/02-borders-only-big.png" id="8_ykgt1"]
+[ext_resource type="Texture2D" uid="uid://cwkrfsmuu1d8o" path="res://assets/effects/border-sprite-sheet-green-4x2.png" id="8_0kgrj"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_2cupl"]
 particle_flag_disable_z = true
@@ -205,36 +205,64 @@ animations = [{
 "speed": 10.0
 }]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_2tx2i"]
-atlas = ExtResource("8_ykgt1")
-region = Rect2(0, 0, 32, 32)
+[sub_resource type="AtlasTexture" id="AtlasTexture_mhhab"]
+atlas = ExtResource("8_0kgrj")
+region = Rect2(0, 0, 108, 148)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_0eqsw"]
-atlas = ExtResource("8_ykgt1")
-region = Rect2(32, 0, 32, 32)
+[sub_resource type="AtlasTexture" id="AtlasTexture_whoyf"]
+atlas = ExtResource("8_0kgrj")
+region = Rect2(108, 0, 108, 148)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_yu647"]
-atlas = ExtResource("8_ykgt1")
-region = Rect2(64, 0, 32, 32)
+[sub_resource type="AtlasTexture" id="AtlasTexture_qqt8b"]
+atlas = ExtResource("8_0kgrj")
+region = Rect2(216, 0, 108, 148)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_3li3i"]
-atlas = ExtResource("8_ykgt1")
-region = Rect2(96, 0, 32, 32)
+[sub_resource type="AtlasTexture" id="AtlasTexture_8q2d0"]
+atlas = ExtResource("8_0kgrj")
+region = Rect2(324, 0, 108, 148)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xbysr"]
+atlas = ExtResource("8_0kgrj")
+region = Rect2(0, 148, 108, 148)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qefd3"]
+atlas = ExtResource("8_0kgrj")
+region = Rect2(108, 148, 108, 148)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g0013"]
+atlas = ExtResource("8_0kgrj")
+region = Rect2(216, 148, 108, 148)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3vdmf"]
+atlas = ExtResource("8_0kgrj")
+region = Rect2(324, 148, 108, 148)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_xvonv"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_2tx2i")
+"texture": SubResource("AtlasTexture_mhhab")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_0eqsw")
+"texture": SubResource("AtlasTexture_whoyf")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_yu647")
+"texture": SubResource("AtlasTexture_qqt8b")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_3li3i")
+"texture": SubResource("AtlasTexture_8q2d0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xbysr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qefd3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g0013")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3vdmf")
 }],
 "loop": true,
 "name": &"border_cycle",
@@ -331,7 +359,16 @@ scale = Vector2(3.125, 4.40625)
 sprite_frames = SubResource("SpriteFrames_xvonv")
 animation = &"border_cycle"
 autoplay = "border_cycle"
-frame_progress = 0.905412
+frame_progress = 0.293696
+
+[node name="BorderAnimGreen8" type="AnimatedSprite2D" parent="."]
+visible = false
+position = Vector2(47, 67)
+scale = Vector2(0.944444, 0.959459)
+sprite_frames = SubResource("SpriteFrames_xvonv")
+animation = &"border_cycle"
+autoplay = "border_cycle"
+frame_progress = 0.974854
 
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
 [connection signal="area_exited" from="Area2D" to="." method="_on_area_2d_area_exited"]

@@ -11,9 +11,8 @@ signal card_hover_ended(card_dragged, target_card)
 @onready var panel_hover : Panel = $PanelHover
 @onready var label_points : Label = $LabelPoints
 @onready var animation_player : AnimationPlayer = $LabelAnimationPlayer
-@onready var border_animation : AnimatedSprite2D = $BorderAnimation
-@onready var border_animation2 : AnimatedSprite2D = $BorderAnimation2
-@onready var border_animation3 : AnimatedSprite2D = $BorderAnimation3
+@onready var border_anim_rainbow : AnimatedSprite2D = $BorderAnimRainbow
+@onready var border_anim_green_8 : AnimatedSprite2D = $BorderAnimGreen8
 
 # Card properties
 var suit : Enums.Suit
@@ -71,13 +70,13 @@ func _on_area_2d_area_exited(area):
 
 func style_hovered_on():
 	panel_hover.visible = true
-	#border_animation.visible = true
-	border_animation3.visible = true
+	#border_anim_rainbow.visible = true
+	border_anim_green_8.visible = true
 
 func style_hovered_off():
 	panel_hover.visible = false
-	#border_animation.visible = false
-	border_animation3.visible = false
+	#border_anim_rainbow.visible = false
+	border_anim_green_8.visible = false
 
 # Call this method to display and animate points
 func show_points(points: int):

@@ -1,9 +1,10 @@
-[gd_scene load_steps=14 format=3 uid="uid://6ykkdeunbek6"]
+[gd_scene load_steps=24 format=3 uid="uid://6ykkdeunbek6"]
 
 [ext_resource type="Script" path="res://scripts/card.gd" id="1_7ifcu"]
 [ext_resource type="Texture2D" uid="uid://5ua6yri85q8k" path="res://assets/cards/back07.png" id="2_ylvg2"]
 [ext_resource type="Script" path="res://scripts/card_control.gd" id="3_lrmxn"]
 [ext_resource type="Texture2D" uid="uid://ktc86ygau5ll" path="res://assets/effects/rainbow-border-sprite-2.png" id="4_yi6hy"]
+[ext_resource type="Texture2D" uid="uid://cwkrfsmuu1d8o" path="res://assets/effects/border-sprite-sheet-green-4x2.png" id="5_mtrdd"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2jll5"]
 size = Vector2(312.821, 482.051)
@@ -94,6 +95,75 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_mhhab"]
+atlas = ExtResource("5_mtrdd")
+region = Rect2(0, 0, 108, 148)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_whoyf"]
+atlas = ExtResource("5_mtrdd")
+region = Rect2(108, 0, 108, 148)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qqt8b"]
+atlas = ExtResource("5_mtrdd")
+region = Rect2(216, 0, 108, 148)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8q2d0"]
+atlas = ExtResource("5_mtrdd")
+region = Rect2(324, 0, 108, 148)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xbysr"]
+atlas = ExtResource("5_mtrdd")
+region = Rect2(0, 148, 108, 148)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qefd3"]
+atlas = ExtResource("5_mtrdd")
+region = Rect2(108, 148, 108, 148)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g0013"]
+atlas = ExtResource("5_mtrdd")
+region = Rect2(216, 148, 108, 148)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3vdmf"]
+atlas = ExtResource("5_mtrdd")
+region = Rect2(324, 148, 108, 148)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_atlfm"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mhhab")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_whoyf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qqt8b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8q2d0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xbysr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qefd3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g0013")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3vdmf")
+}],
+"loop": true,
+"name": &"border_cycle",
+"speed": 10.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
 [node name="Card" type="Node2D"]
 script = ExtResource("1_7ifcu")
 
@@ -122,10 +192,11 @@ offset_bottom = 128.0
 script = ExtResource("3_lrmxn")
 
 [node name="LabelPoints" type="Label" parent="."]
-modulate = Color(0, 1, 0, 0)
-offset_top = -50.0
+visible = false
+modulate = Color(0, 1, 0, 1)
+offset_top = -30.0
 offset_right = 88.0
-offset_bottom = -11.0
+offset_bottom = 9.0
 theme_override_colors/font_color = Color(0, 1, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 1
@@ -139,32 +210,23 @@ libraries = {
 "": SubResource("AnimationLibrary_tf4mn")
 }
 
-[node name="BorderAnimation" type="AnimatedSprite2D" parent="."]
-visible = false
-position = Vector2(44.25, 65)
-scale = Vector2(2.984, 4.271)
-sprite_frames = SubResource("SpriteFrames_8y15i")
-animation = &"border_cycle"
-autoplay = "border_cycle"
-frame_progress = 0.0407379
-
-[node name="BorderAnimation2" type="AnimatedSprite2D" parent="."]
-visible = false
-position = Vector2(44.25, 64)
-scale = Vector2(2.98438, 4.1875)
-sprite_frames = SubResource("SpriteFrames_8y15i")
-animation = &"border_cycle"
-autoplay = "border_cycle"
-frame_progress = 0.740075
-
-[node name="BorderAnimation3" type="AnimatedSprite2D" parent="."]
+[node name="BorderAnimRainbow" type="AnimatedSprite2D" parent="."]
 visible = false
 position = Vector2(44, 64)
 scale = Vector2(0.888889, 0.918919)
 sprite_frames = SubResource("SpriteFrames_8y15i")
 animation = &"border_cycle"
 autoplay = "border_cycle"
-frame_progress = 0.802372
+frame_progress = 0.687636
+
+[node name="BorderAnimGreen8" type="AnimatedSprite2D" parent="."]
+visible = false
+position = Vector2(43.5, 64)
+scale = Vector2(0.861111, 0.905406)
+sprite_frames = SubResource("SpriteFrames_atlfm")
+animation = &"border_cycle"
+autoplay = "border_cycle"
+frame_progress = 0.499645
 
 [connection signal="area_entered" from="Sprite2D/Area2D" to="." method="_on_area_2d_area_entered"]
 [connection signal="area_exited" from="Sprite2D/Area2D" to="." method="_on_area_2d_area_exited"]
