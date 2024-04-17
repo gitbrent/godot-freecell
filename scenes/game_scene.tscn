@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://yk1wyekngt53"]
+[gd_scene load_steps=18 format=3 uid="uid://yk1wyekngt53"]
 
 [ext_resource type="Script" path="res://scripts/game_scene.gd" id="1_6cyku"]
 [ext_resource type="Texture2D" uid="uid://co0anj3n2fyhc" path="res://assets/background_green_felt.png" id="2_cuyih"]
@@ -15,6 +15,7 @@
 [ext_resource type="PackedScene" uid="uid://bbpy3wvistfke" path="res://scenes/main_menu.tscn" id="13_y7q6w"]
 [ext_resource type="AudioStream" uid="uid://dirfa2ol6r01q" path="res://assets/audio/cardShuffle.mp3" id="14_okyee"]
 [ext_resource type="AudioStream" uid="uid://k5lyfy1h8vqi" path="res://assets/audio/card_playcard.wav" id="15_2qywy"]
+[ext_resource type="AudioStream" uid="uid://bdkgmxrko4y4g" path="res://assets/audio/card_error.wav" id="16_gp7mn"]
 
 [sub_resource type="SystemFont" id="SystemFont_t88bg"]
 subpixel_positioning = 0
@@ -292,11 +293,14 @@ position = Vector2(296, 189)
 visible = false
 z_index = 1010
 
-[node name="AudioStreamShuffle" type="AudioStreamPlayer" parent="."]
+[node name="AudioShuffle" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("14_okyee")
 
-[node name="AudioStreamCardFlip" type="AudioStreamPlayer" parent="."]
+[node name="AudioCardFlip" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("15_2qywy")
+
+[node name="AudioCardNope" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("16_gp7mn")
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="pressed" from="TopContainer/VBoxContainer/Control/BtnMainMenu" to="." method="_on_btn_main_menu_pressed"]
