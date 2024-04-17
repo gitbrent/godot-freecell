@@ -14,7 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://cxf5h1ul17kl" path="res://scenes/tableau_pile.tscn" id="10_xpokh"]
 [ext_resource type="PackedScene" uid="uid://bbpy3wvistfke" path="res://scenes/main_menu.tscn" id="13_y7q6w"]
 [ext_resource type="AudioStream" uid="uid://dirfa2ol6r01q" path="res://assets/audio/cardShuffle.mp3" id="14_okyee"]
-[ext_resource type="AudioStream" uid="uid://crryqfp3v4sa0" path="res://assets/audio/cardFlip.mp3" id="15_h031i"]
+[ext_resource type="AudioStream" uid="uid://k5lyfy1h8vqi" path="res://assets/audio/card_playcard.wav" id="15_2qywy"]
 
 [sub_resource type="SystemFont" id="SystemFont_t88bg"]
 subpixel_positioning = 0
@@ -296,8 +296,7 @@ z_index = 1010
 stream = ExtResource("14_okyee")
 
 [node name="AudioStreamCardFlip" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("15_h031i")
-volume_db = 4.13
+stream = ExtResource("15_2qywy")
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="pressed" from="TopContainer/VBoxContainer/Control/BtnMainMenu" to="." method="_on_btn_main_menu_pressed"]
