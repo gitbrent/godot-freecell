@@ -1,12 +1,12 @@
 extends Node2D
 
 # NODES
-@onready var timer = $Timer
-@onready var game_panel_winner:Node2D = $GamePanelWinner
+@onready var timer:Timer = $Timer
 @onready var infobox_moves:Label = $InfoRect/HBoxContainer/HBoxContMoves/Value
 @onready var infobox_timer:Label = $InfoRect/HBoxContainer/HBoxContElapsed/Value
 @onready var infobox_score:Label = $InfoRect/HBoxContainer/HBoxContScore/Value
 @onready var main_menu:MainMenu = $MainMenu
+@onready var game_panel_winner:Node2D = $GamePanelWinner
 @onready var audio_shuffle:AudioStreamPlayer = $AudioShuffle
 @onready var audio_card_play:AudioStreamPlayer = $AudioCardPlay
 @onready var audio_card_nope:AudioStreamPlayer = $AudioCardNope
