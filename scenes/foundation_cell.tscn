@@ -1,10 +1,10 @@
-[gd_scene load_steps=44 format=3 uid="uid://diddbqdq5js1f"]
+[gd_scene load_steps=48 format=3 uid="uid://diddbqdq5js1f"]
 
 [ext_resource type="Script" path="res://scripts/foundation_cell.gd" id="1_qcla2"]
 [ext_resource type="StyleBox" uid="uid://cy52sfse77lj0" path="res://styles/free_cell_hover.tres" id="2_bwo3i"]
 [ext_resource type="StyleBox" uid="uid://c54keensvf1q3" path="res://styles/free_cell_border.tres" id="2_s253y"]
 [ext_resource type="Texture2D" uid="uid://5ua6yri85q8k" path="res://assets/cards/back07.png" id="3_gv8xv"]
-[ext_resource type="Texture2D" uid="uid://ktc86ygau5ll" path="res://assets/effects/rainbow-border-sprite-2.png" id="5_54q4f"]
+[ext_resource type="Texture2D" uid="uid://bgxfmtikyq6so" path="res://assets/effects/border-sprite-sheet-rainbow-4x2.png" id="5_opdn1"]
 [ext_resource type="Texture2D" uid="uid://41l4333w4nhu" path="res://assets/effects/02-borders-only-big.png" id="6_0q2ww"]
 [ext_resource type="Texture2D" uid="uid://bmx78t1wkh1ry" path="res://assets/effects/05-flames-border.png" id="6_o2t1w"]
 [ext_resource type="Texture2D" uid="uid://dkreatwqopy3y" path="res://assets/effects/16-green-star.png" id="7_pqear"]
@@ -50,36 +50,64 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_vh0yb"]
-atlas = ExtResource("5_54q4f")
+[sub_resource type="AtlasTexture" id="AtlasTexture_w6aur"]
+atlas = ExtResource("5_opdn1")
 region = Rect2(0, 0, 108, 148)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_hkf5f"]
-atlas = ExtResource("5_54q4f")
+[sub_resource type="AtlasTexture" id="AtlasTexture_q4ow4"]
+atlas = ExtResource("5_opdn1")
 region = Rect2(108, 0, 108, 148)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_sjgyt"]
-atlas = ExtResource("5_54q4f")
+[sub_resource type="AtlasTexture" id="AtlasTexture_b688r"]
+atlas = ExtResource("5_opdn1")
 region = Rect2(216, 0, 108, 148)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_sj5sk"]
-atlas = ExtResource("5_54q4f")
+[sub_resource type="AtlasTexture" id="AtlasTexture_mjc57"]
+atlas = ExtResource("5_opdn1")
 region = Rect2(324, 0, 108, 148)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r157d"]
+atlas = ExtResource("5_opdn1")
+region = Rect2(0, 148, 108, 148)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_10d3o"]
+atlas = ExtResource("5_opdn1")
+region = Rect2(108, 148, 108, 148)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_alxkk"]
+atlas = ExtResource("5_opdn1")
+region = Rect2(216, 148, 108, 148)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m1qtn"]
+atlas = ExtResource("5_opdn1")
+region = Rect2(324, 148, 108, 148)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_hvy4t"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_vh0yb")
+"texture": SubResource("AtlasTexture_w6aur")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_hkf5f")
+"texture": SubResource("AtlasTexture_q4ow4")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_sjgyt")
+"texture": SubResource("AtlasTexture_b688r")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_sj5sk")
+"texture": SubResource("AtlasTexture_mjc57")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r157d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_10d3o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_alxkk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m1qtn")
 }],
 "loop": true,
 "name": &"border_cycle",
@@ -309,16 +337,16 @@ scale = Vector2(3.1875, 4.5)
 sprite_frames = SubResource("SpriteFrames_884n6")
 animation = &"border_cycle"
 autoplay = "border_cycle"
-frame_progress = 0.823868
+frame_progress = 0.846938
 
 [node name="BorderAnimRainbow" type="AnimatedSprite2D" parent="."]
 visible = false
-position = Vector2(46.5, 66.5)
-scale = Vector2(0.953704, 0.952703)
+position = Vector2(47, 66.5)
+scale = Vector2(0.907407, 0.925676)
 sprite_frames = SubResource("SpriteFrames_hvy4t")
 animation = &"border_cycle"
 autoplay = "border_cycle"
-frame_progress = 0.027913
+frame_progress = 0.384703
 
 [node name="Test_Back070" type="Sprite2D" parent="."]
 visible = false
