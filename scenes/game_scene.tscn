@@ -14,7 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://cxf5h1ul17kl" path="res://scenes/tableau_pile.tscn" id="10_xpokh"]
 [ext_resource type="PackedScene" uid="uid://bbpy3wvistfke" path="res://scenes/main_menu.tscn" id="13_y7q6w"]
 [ext_resource type="AudioStream" uid="uid://dirfa2ol6r01q" path="res://assets/audio/cardShuffle.mp3" id="14_okyee"]
-[ext_resource type="AudioStream" uid="uid://cwlu84s3pl2um" path="res://assets/audio/card_placed.wav" id="15_cjre0"]
+[ext_resource type="AudioStream" uid="uid://bhse2v2nsr3ej" path="res://assets/audio/cardPlace4.wav" id="15_conf1"]
 [ext_resource type="AudioStream" uid="uid://c4txv2w3qxv6g" path="res://assets/audio/card_return.ogg" id="16_78284"]
 [ext_resource type="AudioStream" uid="uid://35hce66lbad4" path="res://assets/audio/btn_click_002.ogg" id="17_uxhed"]
 
@@ -298,7 +298,7 @@ z_index = 1010
 stream = ExtResource("14_okyee")
 
 [node name="AudioCardPlay" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("15_cjre0")
+stream = ExtResource("15_conf1")
 
 [node name="AudioCardNope" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("16_78284")

@@ -5,7 +5,7 @@ signal card_hover_free_start(free_cell : FreeCell)
 signal card_hover_free_ended(free_cell : FreeCell)
 
 @onready var glow_card : Sprite2D = $GlowCard
-@onready var border_animation_1 = $BorderAnimation1
+@onready var border_animation_1 : AnimatedSprite2D = $BorderAnimation1
 @onready var border_animation_2 = $BorderAnimation2
 @onready var border_animation_fire_t = $BorderAnimationFireT
 @onready var border_animation_fire_r = $BorderAnimationFireR
