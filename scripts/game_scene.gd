@@ -8,8 +8,9 @@ extends Node2D
 @onready var infobox_score:Label = $InfoRect/HBoxContainer/HBoxContScore/Value
 @onready var main_menu:MainMenu = $MainMenu
 @onready var audio_shuffle:AudioStreamPlayer = $AudioShuffle
-@onready var audio_card_flip:AudioStreamPlayer = $AudioCardFlip
+@onready var audio_card_play:AudioStreamPlayer = $AudioCardPlay
 @onready var audio_card_nope:AudioStreamPlayer = $AudioCardNope
+@onready var audio_btn_click:AudioStreamPlayer = $AudioBtnClick
 
 # VARIABLES
 var drag_offset : Vector2 = Vector2()
@@ -169,18 +170,18 @@ func _on_move_card_seq_tween_completed(src_card, tgt_card, free_cell, fnda_cell,
 		tableau_piles[new_pile_index].add_card(src_card)
 		game_prop_score += 10
 		src_card.show_points(10)
-		audio_card_flip.play()
+		audio_card_play.play()
 	elif tabl_pile:
 		tabl_pile.add_card(src_card)
 		game_prop_score += 10
 		src_card.show_points(10)
-		audio_card_flip.play()
+		audio_card_play.play()
 	elif free_cell and free_cells.size() > 0:
 		if dragging_cards.size() == 1:
 			free_cell.add_card(src_card)
 			game_prop_score += 10
 			src_card.show_points(10)
-			audio_card_flip.play()
+			audio_card_play.play()
 			#break  # Since only one card can be moved to a free cell, break after moving
 		else:
 			print("ERROR: Cannot move more than one card to a Free Cell!")
@@ -191,7 +192,7 @@ func _on_move_card_seq_tween_completed(src_card, tgt_card, free_cell, fnda_cell,
 		fnda_cell.add_card(src_card)
 		game_prop_score += 100
 		src_card.show_points(100)
-		audio_card_flip.play()
+		audio_card_play.play()
 		#break
 	
 	# If moving the last card in the sequence, reset the dragging cards array and other properties
@@ -566,4 +567,5 @@ func _on_timer_timeout():
 	update_game_props()
 
 func _on_btn_main_menu_pressed():
-	$MainMenu.visible = true
+	audio_btn_click.play()
+	main_menu.visible = true
