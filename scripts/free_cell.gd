@@ -55,8 +55,8 @@ func _on_area_2d_area_exited(_area):
 func highlight(isVisible:bool):
 	glow_card.visible = isVisible
 	# TODO: WIP: better animations
-	border_animation_1.visible = isVisible
-	border_animation_2.visible = isVisible
+	#border_animation_1.visible = isVisible
+	#border_animation_2.visible = isVisible
 	#border_animation_fire_t.visible = isVisible
 	#border_animation_fire_r.visible = isVisible
 	#border_anim_gr_16_bit.visible = isVisible

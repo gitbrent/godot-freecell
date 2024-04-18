@@ -322,7 +322,7 @@ scale = Vector2(1.25, 1)
 sprite_frames = SubResource("SpriteFrames_eyxvd")
 animation = &"border_cycle"
 autoplay = "border_cycle"
-frame_progress = 0.797152
+frame_progress = 0.695751
 
 [node name="BorderAnimation2" type="AnimatedSprite2D" parent="."]
 visible = false
@@ -331,7 +331,7 @@ scale = Vector2(1.25, 1)
 sprite_frames = SubResource("SpriteFrames_eyxvd")
 animation = &"border_cycle"
 autoplay = "border_cycle"
-frame_progress = 0.956812
+frame_progress = 0.855411
 
 [node name="BorderAnimationFireT" type="AnimatedSprite2D" parent="."]
 visible = false
@@ -359,7 +359,7 @@ scale = Vector2(3.125, 4.40625)
 sprite_frames = SubResource("SpriteFrames_xvonv")
 animation = &"border_cycle"
 autoplay = "border_cycle"
-frame_progress = 0.183999
+frame_progress = 0.0825975
 
 [node name="BorderAnimGreen8" type="AnimatedSprite2D" parent="."]
 visible = false
@@ -368,7 +368,7 @@ scale = Vector2(0.944444, 0.959459)
 sprite_frames = SubResource("SpriteFrames_xvonv")
 animation = &"border_cycle"
 autoplay = "border_cycle"
-frame_progress = 0.865157
+frame_progress = 0.763756
 
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
 [connection signal="area_exited" from="Area2D" to="." method="_on_area_2d_area_exited"]
