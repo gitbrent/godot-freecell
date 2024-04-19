@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://dkej8f56i2pty"]
+[gd_scene load_steps=13 format=3 uid="uid://dkej8f56i2pty"]
 
 [ext_resource type="Script" path="res://scripts/start_screen.gd" id="1_54cyh"]
 [ext_resource type="Texture2D" uid="uid://co0anj3n2fyhc" path="res://assets/background_green_felt.png" id="2_ibqng"]
@@ -11,6 +11,89 @@
 [ext_resource type="Texture2D" uid="uid://ba3fsak3ptwmi" path="res://assets/cards/hearts_ace.png" id="9_24y2o"]
 [ext_resource type="AudioStream" uid="uid://35hce66lbad4" path="res://assets/audio/btn_click_002.ogg" id="10_ry8mx"]
 
+[sub_resource type="Animation" id="Animation_xxrq3"]
+resource_name = "spin_card"
+length = 4.0
+loop_mode = 1
+step = 1.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteCardAceClubs:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 6.28319]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = false
+tracks/1/path = NodePath("SpriteCardAceClubs:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2, 4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0.25, 0.25), Vector2(0.35, 0.35), Vector2(0.25, 0.25)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("SpriteCardAceDimnd:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 6.28319]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = false
+tracks/3/path = NodePath("SpriteCardAceDimnd:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 2, 4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0.25, 0.25), Vector2(0.35, 0.35), Vector2(0.25, 0.25)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("SpriteCardAceSpade:rotation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 6.28319]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("SpriteCardAceHeart:rotation")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 6.28319]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_l8xnp"]
+_data = {
+"spin_card": SubResource("Animation_xxrq3")
+}
+
 [node name="StartScreen" type="Node2D"]
 script = ExtResource("1_54cyh")
 
@@ -22,6 +105,7 @@ texture = ExtResource("2_ibqng")
 expand_mode = 1
 
 [node name="Title" type="RichTextLabel" parent="."]
+modulate = Color(1, 0, 0, 1)
 offset_top = 100.0
 offset_right = 1080.0
 offset_bottom = 245.0
@@ -69,6 +153,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
+visible = false
 offset_left = 100.0
 offset_top = 280.0
 offset_right = 980.0
@@ -98,5 +183,30 @@ expand_mode = 3
 
 [node name="AudioBtnClick" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("10_ry8mx")
+
+[node name="SpriteCardAceClubs" type="Sprite2D" parent="."]
+position = Vector2(196, 344)
+scale = Vector2(0.266084, 0.266084)
+texture = ExtResource("7_nj6fg")
+
+[node name="SpriteCardAceDimnd" type="Sprite2D" parent="."]
+position = Vector2(424, 344)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("8_d1f6i")
+
+[node name="SpriteCardAceSpade" type="Sprite2D" parent="."]
+position = Vector2(654, 344)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("8_idw0x")
+
+[node name="SpriteCardAceHeart" type="Sprite2D" parent="."]
+position = Vector2(885, 344)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("9_24y2o")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_l8xnp")
+}
 
 [connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]
