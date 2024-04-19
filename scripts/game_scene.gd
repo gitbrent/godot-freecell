@@ -1,14 +1,16 @@
 extends Node2D
 
 # NODES
-@onready var timer = $Timer
-@onready var game_panel_winner:Node2D = $GamePanelWinner
+@onready var timer:Timer = $Timer
 @onready var infobox_moves:Label = $InfoRect/HBoxContainer/HBoxContMoves/Value
 @onready var infobox_timer:Label = $InfoRect/HBoxContainer/HBoxContElapsed/Value
 @onready var infobox_score:Label = $InfoRect/HBoxContainer/HBoxContScore/Value
 @onready var main_menu:MainMenu = $MainMenu
-@onready var audio_stream_shuffle:AudioStreamPlayer = $AudioStreamShuffle
-@onready var audio_stream_card_flip:AudioStreamPlayer = $AudioStreamCardFlip
+@onready var game_panel_winner:Node2D = $GamePanelWinner
+@onready var audio_shuffle:AudioStreamPlayer = $AudioShuffle
+@onready var audio_card_play:AudioStreamPlayer = $AudioCardPlay
+@onready var audio_card_nope:AudioStreamPlayer = $AudioCardNope
+@onready var audio_btn_click:AudioStreamPlayer = $AudioBtnClick
 
 # VARIABLES
 var drag_offset : Vector2 = Vector2()
@@ -24,12 +26,11 @@ var card_target : Card = null
 var hovered_free_cell : FreeCell = null
 var hovered_fnda_cell : FoundationCell = null
 var hovered_tabl_pile : TableauPile = null
+var is_tween_running : bool = false
 #
 var game_prop_moves : int = 0
 var game_prop_timer : int = 0
 var game_prop_score : int = 0
-#
-var is_tween_running : bool = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -168,18 +169,19 @@ func _on_move_card_seq_tween_completed(src_card, tgt_card, free_cell, fnda_cell,
 		tableau_piles[new_pile_index].add_card(src_card)
 		game_prop_score += 10
 		src_card.show_points(10)
-		audio_stream_card_flip.play()
+		audio_card_play.play()
 	elif tabl_pile:
 		tabl_pile.add_card(src_card)
 		game_prop_score += 10
 		src_card.show_points(10)
-		audio_stream_card_flip.play()
+		audio_card_play.play()
 	elif free_cell and free_cells.size() > 0:
 		if dragging_cards.size() == 1:
 			free_cell.add_card(src_card)
+			# FIXME: dont give credit when moving from one freecell to another!
 			game_prop_score += 10
 			src_card.show_points(10)
-			audio_stream_card_flip.play()
+			audio_card_play.play()
 			#break  # Since only one card can be moved to a free cell, break after moving
 		else:
 			print("ERROR: Cannot move more than one card to a Free Cell!")
@@ -190,7 +192,7 @@ func _on_move_card_seq_tween_completed(src_card, tgt_card, free_cell, fnda_cell,
 		fnda_cell.add_card(src_card)
 		game_prop_score += 100
 		src_card.show_points(100)
-		audio_stream_card_flip.play()
+		audio_card_play.play()
 		#break
 	
 	# If moving the last card in the sequence, reset the dragging cards array and other properties
@@ -200,6 +202,10 @@ func _on_move_card_seq_tween_completed(src_card, tgt_card, free_cell, fnda_cell,
 		game_prop_moves += 1
 		update_game_props()
 		check_for_win_condition()
+
+func on_return_cards_tween_completed():
+	is_tween_running = false
+	reset_card_z_indices()
 
 # =============================================================================
 
@@ -300,10 +306,12 @@ func _on_card_drag_ended(card):
 			for card_in_sequence in dragging_cards:
 				# NOTE: only tween if position changed, otherwise, this kneecaps the dbl-click to move feature!
 				if card_in_sequence.global_position.distance_to(card_in_sequence.original_position) > 1:  # Using a tolerance of 1 pixel
+					is_tween_running = true
 					var tween = get_tree().create_tween()
 					tween.tween_property(card_in_sequence, "global_position", card_in_sequence.original_position, 0.5)
-					tween.tween_callback(reset_card_z_indices)
-#
+					tween.tween_callback(on_return_cards_tween_completed)
+					audio_card_nope.play()
+		
 		# Resets
 		card_dragged = null # Ensure to reset this regardless of condition to prevent stuck states
 		hovered_fnda_cell = null
@@ -341,7 +349,7 @@ func _on_card_hover_free_start(free_cell: FreeCell):
 	
 	# STEP 3:
 	# NOTE: No logic needed to decide if this highlight is valid (the free_cell script only emits hover if unoccupied!)
-	free_cell.highlight(true)
+	hovered_free_cell.highlight(true)
 
 func _on_card_hover_free_ended(free_cell: FreeCell):
 	if hovered_free_cell == free_cell:
@@ -362,7 +370,7 @@ func _on_card_hover_fnda_start(fnda_cell: FoundationCell):
 	
 	# STEP 3:
 	# TODO: only highlight if valid!
-	fnda_cell.highlight(true)
+	hovered_fnda_cell.highlight(true)
 
 func _on_card_hover_fnda_ended(fnda_cell: FoundationCell):
 	# NOTE: Dont do below (it'll be done in `_on_card_drag_ended()`
@@ -469,7 +477,7 @@ func deal_cards():
 	var deck = []
 	
 	# STEP 1: audio
-	audio_stream_shuffle.play()
+	audio_shuffle.play()
 
 	# STEP 1: clear all cards
 	clear_deck()
@@ -564,4 +572,5 @@ func _on_timer_timeout():
 	update_game_props()
 
 func _on_btn_main_menu_pressed():
-	$MainMenu.visible = true
+	audio_btn_click.play()
+	main_menu.visible = true
