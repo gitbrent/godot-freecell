@@ -11,6 +11,7 @@ extends Node2D
 @onready var audio_card_play:AudioStreamPlayer = $AudioCardPlay
 @onready var audio_card_nope:AudioStreamPlayer = $AudioCardNope
 @onready var audio_btn_click:AudioStreamPlayer = $AudioBtnClick
+@onready var placeholder_deal:Sprite2D = $Placeholder_Deal
 
 # VARIABLES
 var drag_offset : Vector2 = Vector2()
@@ -208,6 +209,8 @@ func on_return_cards_tween_completed():
 	reset_card_z_indices()
 
 # =============================================================================
+
+#region Card_Drag_and_Hover
 
 func get_draggable_sequence(card: Card) -> Array[Card]:
 	var cards:Array[Card] = []
@@ -422,6 +425,8 @@ func _on_card_hover_tabl_ended(pile: TableauPile):
 	#print("_on_card_hover_tabl_ended")
 	pile.highlight(false)
 
+#endregion
+
 # =============================================================================
 
 func update_game_props():
@@ -464,26 +469,18 @@ func reset_card_z_indices():
 			var card = pile.get_child(j)
 			card.z_index = j
 
-func clear_cards():
-	for i in range(tableau_piles.size()):
-		tableau_piles[i].remove_all_cards()
-	for i in range(free_cells.size()):
-		free_cells[i].remove_all()
-	for i in range(fnda_cells.size()):
-		fnda_cells[i].remove_all_cards()
-
 func deal_cards():
 	var deck_builder:Array = []
-	const initial_position:Vector2 = Vector2(994, 662)  # location of `Placholder_Deal` card
+	var initial_position:Vector2 = placeholder_deal.global_position #Vector2(994, 662)  # location of `Placholder_Deal` card
 	#const delay_increment:float = 0.1  # Delay each card's animation for staggering effect
-	const animation_time:float = 0.285  # Time it takes for each card to move to its pile
+	const animation_time:float = 0.185  # Time it takes for each card to move to its pile
 	const num_cards_in_columns:Array[int] = [7, 7, 7, 7, 6, 6, 6, 6]
 	
 	# STEP 1: audio & cleanup
-	card_deck = []
-	clear_cards()
 	game_panel_winner.visible = false
 	audio_shuffle.play()
+	for card in card_deck:
+		remove_child(card)
 	
 	# STEP 2: Create and shuffle deck of 52 playing cards
 	for suit in Enums.Suit.values():
@@ -497,7 +494,6 @@ func deal_cards():
 		var card:Card = card_scene.instantiate()
 		if card is Card:
 			add_child(card) # IMPORTANT: add to scene or resources from `@onready` wont be ready! (adding to scene fires its `_ready()` and other init behavior!)
-			card.global_position = initial_position
 			card.initialize(card_info["suit"], card_info["rank"])
 			# OLD: card.call_deferred("initialize", card_info["suit"], card_info["rank"])
 			card_deck.append(card)
@@ -518,11 +514,10 @@ func deal_cards():
 			remove_child(card)
 			tableau_piles[pile_index].add_child(card)
 			# call add method (TODO: we may not need this anymore
-			tableau_piles[pile_index].add_card(card)
+			#tableau_piles[pile_index].add_card(card)
 			card_deck.append(card)
 			# Tween into place
 			card.global_position = initial_position
-			print("card.global_position: ", card.global_position)
 			var tween:Tween = get_tree().create_tween()
 			var target_position = tableau_piles[pile_index].global_position + Vector2(0, card_index * Enums.Y_OFFSET)
 			tween.tween_property(card, "global_position", target_position, animation_time*(card_index+1))

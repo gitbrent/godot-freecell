@@ -295,6 +295,13 @@ position = Vector2(296, 189)
 visible = false
 z_index = 1010
 
+[node name="Placeholder_Deal" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(950, 600)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("18_j214y")
+centered = false
+
 [node name="AudioShuffle" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("14_2tlea")
 
@@ -306,12 +313,6 @@ stream = ExtResource("16_78284")
 
 [node name="AudioBtnClick" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("17_uxhed")
-
-[node name="Placeholder_Deal" type="Sprite2D" parent="."]
-visible = false
-position = Vector2(994, 662)
-scale = Vector2(0.25, 0.25)
-texture = ExtResource("18_j214y")
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="pressed" from="TopContainer/VBoxContainer/Control/BtnMainMenu" to="." method="_on_btn_main_menu_pressed"]
