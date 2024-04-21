@@ -10,6 +10,7 @@ func _ready():
 func on_start_button_pressed():
 	start_scene.visible = false
 	game_scene.visible = true
-	# game_scene.deal_cards() # commented as deal only works once scene is set
-	# print("global_pos: ", tableau_piles[pile_index].global_position)
-	# ^^^ is always 40 if called above, works otherwise
+	# IMPORTANT: Create a small delay so scene can render, otherwise
+	# print("global_pos: ", tableau_piles[pile_index].global_position) is always 40!
+	await get_tree().create_timer(0.5).timeout
+	game_scene.deal_cards()
