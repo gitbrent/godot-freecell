@@ -88,8 +88,9 @@ func identify_card_pile(card: Card) -> int:
 	
 	# STEP 2: check free-cells
 	for free_cell in free_cells:
-		if free_cell.get_curr_card() == card:
-			return -2
+		for free_card in free_cell.get_children():
+			if free_card is Card and free_card == card:
+				return -2
 	
 	# STEP 3: check foundation-cells
 	for fnda_cell in fnda_cells:
@@ -115,7 +116,7 @@ func is_valid_drag_start(card: Card, card_pile_index: int, sequence_length: int)
 	# Additional checks for valid sequences go here.
 	var available_spaces = 0
 	for free_cell in free_cells:
-		if free_cell.is_empty():
+		if get_card_count(free_cell) == 0:
 			available_spaces += 1
 	
 	# Ensure there's enough space to move the sequence.
@@ -160,8 +161,6 @@ func move_card_sequence(tgt_card: Card, free_cell: FreeCell, fnda_cell: Foundati
 			_on_move_card_seq_tween_completed(src_card, tgt_card, free_cell, fnda_cell, tabl_pile)
 
 func _on_move_card_seq_tween_completed(src_card, tgt_card, free_cell, fnda_cell, tabl_pile):
-	is_tween_running = false
-
 	# STEP 1: Remove card from its source pile
 	var old_pile_index = identify_card_pile(src_card)
 	if old_pile_index > -1:
@@ -169,7 +168,9 @@ func _on_move_card_seq_tween_completed(src_card, tgt_card, free_cell, fnda_cell,
 		#print("[move] removed from TABL: " + Enums.human_readable_card(src_card))
 	else:
 		for cell in free_cells:
-			cell.remove_card(src_card)
+			for free_card in cell.get_children():
+				if free_card is Card and free_card == src_card:
+					cell.remove_child(src_card)
 	
 	# STEP 2: Add card to its new pile
 	var new_pile_index = identify_card_pile(tgt_card)
@@ -192,11 +193,17 @@ func _on_move_card_seq_tween_completed(src_card, tgt_card, free_cell, fnda_cell,
 		_on_card_hover_ended(src_card, tgt_card)
 	elif free_cell and free_cells.size() > 0:
 		if dragging_cards.size() == 1:
-			free_cell.add_card(src_card)
+			free_cell.add_child(src_card)
+			src_card.global_position = Vector2(free_cell.global_position.x + Enums.CARD_POSITION.x, free_cell.global_position.y + Enums.CARD_POSITION.y)
 			# FIXME: dont give credit when moving from one freecell to another!
 			game_prop_score += 10
 			src_card.show_points(10)
 			audio_card_play.play()
+			# FIXME: freecell statys highighted
+			print("free_cell: ", free_cell)
+			print("hovered_free_cell: ", hovered_free_cell)
+			_on_card_hover_free_ended(free_cell)
+			# FIXME: no impact free_cell.highlight(false)
 			#break  # Since only one card can be moved to a free cell, break after moving
 		else:
 			print("ERROR: Cannot move more than one card to a Free Cell!")
@@ -217,7 +224,10 @@ func _on_move_card_seq_tween_completed(src_card, tgt_card, free_cell, fnda_cell,
 		game_prop_moves += 1
 		update_game_props()
 		check_for_win_condition()
-
+	
+	# LAST
+	is_tween_running = false
+	
 func on_return_cards_tween_completed():
 	is_tween_running = false
 	reset_card_z_indices()
@@ -308,7 +318,7 @@ func _on_card_drag_ended(card):
 				# RULE: VALID = There must be enough free cells to hold cards other than the first
 				var total_free_cells = 0
 				for cell in free_cells:
-					if cell.is_empty():
+					if get_card_count(cell) == 0:
 						total_free_cells += 1
 				if total_free_cells >= dragging_cards.size() - 1:
 					move_card_sequence(null, null, null, hovered_tabl_pile)
@@ -353,14 +363,16 @@ func _on_card_hover_ended(_src_card: Card, tgt_card: Card):
 		card_target = null
 
 func _on_card_hover_free_start(free_cell: FreeCell):
-	# STEP 0: Bail; dont highlight cells if tween animation is the trigger
-	if is_tween_running:
-		return
+	print("DEBUG:[_on_card_hover_free_start] is_tween_running: ", is_tween_running)
 
+	# STEP 0: Bail; dont highlight cells if tween animation is the trigger
+	if is_tween_running or get_card_count(free_cell) > 0:
+		return
+	
 	# STEP 1: Un-highlight previous cell if any (prevent highlighting of *two* cells if user holds cover over both, etc.)
 	if hovered_free_cell:
 		hovered_free_cell.highlight(false)
-
+	
 	# STEP 2: Store foundation cell
 	hovered_free_cell = free_cell
 	
@@ -416,7 +428,7 @@ func _on_card_double_clicked(card: Card):
 			
 			# If no foundation move is made, check for FreeCell move
 			for free_cell in free_cells:
-				if free_cell.is_empty():
+				if get_card_count(free_cell) == 0:
 					dragging_cards = [card]
 					move_card_sequence(null, free_cell, null, null)
 					return
@@ -466,16 +478,18 @@ func check_for_win_condition():
 
 func reset_card_z_indices():
 	for i in range(tableau_piles.size()):
-		var pile = tableau_piles[i]
+		var pile:TableauPile = tableau_piles[i]
 		for j in range(pile.get_child_count()):
-			var card = pile.get_child(j)
-			card.z_index = j
+			var pile_card = pile.get_child(j)
+			if pile_card is Card:
+				pile_card.z_index = j
 	
 	for i in range(free_cells.size()):
 		var pile:FreeCell = free_cells[i]
-		var card:Card = pile.get_curr_card()
-		if card:
-			card.z_index = 1
+		for j in range(pile.get_child_count()):
+			var pile_card = pile.get_child(j)
+			if pile_card is Card:
+				pile_card.z_index = j
 	
 	for i in range(fnda_cells.size()):
 		var pile = fnda_cells[i]
