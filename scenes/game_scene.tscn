@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://yk1wyekngt53"]
+[gd_scene load_steps=20 format=3 uid="uid://yk1wyekngt53"]
 
 [ext_resource type="Script" path="res://scripts/game_scene.gd" id="1_6cyku"]
 [ext_resource type="Texture2D" uid="uid://co0anj3n2fyhc" path="res://assets/background_green_felt.png" id="2_cuyih"]
@@ -13,10 +13,11 @@
 [ext_resource type="PackedScene" uid="uid://d36ntyouo8moq" path="res://scenes/you_won_scene.tscn" id="10_c7eam"]
 [ext_resource type="PackedScene" uid="uid://cxf5h1ul17kl" path="res://scenes/tableau_pile.tscn" id="10_xpokh"]
 [ext_resource type="PackedScene" uid="uid://bbpy3wvistfke" path="res://scenes/main_menu.tscn" id="13_y7q6w"]
-[ext_resource type="AudioStream" uid="uid://dirfa2ol6r01q" path="res://assets/audio/cardShuffle.mp3" id="14_okyee"]
+[ext_resource type="AudioStream" uid="uid://cgl2aokvwb11k" path="res://assets/audio/cardShuffle-casino.wav" id="14_2tlea"]
 [ext_resource type="AudioStream" uid="uid://bhse2v2nsr3ej" path="res://assets/audio/cardPlace4.wav" id="15_conf1"]
 [ext_resource type="AudioStream" uid="uid://c4txv2w3qxv6g" path="res://assets/audio/card_return.ogg" id="16_78284"]
 [ext_resource type="AudioStream" uid="uid://35hce66lbad4" path="res://assets/audio/btn_click_002.ogg" id="17_uxhed"]
+[ext_resource type="Texture2D" uid="uid://de4pqr8xuhqff" path="res://assets/cards/back01.png" id="18_j214y"]
 
 [sub_resource type="SystemFont" id="SystemFont_t88bg"]
 subpixel_positioning = 0
@@ -295,7 +296,7 @@ visible = false
 z_index = 1010
 
 [node name="AudioShuffle" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("14_okyee")
+stream = ExtResource("14_2tlea")
 
 [node name="AudioCardPlay" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("15_conf1")
@@ -305,6 +306,12 @@ stream = ExtResource("16_78284")
 
 [node name="AudioBtnClick" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("17_uxhed")
+
+[node name="Placeholder_Deal" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(994, 662)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("18_j214y")
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="pressed" from="TopContainer/VBoxContainer/Control/BtnMainMenu" to="." method="_on_btn_main_menu_pressed"]

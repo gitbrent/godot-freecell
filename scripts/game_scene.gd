@@ -15,12 +15,12 @@ extends Node2D
 # VARIABLES
 var drag_offset : Vector2 = Vector2()
 #
-var card_deck: Array[Card] = []
-var tableau_piles: Array[TableauPile] = []
-var free_cells: Array[FreeCell] = []
-var fnda_cells: Array[FoundationCell] = []
+var card_deck : Array[Card] = []
+var tableau_piles : Array[TableauPile] = []
+var free_cells : Array[FreeCell] = []
+var fnda_cells : Array[FoundationCell] = []
 #
-var dragging_cards: Array[Card] = []
+var dragging_cards : Array[Card] = []
 var card_dragged : Card = null
 var card_target : Card = null
 var hovered_free_cell : FreeCell = null
@@ -464,8 +464,7 @@ func reset_card_z_indices():
 			var card = pile.get_child(j)
 			card.z_index = j
 
-func clear_deck():
-	card_deck = []
+func clear_cards():
 	for i in range(tableau_piles.size()):
 		tableau_piles[i].remove_all_cards()
 	for i in range(free_cells.size()):
@@ -474,53 +473,62 @@ func clear_deck():
 		fnda_cells[i].remove_all_cards()
 
 func deal_cards():
-	var deck = []
+	var deck_builder:Array = []
+	const initial_position:Vector2 = Vector2(994, 662)  # location of `Placholder_Deal` card
+	#const delay_increment:float = 0.1  # Delay each card's animation for staggering effect
+	const animation_time:float = 0.285  # Time it takes for each card to move to its pile
+	const num_cards_in_columns:Array[int] = [7, 7, 7, 7, 6, 6, 6, 6]
 	
-	# STEP 1: audio
-	audio_shuffle.play()
-
-	# STEP 1: clear all cards
-	clear_deck()
+	# STEP 1: audio & cleanup
+	card_deck = []
+	clear_cards()
 	game_panel_winner.visible = false
-		
-	# STEP 2: Create the standard 52 playing cards
+	audio_shuffle.play()
+	
+	# STEP 2: Create and shuffle deck of 52 playing cards
 	for suit in Enums.Suit.values():
 		for rank in Enums.Rank.values():
-			deck.append({"suit": suit, "rank": rank})
+			deck_builder.append({"suit": suit, "rank": rank})
+	deck_builder.shuffle()
 	
-	# STEP 3: Shuffle the deck
-	deck.shuffle()
+	# STEP 3: Instantiate all cards at the origin location
+	for card_info in deck_builder:
+		var card_scene = load("res://scenes/card.tscn")
+		var card:Card = card_scene.instantiate()
+		if card is Card:
+			add_child(card) # IMPORTANT: add to scene or resources from `@onready` wont be ready! (adding to scene fires its `_ready()` and other init behavior!)
+			card.global_position = initial_position
+			card.initialize(card_info["suit"], card_info["rank"])
+			# OLD: card.call_deferred("initialize", card_info["suit"], card_info["rank"])
+			card_deck.append(card)
 	
-	# STEP 4: Setup for dealing cards to tableau piles according to FreeCell rules
-	var num_cards_in_columns = [7, 7, 7, 7, 6, 6, 6, 6]
-	var deck_index = 0
+	# STEP 4: Setup and run animations for all cards
+	for pile_index in range(tableau_piles.size()):
+		var num_cards = num_cards_in_columns[pile_index]
+		for card_index in range(num_cards):
+			var card = card_deck[pile_index + card_index * tableau_piles.size()]  # Calculate index based on interleave
+			card.connect("card_hover_start", self._on_card_hover_start)
+			card.connect("card_hover_ended", self._on_card_hover_ended)
+			var control_node = card.get_node("CardControl")
+			control_node.connect("card_drag_start", self._on_card_drag_start)
+			control_node.connect("drag_in_progress", self._on_drag_in_progress)
+			control_node.connect("card_drag_ended", self._on_card_drag_ended)
+			control_node.connect("card_double_clicked", self._on_card_double_clicked)
+			# move card to tableau from game_scene
+			remove_child(card)
+			tableau_piles[pile_index].add_child(card)
+			# call add method (TODO: we may not need this anymore
+			tableau_piles[pile_index].add_card(card)
+			card_deck.append(card)
+			# Tween into place
+			card.global_position = initial_position
+			print("card.global_position: ", card.global_position)
+			var tween:Tween = get_tree().create_tween()
+			var target_position = tableau_piles[pile_index].global_position + Vector2(0, card_index * Enums.Y_OFFSET)
+			tween.tween_property(card, "global_position", target_position, animation_time*(card_index+1))
+			tween.play()
 	
-	# STEP 5: Deal
-	for i in range(tableau_piles.size()):
-		var num_cards = num_cards_in_columns[i]
-		for j in range(num_cards):
-			var card_info = deck[deck_index]
-			deck_index += 1
-			
-			var card_scene = load("res://scenes/card.tscn")
-			var card_instance = card_scene.instantiate()
-			
-			if card_instance is Card:
-				var card: Card = card_instance
-				card.call_deferred("initialize", card_info["suit"], card_info["rank"])
-				card.connect("card_hover_start", self._on_card_hover_start)
-				card.connect("card_hover_ended", self._on_card_hover_ended)
-				var control_node = card.get_node("CardControl")
-				control_node.connect("card_drag_start", self._on_card_drag_start)
-				control_node.connect("drag_in_progress", self._on_drag_in_progress)
-				control_node.connect("card_drag_ended", self._on_card_drag_ended)
-				control_node.connect("card_double_clicked", self._on_card_double_clicked)
-				tableau_piles[i].add_card(card)
-				card_deck.append(card)
-			else:
-				print("Error: The instantiated object is not a Card.")
-	
-	# STEP 6: Reset z-indexes
+	# STEP 5: Reset z-indexes
 	reset_card_z_indices()
 	
 	# STEP 6: Clear game props

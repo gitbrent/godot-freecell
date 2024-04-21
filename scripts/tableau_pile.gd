@@ -21,8 +21,8 @@ func get_card_count():
 func add_card(card: Card):
 	if card is Card:
 		#print("[TABL] added card: {" + Enums.human_readable_card(card) + "} with position: ", card.position)
-		add_child(card)
-		card.position = Vector2(horizontal_offset, cards.size() * Enums.Y_OFFSET)
+		#add_child(card)
+		#card.position = Vector2(horizontal_offset, cards.size() * Enums.Y_OFFSET)
 		cards.append(card)
 	else:
 		print("[tableau] attempted to add a non-Card node to the pile.")
