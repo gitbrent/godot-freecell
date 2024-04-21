@@ -469,18 +469,29 @@ func reset_card_z_indices():
 			var card = pile.get_child(j)
 			card.z_index = j
 
+func clear_all_cards():
+	var pile_containers:Array = [free_cells, fnda_cells, tableau_piles]
+	
+	for pile in pile_containers:
+		for container in pile:
+			for card in container.get_children():
+				if card is Card:
+					container.remove_child(card)
+					card.queue_free()
+	
+	card_deck.clear()
+
 func deal_cards():
 	var deck_builder:Array = []
-	var initial_position:Vector2 = placeholder_deal.global_position #Vector2(994, 662)  # location of `Placholder_Deal` card
+	var initial_position:Vector2 = placeholder_deal.global_position
 	#const delay_increment:float = 0.1  # Delay each card's animation for staggering effect
-	const animation_time:float = 0.185  # Time it takes for each card to move to its pile
+	const animation_time:float = 0.285  # Time it takes for each card to move to its pile
 	const num_cards_in_columns:Array[int] = [7, 7, 7, 7, 6, 6, 6, 6]
 	
 	# STEP 1: audio & cleanup
+	clear_all_cards()
 	game_panel_winner.visible = false
 	audio_shuffle.play()
-	for card in card_deck:
-		remove_child(card)
 	
 	# STEP 2: Create and shuffle deck of 52 playing cards
 	for suit in Enums.Suit.values():
