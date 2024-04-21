@@ -68,6 +68,13 @@ func _ready():
 static func compare_cards_z_index(a, b):
 	return a.z_index < b.z_index
 
+func get_card_count(container):
+	var count = 0
+	for child in container.get_children():
+		if child is Card:
+			count += 1
+	return count
+
 func identify_card_pile(card: Card) -> int:
 	if not card:
 		return -1
@@ -158,7 +165,7 @@ func _on_move_card_seq_tween_completed(src_card, tgt_card, free_cell, fnda_cell,
 	# STEP 1: Remove card from its source pile
 	var old_pile_index = identify_card_pile(src_card)
 	if old_pile_index > -1:
-		tableau_piles[old_pile_index].remove_card(src_card)
+		tableau_piles[old_pile_index].remove_child(src_card)
 		#print("[move] removed from TABL: " + Enums.human_readable_card(src_card))
 	else:
 		for cell in free_cells:
@@ -167,15 +174,22 @@ func _on_move_card_seq_tween_completed(src_card, tgt_card, free_cell, fnda_cell,
 	# STEP 2: Add card to its new pile
 	var new_pile_index = identify_card_pile(tgt_card)
 	if new_pile_index > -1:
-		tableau_piles[new_pile_index].add_card(src_card)
+		var new_pile = tableau_piles[new_pile_index]
+		new_pile.add_child(src_card)
+		src_card.global_position = Vector2(new_pile.global_position.x, new_pile.global_position.y + (get_card_count(new_pile)-1) * Enums.Y_OFFSET)
 		game_prop_score += 10
 		src_card.show_points(10)
 		audio_card_play.play()
+		_on_card_hover_tabl_ended(new_pile)
+		_on_card_hover_ended(src_card, tgt_card)
 	elif tabl_pile:
-		tabl_pile.add_card(src_card)
+		tabl_pile.add_child(src_card)
+		src_card.global_position = Vector2(tabl_pile.global_position.x, tabl_pile.global_position.y + (get_card_count(tabl_pile)-1) * Enums.Y_OFFSET)
 		game_prop_score += 10
 		src_card.show_points(10)
 		audio_card_play.play()
+		_on_card_hover_tabl_ended(tabl_pile)
+		_on_card_hover_ended(src_card, tgt_card)
 	elif free_cell and free_cells.size() > 0:
 		if dragging_cards.size() == 1:
 			free_cell.add_card(src_card)
@@ -289,7 +303,7 @@ func _on_card_drag_ended(card):
 					print("Card cannot be placed here: ", hovered_fnda_cell)
 					do_return_cards = true
 		elif hovered_tabl_pile:
-			if hovered_tabl_pile.get_card_count() == 0:
+			if get_card_count(hovered_tabl_pile) == 0:
 				# RULE: VALID = Moving any 1 card to an empty tabelau
 				# RULE: VALID = There must be enough free cells to hold cards other than the first
 				var total_free_cells = 0
@@ -416,7 +430,7 @@ func _on_card_double_clicked(card: Card):
 
 func _on_card_hover_tabl_start(pile: TableauPile):
 	# TODO: Only highlight when move is valid
-	if pile.get_card_count() == 0:
+	if get_card_count(pile) == 0:
 		hovered_tabl_pile = pile
 		#print("_on_card_hover_tabl_start")
 		pile.highlight(true)
@@ -482,11 +496,10 @@ func clear_all_cards():
 	card_deck.clear()
 
 func deal_cards():
-	var deck_builder:Array = []
-	var initial_position:Vector2 = placeholder_deal.global_position
-	#const delay_increment:float = 0.1  # Delay each card's animation for staggering effect
-	const animation_time:float = 0.285  # Time it takes for each card to move to its pile
 	const num_cards_in_columns:Array[int] = [7, 7, 7, 7, 6, 6, 6, 6]
+	const animation_time:float = 0.285  # Time it takes for each card to move to its pile
+	var initial_position:Vector2 = placeholder_deal.global_position
+	var deck_builder:Array = []
 	
 	# STEP 1: audio & cleanup
 	clear_all_cards()
@@ -524,8 +537,6 @@ func deal_cards():
 			# move card to tableau from game_scene
 			remove_child(card)
 			tableau_piles[pile_index].add_child(card)
-			# call add method (TODO: we may not need this anymore
-			#tableau_piles[pile_index].add_card(card)
 			card_deck.append(card)
 			# Tween into place
 			card.global_position = initial_position
@@ -580,6 +591,13 @@ func _on_btn_debug_pressed():
 	await get_tree().create_timer(1.5).timeout
 	for pile in tableau_piles:
 		pile.reset_card_positions_in_pile()
+
+# DEBUG: called from debug button in `game_scene`
+#func reset_card_positions_in_pile():
+	#for i in range(cards.size()):
+		#var card = cards[i]
+		#card.position = Vector2(horizontal_offset, i * Enums.Y_OFFSET)
+
 
 func _on_timer_timeout():
 	game_prop_timer += 1
