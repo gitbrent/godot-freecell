@@ -17,9 +17,9 @@ extends Node2D
 var drag_offset : Vector2 = Vector2()
 #
 var card_deck : Array[Card] = []
-var tableau_piles : Array[TableauPile] = []
 var free_cells : Array[FreeCell] = []
 var fnda_cells : Array[FoundationCell] = []
+var tableau_piles : Array[TableauPile] = []
 #
 var dragging_cards : Array[Card] = []
 var card_dragged : Card = null
@@ -75,6 +75,13 @@ func get_card_count(container):
 			count += 1
 	return count
 
+func get_top_fnda_card(fnda_cell: FoundationCell):
+	var top_card:Card = null
+	for child in fnda_cell.get_children():
+		if child is Card:
+			top_card = child
+	return top_card
+
 func identify_card_pile(card: Card) -> int:
 	if not card:
 		return -1
@@ -94,8 +101,9 @@ func identify_card_pile(card: Card) -> int:
 	
 	# STEP 3: check foundation-cells
 	for fnda_cell in fnda_cells:
-		if fnda_cell.get_top_card() == card:
-			return -3
+		for fnda_card in fnda_cell.get_children():
+			if fnda_card is Card and fnda_card == card:
+				return -3
 	
 	# LAST:
 	return -1
@@ -211,9 +219,11 @@ func _on_move_card_seq_tween_completed(src_card, tgt_card, free_cell, fnda_cell,
 			#print("dragging_cards", dragging_cards)
 			#break
 	elif fnda_cell and src_card:
-		fnda_cell.add_card(src_card)
+		fnda_cell.add_child(src_card)
+		src_card.global_position = Vector2(fnda_cell.global_position.x + Enums.CARD_POSITION.x, fnda_cell.global_position.y + Enums.CARD_POSITION.y)
 		game_prop_score += 100
 		src_card.show_points(100)
+		fnda_cell.play_card_added_anim()
 		audio_card_play.play()
 		#break
 	
@@ -295,7 +305,7 @@ func _on_card_drag_ended(card):
 			move_card_sequence(null, hovered_free_cell, null, null)
 			hovered_free_cell = null
 		elif hovered_fnda_cell and dragging_cards.size() == 1:
-			if hovered_fnda_cell.is_empty():
+			if get_card_count(hovered_fnda_cell) == 0:
 				# If the foundation cell is empty, only an Ace can be placed
 				if card_dragged.rank == Enums.Rank.ACE:
 					print("[FNDA valid] An Ace can be placed here.")
@@ -305,7 +315,7 @@ func _on_card_drag_ended(card):
 					do_return_cards = true
 			else:
 				# If the foundation cell is not empty, check if the card follows the suit and is in order
-				var top_card = hovered_fnda_cell.get_top_card()
+				var top_card = get_top_fnda_card(hovered_fnda_cell)
 				if card_dragged.suit == top_card.suit and card_dragged.rank == top_card.rank + 1:
 					print("[FNDA valid] Card can be placed here.")
 					move_card_sequence(card_dragged, null, hovered_fnda_cell, null)
@@ -413,13 +423,13 @@ func _on_card_double_clicked(card: Card):
 		if card == pile.get_children().back():  # Using .back() to get the last card in the pile
 			# Check for valid foundation moves
 			for fnda_cell in fnda_cells:
-				if fnda_cell.is_empty() and card.rank == Enums.Rank.ACE:
+				if get_card_count(fnda_cell) == 0 and card.rank == Enums.Rank.ACE:
 					# Move Ace to empty foundation cell
 					dragging_cards = [card]
 					move_card_sequence(null, null, fnda_cell, null)
 					return
-				elif not fnda_cell.is_empty():
-					var top_fnda_card = fnda_cell.get_top_card()
+				elif get_card_count(fnda_cell) > 0:
+					var top_fnda_card = get_top_fnda_card(fnda_cell)
 					if top_fnda_card.suit == card.suit and top_fnda_card.rank + 1 == card.rank:
 						# Sequentially correct card to non-empty foundation
 						dragging_cards = [card]
@@ -465,7 +475,7 @@ func check_for_win_condition():
 
 	# Iterate through each foundation cell to count the cards
 	for fnda_cell in fnda_cells:
-		total_cards_in_foundation += fnda_cell.get_card_count()
+		total_cards_in_foundation += get_card_count(fnda_cell)
 
 	# Check if the total number of cards in foundation cells equals 52
 	if total_cards_in_foundation == 52:
@@ -494,8 +504,9 @@ func reset_card_z_indices():
 	for i in range(fnda_cells.size()):
 		var pile = fnda_cells[i]
 		for j in range(pile.get_child_count()):
-			var card = pile.get_child(j)
-			card.z_index = j
+			var pile_card = pile.get_child(j)
+			if pile_card is Card:
+				pile_card.z_index = j
 
 func clear_all_cards():
 	var pile_containers:Array = [free_cells, fnda_cells, tableau_piles]
@@ -586,7 +597,7 @@ func sort_and_move_cards_to_foundation(move_suit:Enums.Suit, target_fnda:Foundat
 	# Sort the cards by rank
 	move_cards.sort_custom(self.compare_ranks)
 	
-	# Assuming foundation[0] is designated for clubs and has an 'add_card' method
+	# Assuming foundation[0] is designated for clubs
 	for move_card in move_cards:
 		#print("[DEBUG] moving move_card: ", Enums.human_readable_card(move_card))
 		dragging_cards = [move_card]

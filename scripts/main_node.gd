@@ -12,5 +12,5 @@ func on_start_button_pressed():
 	game_scene.visible = true
 	# IMPORTANT: Create a small delay so scene can render, otherwise
 	# print("global_pos: ", tableau_piles[pile_index].global_position) is always 40!
-	await get_tree().create_timer(0.5).timeout
+	await get_tree().create_timer(0.25).timeout
 	game_scene.deal_cards()
