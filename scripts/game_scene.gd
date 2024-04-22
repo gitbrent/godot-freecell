@@ -522,13 +522,14 @@ func clear_all_cards():
 
 func deal_cards():
 	const num_cards_in_columns:Array[int] = [7, 7, 7, 7, 6, 6, 6, 6]
-	const animation_time:float = 0.285  # Time it takes for each card to move to its pile
+	const animation_time:float = 0.15  # Time it takes for each card to move to its pile
 	var initial_position:Vector2 = placeholder_deal.global_position
 	var deck_builder:Array = []
 	
 	# STEP 1: audio & cleanup
 	clear_all_cards()
 	game_panel_winner.visible = false
+	placeholder_deal.visible = true
 	audio_shuffle.play()
 	
 	# STEP 2: Create and shuffle deck of 52 playing cards
@@ -578,6 +579,10 @@ func deal_cards():
 	game_prop_moves = 0
 	game_prop_score = 0
 	update_game_props()
+
+	# STEP 7: Hide face deal placeholder card ater cards have tweened	
+	await get_tree().create_timer(1.0).timeout
+	placeholder_deal.visible = false
 
 func _on_btn_deal_pressed():
 	deal_cards()

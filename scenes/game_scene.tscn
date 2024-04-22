@@ -297,6 +297,7 @@ z_index = 1010
 
 [node name="Placeholder_Deal" type="Sprite2D" parent="."]
 visible = false
+z_index = 1000
 position = Vector2(950, 600)
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("18_j214y")
