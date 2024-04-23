@@ -154,7 +154,7 @@ func move_card_sequence(tgt_card: Card, free_cell: FreeCell, fnda_cell: Foundati
 			target_position = Vector2(fnda_cell.global_position.x + Enums.CARD_POSITION.x, fnda_cell.global_position.y + Enums.CARD_POSITION.y)
 		elif tabl_pile:
 			target_container = tabl_pile
-			target_position = Vector2(tabl_pile.global_position.x, tabl_pile.global_position.y)
+			target_position = Vector2(tabl_pile.global_position.x, tabl_pile.global_position.y + (Enums.Y_OFFSET * idx))
 		elif tgt_card:
 			target_container = tgt_card.get_parent()
 			target_position = Vector2(tgt_card.global_position.x, tgt_card.global_position.y + (Enums.Y_OFFSET * (idx+1)))
