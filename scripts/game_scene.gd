@@ -141,27 +141,34 @@ func is_valid_drag_start(card: Card, card_pile_index: int, sequence_length: int)
 
 func move_card_sequence(tgt_card: Card, free_cell: FreeCell, fnda_cell: FoundationCell, tabl_pile: TableauPile):
 	for src_card in dragging_cards:
-		var target_position = Vector2() # Calculate the target global position for the card based on the destination
+		var target_position = Vector2()
+		var target_container = null
+		
 		if free_cell:
-			target_position = free_cell.global_position # Assuming free_cell has a property for its position
+			target_container = free_cell
+			target_position = Vector2(free_cell.global_position.x + Enums.CARD_POSITION.x, free_cell.global_position.y + Enums.CARD_POSITION.y)
 		elif fnda_cell:
-			target_position = fnda_cell.global_position # Similar for foundation cells
+			target_container = fnda_cell
+			target_position = Vector2(fnda_cell.global_position.x + Enums.CARD_POSITION.x, fnda_cell.global_position.y + Enums.CARD_POSITION.y)
 		elif tabl_pile:
-			# For tableau piles, you might want to consider the vertical offset for stacking cards
-			#var last_card = tabl_pile.get_last_card() # Assuming there's a method to get the last card
-			#target_position = last_card.global_position + Vector2(0, 0) if last_card else tabl_pile.global_position
-			#target_position = null
-			pass
+			target_container = tabl_pile
+			target_position = Vector2(tabl_pile.global_position.x, tabl_pile.global_position.y)
 		elif tgt_card:
-			# Similar logic as for tabl_pile
-			#var last_card_position = get_global_position_of_last_card_in_pile(tgt_card) # You need to implement this
-			#target_position = last_card_position + Vector2(0, 0)
-			#target_position = null
-			pass
-
+			target_container = tgt_card.get_parent()
+			target_position = Vector2(tgt_card.global_position.x, tgt_card.global_position.y + Enums.Y_OFFSET)
+		
 		# Now that you have the target position, create and configure the tween
 		if (target_position.x + target_position.y > 0):
+			# A: Set tween flag
 			is_tween_running = true
+			# B: Re-parent the card *NOW*
+			# IMPORTANT: Move now (not in tween_done method) b/c setting `global_position` first causes 
+			# - the associated target's `_on_area_2d_area_exited()` method to fire, 
+			# - which is processed *AFTER* the tween_done() method completes (leaving the hover effect on)
+			var restore_pos = src_card.global_position
+			src_card.get_parent().remove_child(src_card)
+			target_container.add_child(src_card)
+			src_card.global_position = restore_pos
 			var tween = get_tree().create_tween()
 			tween.tween_property(src_card, "global_position", target_position, 0.5)
 			tween.tween_callback(_on_move_card_seq_tween_completed.bind(src_card, tgt_card, free_cell, fnda_cell, tabl_pile))
@@ -169,66 +176,35 @@ func move_card_sequence(tgt_card: Card, free_cell: FreeCell, fnda_cell: Foundati
 			_on_move_card_seq_tween_completed(src_card, tgt_card, free_cell, fnda_cell, tabl_pile)
 
 func _on_move_card_seq_tween_completed(src_card, tgt_card, free_cell, fnda_cell, tabl_pile):
-	# STEP 1: Remove card from its source pile
-	var old_pile_index = identify_card_pile(src_card)
-	if old_pile_index > -1:
-		tableau_piles[old_pile_index].remove_child(src_card)
-		#print("[move] removed from TABL: " + Enums.human_readable_card(src_card))
-	else:
-		for cell in free_cells:
-			for free_card in cell.get_children():
-				if free_card is Card and free_card == src_card:
-					cell.remove_child(src_card)
-	
-	# STEP 2: Add card to its new pile
+	# STEP 1: Add points, play audio/animation effects
 	var new_pile_index = identify_card_pile(tgt_card)
 	if new_pile_index > -1:
-		var new_pile = tableau_piles[new_pile_index]
-		new_pile.add_child(src_card)
-		src_card.global_position = Vector2(new_pile.global_position.x, new_pile.global_position.y + (get_card_count(new_pile)-1) * Enums.Y_OFFSET)
 		game_prop_score += 10
 		src_card.show_points(10)
 		audio_card_play.play()
-		_on_card_hover_tabl_ended(new_pile)
-		_on_card_hover_ended(src_card, tgt_card)
 	elif tabl_pile:
-		tabl_pile.add_child(src_card)
-		src_card.global_position = Vector2(tabl_pile.global_position.x, tabl_pile.global_position.y + (get_card_count(tabl_pile)-1) * Enums.Y_OFFSET)
 		game_prop_score += 10
 		src_card.show_points(10)
 		audio_card_play.play()
-		_on_card_hover_tabl_ended(tabl_pile)
-		_on_card_hover_ended(src_card, tgt_card)
 	elif free_cell and free_cells.size() > 0:
 		if dragging_cards.size() == 1:
-			free_cell.add_child(src_card)
-			src_card.global_position = Vector2(free_cell.global_position.x + Enums.CARD_POSITION.x, free_cell.global_position.y + Enums.CARD_POSITION.y)
 			# FIXME: dont give credit when moving from one freecell to another!
 			game_prop_score += 10
 			src_card.show_points(10)
 			audio_card_play.play()
-			# FIXME: freecell statys highighted
-			print("free_cell: ", free_cell)
-			print("hovered_free_cell: ", hovered_free_cell)
-			_on_card_hover_free_ended(free_cell)
-			# FIXME: no impact free_cell.highlight(false)
-			#break  # Since only one card can be moved to a free cell, break after moving
 		else:
 			print("ERROR: Cannot move more than one card to a Free Cell!")
 			#print("free_cells", free_cells)
 			#print("dragging_cards", dragging_cards)
 			#break
 	elif fnda_cell and src_card:
-		fnda_cell.add_child(src_card)
-		src_card.global_position = Vector2(fnda_cell.global_position.x + Enums.CARD_POSITION.x, fnda_cell.global_position.y + Enums.CARD_POSITION.y)
 		game_prop_score += 100
 		src_card.show_points(100)
 		fnda_cell.play_card_added_anim()
 		audio_card_play.play()
-		#break
 	
-	# If moving the last card in the sequence, reset the dragging cards array and other properties
-	if src_card == dragging_cards.back():
+	# STEP 2: If moving the last card in the sequence, reset the dragging cards array and other properties
+	if dragging_cards.size() > 0 and src_card == dragging_cards.back():
 		dragging_cards.clear()
 		reset_card_z_indices()
 		game_prop_moves += 1
@@ -237,6 +213,7 @@ func _on_move_card_seq_tween_completed(src_card, tgt_card, free_cell, fnda_cell,
 	
 	# LAST
 	is_tween_running = false
+	#print("[_on_move_card_seq_tween_completed] is_tween_running = ", is_tween_running)
 	
 func on_return_cards_tween_completed():
 	is_tween_running = false
@@ -373,8 +350,6 @@ func _on_card_hover_ended(_src_card: Card, tgt_card: Card):
 		card_target = null
 
 func _on_card_hover_free_start(free_cell: FreeCell):
-	print("DEBUG:[_on_card_hover_free_start] is_tween_running: ", is_tween_running)
-
 	# STEP 0: Bail; dont highlight cells if tween animation is the trigger
 	if is_tween_running or get_card_count(free_cell) > 0:
 		return
@@ -396,6 +371,7 @@ func _on_card_hover_free_ended(free_cell: FreeCell):
 		free_cell.highlight(false)
 
 func _on_card_hover_fnda_start(fnda_cell: FoundationCell):
+	#print("[_on_card_hover_fnda_start] is_tween_running = ", is_tween_running)
 	# STEP 0: Bail; dont highlight cells if tween animation is the trigger
 	if is_tween_running:
 		return
@@ -412,6 +388,7 @@ func _on_card_hover_fnda_start(fnda_cell: FoundationCell):
 	hovered_fnda_cell.highlight(true)
 
 func _on_card_hover_fnda_ended(fnda_cell: FoundationCell):
+	#print("_on_card_hover_tabl_ended")
 	# NOTE: Dont do below (it'll be done in `_on_card_drag_ended()`
 	# hovered_fnda_cell = null
 	fnda_cell.highlight(false)
@@ -467,7 +444,8 @@ func _on_card_hover_tabl_ended(pile: TableauPile):
 
 func update_game_props():
 	infobox_moves.text = str(game_prop_moves)
-	infobox_timer.text = "%02d:%02d" % [game_prop_timer / 60, game_prop_timer % 60]
+	#infobox_timer.text = "%02d:%02d" % [int(game_prop_timer / 60), int(game_prop_timer % 60)]
+	infobox_timer.text = "%02d:%02d" % [int(float(game_prop_timer) / 60.0), int(game_prop_timer % 60)]
 	infobox_score.text = str(game_prop_score)
 
 func check_for_win_condition():
