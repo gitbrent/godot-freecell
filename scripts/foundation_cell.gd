@@ -14,57 +14,21 @@ signal card_hover_fnda_ended(fnda_cell : FoundationCell)
 @onready var border_anim_gr16bit : AnimatedSprite2D = $BorderAnimGr16bit
 @onready var border_anim_rainbow : AnimatedSprite2D = $BorderAnimRainbow
 
-var cards : Array = []
-var card_added : Card
-
-# =====================================
-
 func _ready():
 	highlight(false)
 	# Set to last (empty) frame, so all we have to do is call `play` whenever needed and thats it!
 	animation_green_star_l.frame = 11
 	animation_green_star_r.frame = 11
 
-func is_empty():
-	return cards.size() == 0
-
-func get_top_card():
-	if cards.size() > 0:
-		return cards[cards.size() - 1]
-	else:
-		return null
-
-func get_card_count():
-	return cards.size()
-
-func add_card(card: Card):
-	if card is Card:
-		add_child(card)
-		card.position = Enums.CARD_POSITION
-		cards.append(card)
-		card_added = card
-		animation_green_star_l.play()
-		animation_green_star_r.play()
-		#print("[Foundation-Cell] added card: ", Enums.human_readable_card(card))
-	else:
-		print("[ERR] attempted to add a non-Card node to the pile.")
-
-func remove_card(card: Card):
-	remove_child(card)
-	cards.erase(card)
-
-func remove_all_cards():
-	while cards.size() > 0:
-		remove_card(cards[0])
-
 func _on_area_2d_area_entered(_area):
-	if not card_added:
-		emit_signal("card_hover_fnda_start", self)
-	else:
-		card_added = null
+	emit_signal("card_hover_fnda_start", self)
 
 func _on_area_2d_area_exited(_area):
 	emit_signal("card_hover_fnda_ended", self)
+
+func play_card_added_anim():
+	animation_green_star_l.play()
+	animation_green_star_r.play()
 
 func highlight(isVisible:bool):
 	panel_hover.visible = isVisible

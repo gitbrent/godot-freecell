@@ -1,7 +1,7 @@
 extends Node
 
-const CARD_POSITION = Vector2(3, 3)
-const Y_OFFSET : int = 45
+const CARD_POSITION = Vector2(3.0, 3.0)
+const Y_OFFSET : float = 45.0
 
 enum SuitColor {
 	RED,

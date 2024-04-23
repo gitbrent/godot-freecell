@@ -1,6 +1,6 @@
-# DESIGN: We use both [Control] nd [Area2D]
-# ......: Control to block mouse clicks and provide DnD
-#.......: Area2D for collisions (dragging csards onto other cards/free cells)
+# DESIGN: We use a combination of [Control] and [Area2D]
+# ......: Control: to block mouse clicks and provide DnD
+#.......: Area2D: for collisions (dragging csards onto other cards/free cells)
 extends Node2D
 class_name Card
 
@@ -46,7 +46,7 @@ func load_texture():
 	# Construct texture path based on suit and rank
 	var texture_path = "res://assets/cards/"
 	texture_path += Enums.suit_to_string(suit) + "_" + Enums.rank_to_string(rank) + ".png"
-
+	
 	# Load and assign texture
 	sprite.texture = ResourceLoader.load(texture_path)
 
