@@ -605,15 +605,12 @@ func _on_btn_debug_pressed():
 	sort_and_move_cards_to_foundation(Enums.Suit.DIAMONDS, fnda_cells[2])
 	sort_and_move_cards_to_foundation(Enums.Suit.HEARTS, fnda_cells[3])
 	await get_tree().create_timer(1.5).timeout
-	for pile in tableau_piles:
-		pile.reset_card_positions_in_pile()
-
-# DEBUG: called from debug button in `game_scene`
-#func reset_card_positions_in_pile():
-	#for i in range(cards.size()):
-		#var card = cards[i]
-		#card.position = Vector2(horizontal_offset, i * Enums.Y_OFFSET)
-
+	for pile_index in range(tableau_piles.size()):
+		var pile = tableau_piles[pile_index]
+		for card_index in range(pile.get_children().size()):
+			var pile_card = pile.get_child(card_index)
+			if pile_card is Card:
+				pile_card.position = Vector2(0, card_index * Enums.Y_OFFSET)
 
 func _on_timer_timeout():
 	game_prop_timer += 1
