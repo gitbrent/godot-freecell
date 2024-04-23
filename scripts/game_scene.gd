@@ -129,6 +129,7 @@ func is_valid_drag_start(card: Card, card_pile_index: int, sequence_length: int)
 	
 	# Ensure there's enough space to move the sequence.
 	if sequence_length > available_spaces + 1:
+		print("[RULE]: not enough free cells")
 		return false
 	
 	# Example sequence check (assuming descending sequence without suit check):
@@ -312,8 +313,10 @@ func _on_card_drag_ended(card):
 				if total_free_cells >= dragging_cards.size() - 1:
 					move_card_sequence(null, null, null, hovered_tabl_pile)
 				else:
+					print("[hovered_tabl_pile] card cannot be placed here: ", hovered_tabl_pile)
 					do_return_cards = true
 			else:
+				print("[hovered_tabl_pile] else: ", get_card_count(hovered_tabl_pile))
 				do_return_cards = true
 		else:
 			do_return_cards = true
