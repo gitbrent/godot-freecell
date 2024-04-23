@@ -1,49 +1,117 @@
-[gd_scene load_steps=9 format=3 uid="uid://dkej8f56i2pty"]
+[gd_scene load_steps=13 format=3 uid="uid://dkej8f56i2pty"]
 
 [ext_resource type="Script" path="res://scripts/start_screen.gd" id="1_54cyh"]
-[ext_resource type="Texture2D" uid="uid://2non5yojsj8q" path="res://assets/background_green felt.jpg" id="1_p6www"]
-[ext_resource type="Texture2D" uid="uid://bc1cb5najykmp" path="res://assets/start_screen/Banner_Orange.svg" id="2_ppja0"]
+[ext_resource type="Texture2D" uid="uid://co0anj3n2fyhc" path="res://assets/background_green_felt.png" id="2_ibqng"]
 [ext_resource type="Texture2D" uid="uid://c71jvatphm1fc" path="res://assets/buttons/UI-7.png" id="4_xs1ld"]
 [ext_resource type="Texture2D" uid="uid://cid7a2p8kpokp" path="res://assets/buttons/UI-8.png" id="5_qrdwh"]
 [ext_resource type="FontFile" uid="uid://b8wlkh3hxbgdn" path="res://assets/fonts/kirifont/KiriFont.ttf" id="6_pai5w"]
+[ext_resource type="Texture2D" uid="uid://cfqfdlwv3dicd" path="res://assets/cards/clubs_ace.png" id="7_nj6fg"]
+[ext_resource type="Texture2D" uid="uid://12tt2cah233x" path="res://assets/cards/diamonds_ace.png" id="8_d1f6i"]
+[ext_resource type="Texture2D" uid="uid://n0yl1q6pjpup" path="res://assets/cards/spades_ace.png" id="8_idw0x"]
+[ext_resource type="Texture2D" uid="uid://ba3fsak3ptwmi" path="res://assets/cards/hearts_ace.png" id="9_24y2o"]
+[ext_resource type="AudioStream" uid="uid://35hce66lbad4" path="res://assets/audio/btn_click_002.ogg" id="10_ry8mx"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ed4aq"]
-bg_color = Color(0.219608, 0.568627, 0.917647, 1)
-border_width_bottom = 4
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-shadow_color = Color(0, 0, 0, 0.2)
-shadow_size = 4
-shadow_offset = Vector2(2, 2)
+[sub_resource type="Animation" id="Animation_xxrq3"]
+resource_name = "spin_card"
+length = 4.0
+loop_mode = 1
+step = 1.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteCardAceClubs:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 6.28319]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = false
+tracks/1/path = NodePath("SpriteCardAceClubs:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2, 4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0.25, 0.25), Vector2(0.35, 0.35), Vector2(0.25, 0.25)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("SpriteCardAceDimnd:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 6.28319]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = false
+tracks/3/path = NodePath("SpriteCardAceDimnd:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 2, 4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0.25, 0.25), Vector2(0.35, 0.35), Vector2(0.25, 0.25)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("SpriteCardAceSpade:rotation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 6.28319]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("SpriteCardAceHeart:rotation")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 6.28319]
+}
 
-[sub_resource type="Theme" id="Theme_7po1u"]
-Button/styles/normal = SubResource("StyleBoxFlat_ed4aq")
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_l8xnp"]
+_data = {
+"spin_card": SubResource("Animation_xxrq3")
+}
 
 [node name="StartScreen" type="Node2D"]
 script = ExtResource("1_54cyh")
 
 [node name="Background" type="TextureRect" parent="."]
-offset_right = 1152.0
-offset_bottom = 648.0
+offset_right = 1080.0
+offset_bottom = 810.0
 size_flags_vertical = 4
-texture = ExtResource("1_p6www")
-expand_mode = 3
-
-[node name="BannerOrange" type="Sprite2D" parent="."]
-visible = false
-position = Vector2(575, 218)
-scale = Vector2(0.836264, 0.836264)
-texture = ExtResource("2_ppja0")
+texture = ExtResource("2_ibqng")
+expand_mode = 1
 
 [node name="Title" type="RichTextLabel" parent="."]
-offset_top = 135.0
-offset_right = 1152.0
-offset_bottom = 280.0
+modulate = Color(1, 0, 0, 1)
+offset_top = 100.0
+offset_right = 1080.0
+offset_bottom = 245.0
 size_flags_horizontal = 4
 theme_override_colors/default_color = Color(1, 0, 0, 1)
-theme_override_colors/font_shadow_color = Color(0.2, 0.2, 0.2, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.501961)
 theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
 theme_override_constants/shadow_offset_x = 4
 theme_override_constants/shadow_offset_y = 4
@@ -54,22 +122,15 @@ bbcode_enabled = true
 text = "[center]FreeCell Solitaire[/center]"
 
 [node name="StartButton" type="TextureButton" parent="."]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 383.0
-offset_top = 385.0
-offset_right = 1176.0
-offset_bottom = 591.0
-grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(0.5, 0.5)
-size_flags_vertical = 4
+offset_left = 300.0
+offset_top = 500.0
+offset_right = 1093.0
+offset_bottom = 706.0
+scale = Vector2(0.6, 0.6)
 texture_normal = ExtResource("5_qrdwh")
 texture_pressed = ExtResource("5_qrdwh")
 texture_hover = ExtResource("4_xs1ld")
+stretch_mode = 0
 
 [node name="CenterContainer" type="CenterContainer" parent="StartButton"]
 layout_mode = 1
@@ -91,13 +152,61 @@ text = "Start"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Button" type="Button" parent="."]
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
 visible = false
-offset_left = 383.0
-offset_top = 314.0
-offset_right = 614.0
-offset_bottom = 385.0
-theme = SubResource("Theme_7po1u")
-text = "START"
+offset_left = 100.0
+offset_top = 280.0
+offset_right = 980.0
+offset_bottom = 408.0
+theme_override_constants/separation = 142
+alignment = 1
+
+[node name="TextureRect-clubs" type="TextureRect" parent="HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("7_nj6fg")
+expand_mode = 3
+
+[node name="TextureRect-diamd" type="TextureRect" parent="HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("8_d1f6i")
+expand_mode = 3
+
+[node name="TextureRect-spade" type="TextureRect" parent="HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("8_idw0x")
+expand_mode = 3
+
+[node name="TextureRect-heart" type="TextureRect" parent="HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("9_24y2o")
+expand_mode = 3
+
+[node name="AudioBtnClick" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("10_ry8mx")
+
+[node name="SpriteCardAceClubs" type="Sprite2D" parent="."]
+position = Vector2(196, 344)
+scale = Vector2(0.266084, 0.266084)
+texture = ExtResource("7_nj6fg")
+
+[node name="SpriteCardAceDimnd" type="Sprite2D" parent="."]
+position = Vector2(424, 344)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("8_d1f6i")
+
+[node name="SpriteCardAceSpade" type="Sprite2D" parent="."]
+position = Vector2(654, 344)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("8_idw0x")
+
+[node name="SpriteCardAceHeart" type="Sprite2D" parent="."]
+position = Vector2(885, 344)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("9_24y2o")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_l8xnp")
+}
 
 [connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]

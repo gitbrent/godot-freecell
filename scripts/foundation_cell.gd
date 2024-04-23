@@ -7,44 +7,18 @@ var free_cell_normal_style = preload("res://styles/free_cell_normal.tres")
 signal card_hover_fnda_start(fnda_cell : FoundationCell)
 signal card_hover_fnda_ended(fnda_cell : FoundationCell)
 
-@onready var panel_hover:Panel = $PanelHover
-@onready var panel_normal:Panel = $PanelNormal
-
-var cards : Array = []
-
-# =====================================
+@onready var panel_hover : Panel = $PanelHover
+@onready var panel_normal : Panel = $PanelNormal
+@onready var animation_green_star_l : AnimatedSprite2D = $AnimationGreenStarL
+@onready var animation_green_star_r : AnimatedSprite2D = $AnimationGreenStarR
+@onready var border_anim_gr16bit : AnimatedSprite2D = $BorderAnimGr16bit
+@onready var border_anim_rainbow : AnimatedSprite2D = $BorderAnimRainbow
 
 func _ready():
-	$PanelHover.visible = false
-
-func is_empty():
-	return cards.size() == 0
-
-func get_top_card():
-	if cards.size() > 0:
-		return cards[cards.size() - 1]
-	else:
-		return null
-
-func get_card_count():
-	return cards.size()
-
-func add_card(card: Card):
-	if card is Card:
-		add_child(card)
-		card.position = Vector2(0, 0)
-		cards.append(card)
-		#print("[Foundation-Cell] added card: ", Enums.human_readable_card(card))
-	else:
-		print("[ERR] attempted to add a non-Card node to the pile.")
-
-func remove_card(card: Card):
-	remove_child(card)
-	cards.erase(card)
-
-func remove_all_cards():
-	while cards.size() > 0:
-		remove_card(cards[0])
+	highlight(false)
+	# Set to last (empty) frame, so all we have to do is call `play` whenever needed and thats it!
+	animation_green_star_l.frame = 11
+	animation_green_star_r.frame = 11
 
 func _on_area_2d_area_entered(_area):
 	emit_signal("card_hover_fnda_start", self)
@@ -52,6 +26,12 @@ func _on_area_2d_area_entered(_area):
 func _on_area_2d_area_exited(_area):
 	emit_signal("card_hover_fnda_ended", self)
 
+func play_card_added_anim():
+	animation_green_star_l.play()
+	animation_green_star_r.play()
+
 func highlight(isVisible:bool):
-	$PanelHover.visible = isVisible
-	$PanelNormal.visible = !isVisible
+	panel_hover.visible = isVisible
+	panel_normal.visible = !isVisible
+	#border_anim_gr16bit.visible = isVisible
+	border_anim_rainbow.visible = isVisible
