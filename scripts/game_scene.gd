@@ -140,7 +140,8 @@ func is_valid_drag_start(card: Card, card_pile_index: int, sequence_length: int)
 	return true  # Valid sequence
 
 func move_card_sequence(tgt_card: Card, free_cell: FreeCell, fnda_cell: FoundationCell, tabl_pile: TableauPile):
-	for src_card in dragging_cards:
+	for idx in range(dragging_cards.size()):
+		var src_card = dragging_cards[idx]
 		var target_position = Vector2()
 		var target_container = null
 		
@@ -155,7 +156,7 @@ func move_card_sequence(tgt_card: Card, free_cell: FreeCell, fnda_cell: Foundati
 			target_position = Vector2(tabl_pile.global_position.x, tabl_pile.global_position.y)
 		elif tgt_card:
 			target_container = tgt_card.get_parent()
-			target_position = Vector2(tgt_card.global_position.x, tgt_card.global_position.y + Enums.Y_OFFSET)
+			target_position = Vector2(tgt_card.global_position.x, tgt_card.global_position.y + (Enums.Y_OFFSET * (idx+1)))
 		
 		# Now that you have the target position, create and configure the tween
 		if (target_position.x + target_position.y > 0):
@@ -182,6 +183,7 @@ func _on_move_card_seq_tween_completed(src_card, tgt_card, free_cell, fnda_cell,
 		game_prop_score += 10
 		src_card.show_points(10)
 		audio_card_play.play()
+		_on_card_hover_ended(src_card, tgt_card)
 	elif tabl_pile:
 		game_prop_score += 10
 		src_card.show_points(10)
@@ -332,6 +334,10 @@ func _on_card_drag_ended(card):
 		hovered_tabl_pile = null
 
 func _on_card_hover_start(src_card: Card, tgt_card: Card):
+	# STEP 0: Bail; dont highlight if tween animation is the trigger
+	if is_tween_running:
+		return
+
 	# RULE: Only the top-most (the card completely visible) card is a valid target
 	var pile_tab = tableau_piles[identify_card_pile(tgt_card)]
 	var last_child_index = pile_tab.get_child_count() - 1
@@ -444,7 +450,6 @@ func _on_card_hover_tabl_ended(pile: TableauPile):
 
 func update_game_props():
 	infobox_moves.text = str(game_prop_moves)
-	#infobox_timer.text = "%02d:%02d" % [int(game_prop_timer / 60), int(game_prop_timer % 60)]
 	infobox_timer.text = "%02d:%02d" % [int(float(game_prop_timer) / 60.0), int(game_prop_timer % 60)]
 	infobox_score.text = str(game_prop_score)
 
