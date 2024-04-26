@@ -1,7 +1,7 @@
-[gd_scene load_steps=13 format=3 uid="uid://dkej8f56i2pty"]
+[gd_scene load_steps=14 format=3 uid="uid://dkej8f56i2pty"]
 
 [ext_resource type="Script" path="res://scripts/start_screen.gd" id="1_54cyh"]
-[ext_resource type="Texture2D" uid="uid://co0anj3n2fyhc" path="res://assets/background_green_felt.png" id="2_ibqng"]
+[ext_resource type="Texture2D" uid="uid://3v1wjcpptmsk" path="res://assets/awesome_tile.png" id="3_18h75"]
 [ext_resource type="Texture2D" uid="uid://c71jvatphm1fc" path="res://assets/buttons/UI-7.png" id="4_xs1ld"]
 [ext_resource type="Texture2D" uid="uid://cid7a2p8kpokp" path="res://assets/buttons/UI-8.png" id="5_qrdwh"]
 [ext_resource type="FontFile" uid="uid://b8wlkh3hxbgdn" path="res://assets/fonts/kirifont/KiriFont.ttf" id="6_pai5w"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://n0yl1q6pjpup" path="res://assets/cards/spades_ace.png" id="8_idw0x"]
 [ext_resource type="Texture2D" uid="uid://ba3fsak3ptwmi" path="res://assets/cards/hearts_ace.png" id="9_24y2o"]
 [ext_resource type="AudioStream" uid="uid://35hce66lbad4" path="res://assets/audio/btn_click_002.ogg" id="10_ry8mx"]
+[ext_resource type="FontFile" uid="uid://dif5bwgm7wka1" path="res://assets/fonts/AbrilFatface-Regular.ttf" id="11_m3obj"]
 
 [sub_resource type="Animation" id="Animation_xxrq3"]
 resource_name = "spin_card"
@@ -98,13 +99,15 @@ _data = {
 script = ExtResource("1_54cyh")
 
 [node name="Background" type="TextureRect" parent="."]
-offset_right = 1080.0
+offset_left = -70.0
+offset_right = 1502.0
 offset_bottom = 810.0
 size_flags_vertical = 4
-texture = ExtResource("2_ibqng")
-expand_mode = 1
+texture = ExtResource("3_18h75")
+stretch_mode = 1
 
 [node name="Title" type="RichTextLabel" parent="."]
+visible = false
 modulate = Color(1, 0, 0, 1)
 offset_top = 100.0
 offset_right = 1080.0
@@ -208,5 +211,21 @@ texture = ExtResource("9_24y2o")
 libraries = {
 "": SubResource("AnimationLibrary_l8xnp")
 }
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+offset_top = 100.0
+offset_right = 1080.0
+offset_bottom = 245.0
+theme_override_colors/default_color = Color(1, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.501961)
+theme_override_colors/font_outline_color = Color(0.996078, 0.996078, 0.996078, 1)
+theme_override_constants/shadow_offset_x = 4
+theme_override_constants/shadow_offset_y = 4
+theme_override_constants/shadow_outline_size = 2
+theme_override_constants/outline_size = 8
+theme_override_fonts/normal_font = ExtResource("11_m3obj")
+theme_override_font_sizes/normal_font_size = 108
+bbcode_enabled = true
+text = "[center]FreeCell Solitaire[/center]"
 
 [connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]

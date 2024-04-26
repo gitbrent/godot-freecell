@@ -8,8 +8,8 @@
 [ext_resource type="Texture2D" uid="uid://bbwxkm235jxg4" path="res://assets/basic_gui/Box_Orange_Square.png" id="6_yc7rn"]
 [ext_resource type="Texture2D" uid="uid://cjtuo230wruw0" path="res://assets/basic_gui/Banner_Orange.png" id="7_6nmgg"]
 [ext_resource type="Texture2D" uid="uid://doccqluarp17a" path="res://assets/basic_gui/Box_Blue_Square.png" id="8_dxa65"]
-[ext_resource type="FontFile" uid="uid://b8wlkh3hxbgdn" path="res://assets/fonts/kirifont/KiriFont.ttf" id="9_8es7t"]
 [ext_resource type="Texture2D" uid="uid://c147h4e5kcsjd" path="res://assets/basic_gui/ButtonText_Large_Blue_Square.png" id="9_hoqir"]
+[ext_resource type="FontFile" uid="uid://dc4mvtwprqubx" path="res://assets/fonts/Acme-Regular.ttf" id="10_l2rte"]
 [ext_resource type="Texture2D" uid="uid://d1a7q3w86rcwx" path="res://assets/basic_gui/ButtonText_Large_Orange_Round.png" id="10_n0jy5"]
 [ext_resource type="Texture2D" uid="uid://csi1aig436o7y" path="res://assets/basic_gui/ButtonText_Large_Red_Round.png" id="11_jipm6"]
 [ext_resource type="Texture2D" uid="uid://hycrehb3kevt" path="res://assets/basic_gui/ButtonText_Large_Green_Round.png" id="12_1v455"]
@@ -245,11 +245,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 35.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_fonts/font = ExtResource("9_8es7t")
-theme_override_font_sizes/font_size = 154
+theme_override_fonts/font = ExtResource("10_l2rte")
+theme_override_font_sizes/font_size = 210
 text = "PAUSED"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -269,13 +268,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 20.0
-offset_right = -31.0
-offset_bottom = -18.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_fonts/font = ExtResource("9_8es7t")
-theme_override_font_sizes/font_size = 112
+theme_override_fonts/font = ExtResource("10_l2rte")
+theme_override_font_sizes/font_size = 168
 text = "New Game"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -294,13 +290,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 22.0
-offset_right = -31.0
-offset_bottom = -16.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_fonts/font = ExtResource("9_8es7t")
-theme_override_font_sizes/font_size = 112
+theme_override_fonts/font = ExtResource("10_l2rte")
+theme_override_font_sizes/font_size = 168
 text = "Options"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -319,13 +312,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 24.0
-offset_right = -31.0
-offset_bottom = -14.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_fonts/font = ExtResource("9_8es7t")
-theme_override_font_sizes/font_size = 112
+theme_override_fonts/font = ExtResource("10_l2rte")
+theme_override_font_sizes/font_size = 168
 text = "Resume"
 horizontal_alignment = 1
 vertical_alignment = 1
