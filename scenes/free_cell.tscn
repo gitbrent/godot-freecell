@@ -435,6 +435,7 @@ autoplay = "border_cycle"
 frame_progress = 0.763756
 
 [node name="BorderAnimGrnNew" type="AnimatedSprite2D" parent="."]
+visible = false
 position = Vector2(47, 67)
 scale = Vector2(0.907407, 0.932432)
 sprite_frames = SubResource("SpriteFrames_cdfy3")

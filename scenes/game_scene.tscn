@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://yk1wyekngt53"]
+[gd_scene load_steps=22 format=3 uid="uid://yk1wyekngt53"]
 
 [ext_resource type="Script" path="res://scripts/game_scene.gd" id="1_6cyku"]
 [ext_resource type="Texture2D" uid="uid://co0anj3n2fyhc" path="res://assets/backgrounds/background_green_felt.png" id="2_cuyih"]
@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://c0pu0eykvwo1i" path="res://scenes/btn_debug.tscn" id="6_8unit"]
 [ext_resource type="PackedScene" uid="uid://diddbqdq5js1f" path="res://scenes/foundation_cell.tscn" id="7_iqgb2"]
 [ext_resource type="PackedScene" uid="uid://d36ntyouo8moq" path="res://scenes/you_won_scene.tscn" id="10_c7eam"]
+[ext_resource type="Theme" uid="uid://dxfw0snolsagv" path="res://styles/control_value_theme.tres" id="10_gnhmw"]
 [ext_resource type="PackedScene" uid="uid://cxf5h1ul17kl" path="res://scenes/tableau_pile.tscn" id="10_xpokh"]
 [ext_resource type="PackedScene" uid="uid://bbpy3wvistfke" path="res://scenes/main_menu.tscn" id="13_y7q6w"]
 [ext_resource type="AudioStream" uid="uid://cgl2aokvwb11k" path="res://assets/audio/cardShuffle-casino.wav" id="14_2tlea"]
@@ -218,11 +219,12 @@ size_flags_horizontal = 6
 [node name="Label" type="Label" parent="InfoRect/HBoxContainer/HBoxContElapsed"]
 layout_mode = 2
 theme = ExtResource("3_vv2if")
-text = "Elapsed"
+text = "Elapsed "
 
 [node name="Value" type="Label" parent="InfoRect/HBoxContainer/HBoxContElapsed"]
 layout_mode = 2
 size_flags_horizontal = 10
+theme = ExtResource("10_gnhmw")
 text = "00:00"
 
 [node name="HBoxContMoves" type="HBoxContainer" parent="InfoRect/HBoxContainer"]
@@ -232,11 +234,12 @@ size_flags_horizontal = 4
 [node name="Label" type="Label" parent="InfoRect/HBoxContainer/HBoxContMoves"]
 layout_mode = 2
 theme = ExtResource("3_vv2if")
-text = "Moves"
+text = "Moves "
 
 [node name="Value" type="Label" parent="InfoRect/HBoxContainer/HBoxContMoves"]
 layout_mode = 2
 size_flags_horizontal = 10
+theme = ExtResource("10_gnhmw")
 text = "0"
 
 [node name="HBoxContScore" type="HBoxContainer" parent="InfoRect/HBoxContainer"]
@@ -247,12 +250,13 @@ alignment = 1
 [node name="Label" type="Label" parent="InfoRect/HBoxContainer/HBoxContScore"]
 layout_mode = 2
 theme = ExtResource("3_vv2if")
-text = "Score	"
+text = "Score "
 vertical_alignment = 1
 
 [node name="Value" type="Label" parent="InfoRect/HBoxContainer/HBoxContScore"]
 layout_mode = 2
 size_flags_horizontal = 10
+theme = ExtResource("10_gnhmw")
 text = "0"
 vertical_alignment = 1
 

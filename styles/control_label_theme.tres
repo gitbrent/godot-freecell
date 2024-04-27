@@ -1,8 +1,8 @@
 [gd_resource type="Theme" load_steps=2 format=3 uid="uid://b3nw8ski1k4dn"]
 
-[ext_resource type="FontFile" uid="uid://ce3b7qrw14sp3" path="res://assets/fonts/montreal/Montreal-Regular.ttf" id="1_xb4lp"]
+[ext_resource type="FontFile" uid="uid://dfggceo8e08ln" path="res://assets/fonts/IndieFlower-Regular.ttf" id="1_0mh56"]
 
 [resource]
-Label/colors/font_color = Color(0.788235, 0.788235, 0.788235, 1)
-Label/font_sizes/font_size = 12
-Label/fonts/font = ExtResource("1_xb4lp")
+Label/colors/font_color = Color(0.72549, 0.929412, 0.85098, 0.588235)
+Label/font_sizes/font_size = 24
+Label/fonts/font = ExtResource("1_0mh56")

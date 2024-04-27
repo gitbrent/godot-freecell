@@ -1,0 +1,8 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://dxfw0snolsagv"]
+
+[ext_resource type="FontFile" uid="uid://dc4mvtwprqubx" path="res://assets/fonts/Acme-Regular.ttf" id="1_bfj8v"]
+
+[resource]
+default_font = ExtResource("1_bfj8v")
+default_font_size = 24
+Label/colors/font_color = Color(0.223529, 0.815686, 0, 1)
