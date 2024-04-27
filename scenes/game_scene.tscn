@@ -1,9 +1,10 @@
-[gd_scene load_steps=20 format=3 uid="uid://yk1wyekngt53"]
+[gd_scene load_steps=21 format=3 uid="uid://yk1wyekngt53"]
 
 [ext_resource type="Script" path="res://scripts/game_scene.gd" id="1_6cyku"]
-[ext_resource type="Texture2D" uid="uid://co0anj3n2fyhc" path="res://assets/background_green_felt.png" id="2_cuyih"]
+[ext_resource type="Texture2D" uid="uid://co0anj3n2fyhc" path="res://assets/backgrounds/background_green_felt.png" id="2_cuyih"]
 [ext_resource type="PackedScene" uid="uid://cdti6c0vnval3" path="res://scenes/btn_pause.tscn" id="2_mvke8"]
 [ext_resource type="Theme" uid="uid://b3nw8ski1k4dn" path="res://styles/control_label_theme.tres" id="3_vv2if"]
+[ext_resource type="Texture2D" uid="uid://b2vtdhm4lv57o" path="res://assets/backgrounds/card-suits-seamless-pattern.jpg" id="3_w5cwk"]
 [ext_resource type="Texture2D" uid="uid://ptpw6pfsh3ip" path="res://assets/buttons/CGB02-green_M_btn.png" id="4_ktaa6"]
 [ext_resource type="PackedScene" uid="uid://pmwtogh2qbp7" path="res://scenes/btn_deal.tscn" id="4_pqekv"]
 [ext_resource type="FontFile" uid="uid://b8wlkh3hxbgdn" path="res://assets/fonts/kirifont/KiriFont.ttf" id="5_eiujg"]
@@ -35,6 +36,22 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_cuyih")
 expand_mode = 2
+
+[node name="BackgroundDark" type="TextureRect" parent="."]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -23.0
+offset_top = -23.0
+offset_right = 1870.0
+offset_bottom = 1410.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("3_w5cwk")
+expand_mode = 1
+stretch_mode = 1
 
 [node name="Timer" type="Timer" parent="."]
 autostart = true

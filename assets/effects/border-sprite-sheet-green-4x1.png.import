@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://2non5yojsj8q"
-path="res://.godot/imported/background_green felt.jpg-d3098d5d57a35970b74d8fe684667028.ctex"
+uid="uid://bpa5s2f01o0v"
+path="res://.godot/imported/border-sprite-sheet-green-4x1.png-6a3267b0d8f0175164b8746cd3dcb141.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/background_green felt.jpg"
-dest_files=["res://.godot/imported/background_green felt.jpg-d3098d5d57a35970b74d8fe684667028.ctex"]
+source_file="res://assets/effects/border-sprite-sheet-green-4x1.png"
+dest_files=["res://.godot/imported/border-sprite-sheet-green-4x1.png-6a3267b0d8f0175164b8746cd3dcb141.ctex"]
 
 [params]
 

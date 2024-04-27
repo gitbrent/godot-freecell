@@ -1,11 +1,12 @@
-[gd_scene load_steps=14 format=3 uid="uid://dkej8f56i2pty"]
+[gd_scene load_steps=15 format=3 uid="uid://dkej8f56i2pty"]
 
 [ext_resource type="Script" path="res://scripts/start_screen.gd" id="1_54cyh"]
-[ext_resource type="Texture2D" uid="uid://3v1wjcpptmsk" path="res://assets/awesome_tile.png" id="3_18h75"]
+[ext_resource type="Texture2D" uid="uid://3v1wjcpptmsk" path="res://assets/backgrounds/awesome_tile.png" id="3_18h75"]
 [ext_resource type="Texture2D" uid="uid://c71jvatphm1fc" path="res://assets/buttons/UI-7.png" id="4_xs1ld"]
 [ext_resource type="Texture2D" uid="uid://cid7a2p8kpokp" path="res://assets/buttons/UI-8.png" id="5_qrdwh"]
-[ext_resource type="FontFile" uid="uid://b8wlkh3hxbgdn" path="res://assets/fonts/kirifont/KiriFont.ttf" id="6_pai5w"]
+[ext_resource type="FontFile" uid="uid://dc4mvtwprqubx" path="res://assets/fonts/Acme-Regular.ttf" id="6_kiepp"]
 [ext_resource type="Texture2D" uid="uid://cfqfdlwv3dicd" path="res://assets/cards/clubs_ace.png" id="7_nj6fg"]
+[ext_resource type="Texture2D" uid="uid://csi1aig436o7y" path="res://assets/basic_gui/ButtonText_Large_Red_Round.png" id="7_q0ohl"]
 [ext_resource type="Texture2D" uid="uid://12tt2cah233x" path="res://assets/cards/diamonds_ace.png" id="8_d1f6i"]
 [ext_resource type="Texture2D" uid="uid://n0yl1q6pjpup" path="res://assets/cards/spades_ace.png" id="8_idw0x"]
 [ext_resource type="Texture2D" uid="uid://ba3fsak3ptwmi" path="res://assets/cards/hearts_ace.png" id="9_24y2o"]
@@ -107,51 +108,69 @@ texture = ExtResource("3_18h75")
 stretch_mode = 1
 
 [node name="Title" type="RichTextLabel" parent="."]
-visible = false
-modulate = Color(1, 0, 0, 1)
 offset_top = 100.0
-offset_right = 1080.0
+offset_right = 1082.0
 offset_bottom = 245.0
-size_flags_horizontal = 4
-theme_override_colors/default_color = Color(1, 0, 0, 1)
+theme_override_colors/default_color = Color(0.752941, 0, 0, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.501961)
-theme_override_colors/font_outline_color = Color(1, 1, 1, 1)
-theme_override_constants/shadow_offset_x = 4
-theme_override_constants/shadow_offset_y = 4
-theme_override_constants/shadow_outline_size = 4
-theme_override_constants/outline_size = 4
-theme_override_font_sizes/normal_font_size = 96
+theme_override_colors/font_outline_color = Color(0.996078, 0.996078, 0.996078, 1)
+theme_override_constants/shadow_offset_x = 8
+theme_override_constants/shadow_offset_y = 8
+theme_override_constants/shadow_outline_size = 8
+theme_override_constants/outline_size = 8
+theme_override_fonts/normal_font = ExtResource("11_m3obj")
+theme_override_font_sizes/normal_font_size = 112
 bbcode_enabled = true
 text = "[center]FreeCell Solitaire[/center]"
+scroll_active = false
+shortcut_keys_enabled = false
 
 [node name="StartButton" type="TextureButton" parent="."]
+visible = false
 offset_left = 300.0
-offset_top = 500.0
-offset_right = 1093.0
-offset_bottom = 706.0
+offset_top = 553.0
+offset_right = 1100.0
+offset_bottom = 783.0
 scale = Vector2(0.6, 0.6)
 texture_normal = ExtResource("5_qrdwh")
 texture_pressed = ExtResource("5_qrdwh")
 texture_hover = ExtResource("4_xs1ld")
 stretch_mode = 0
 
-[node name="CenterContainer" type="CenterContainer" parent="StartButton"]
+[node name="Label" type="Label" parent="StartButton"]
 layout_mode = 1
-anchors_preset = 13
-anchor_left = 0.5
-anchor_right = 0.5
+anchors_preset = 15
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -71.5
-offset_right = 71.5
 grow_horizontal = 2
 grow_vertical = 2
-
-[node name="Label" type="Label" parent="StartButton/CenterContainer"]
-layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("6_pai5w")
-theme_override_font_sizes/font_size = 72
+theme_override_fonts/font = ExtResource("6_kiepp")
+theme_override_font_sizes/font_size = 148
 text = "Start"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StartButton2" type="TextureButton" parent="."]
+offset_left = 268.0
+offset_top = 542.0
+offset_right = 1430.0
+offset_bottom = 916.0
+scale = Vector2(0.5, 0.5)
+texture_normal = ExtResource("7_q0ohl")
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="StartButton2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("6_kiepp")
+theme_override_font_sizes/font_size = 148
+text = "Let's Play!"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -188,22 +207,22 @@ expand_mode = 3
 stream = ExtResource("10_ry8mx")
 
 [node name="SpriteCardAceClubs" type="Sprite2D" parent="."]
-position = Vector2(196, 344)
+position = Vector2(196, 382)
 scale = Vector2(0.266084, 0.266084)
 texture = ExtResource("7_nj6fg")
 
 [node name="SpriteCardAceDimnd" type="Sprite2D" parent="."]
-position = Vector2(424, 344)
+position = Vector2(424, 382)
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("8_d1f6i")
 
 [node name="SpriteCardAceSpade" type="Sprite2D" parent="."]
-position = Vector2(654, 344)
+position = Vector2(654, 382)
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("8_idw0x")
 
 [node name="SpriteCardAceHeart" type="Sprite2D" parent="."]
-position = Vector2(885, 344)
+position = Vector2(885, 382)
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("9_24y2o")
 
@@ -212,20 +231,5 @@ libraries = {
 "": SubResource("AnimationLibrary_l8xnp")
 }
 
-[node name="RichTextLabel" type="RichTextLabel" parent="."]
-offset_top = 100.0
-offset_right = 1080.0
-offset_bottom = 245.0
-theme_override_colors/default_color = Color(1, 0, 0, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.501961)
-theme_override_colors/font_outline_color = Color(0.996078, 0.996078, 0.996078, 1)
-theme_override_constants/shadow_offset_x = 4
-theme_override_constants/shadow_offset_y = 4
-theme_override_constants/shadow_outline_size = 2
-theme_override_constants/outline_size = 8
-theme_override_fonts/normal_font = ExtResource("11_m3obj")
-theme_override_font_sizes/normal_font_size = 108
-bbcode_enabled = true
-text = "[center]FreeCell Solitaire[/center]"
-
 [connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="StartButton2" to="." method="_on_start_button_pressed"]

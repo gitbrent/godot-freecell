@@ -1,4 +1,4 @@
-[gd_scene load_steps=46 format=3 uid="uid://chwprjvrdjihp"]
+[gd_scene load_steps=55 format=3 uid="uid://chwprjvrdjihp"]
 
 [ext_resource type="Script" path="res://scripts/free_cell.gd" id="1_pfu5x"]
 [ext_resource type="Texture2D" uid="uid://5ua6yri85q8k" path="res://assets/cards/back07.png" id="2_gqg5f"]
@@ -274,6 +274,70 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_bba0x"]
+atlas = ExtResource("8_0kgrj")
+region = Rect2(0, 0, 108, 148)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_20ae4"]
+atlas = ExtResource("8_0kgrj")
+region = Rect2(108, 0, 108, 148)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7b5rw"]
+atlas = ExtResource("8_0kgrj")
+region = Rect2(216, 0, 108, 148)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c6dl8"]
+atlas = ExtResource("8_0kgrj")
+region = Rect2(324, 0, 108, 148)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1c3px"]
+atlas = ExtResource("8_0kgrj")
+region = Rect2(0, 148, 108, 148)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gvf2y"]
+atlas = ExtResource("8_0kgrj")
+region = Rect2(108, 148, 108, 148)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7q8xu"]
+atlas = ExtResource("8_0kgrj")
+region = Rect2(216, 148, 108, 148)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bxp3b"]
+atlas = ExtResource("8_0kgrj")
+region = Rect2(324, 148, 108, 148)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_cdfy3"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bba0x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_20ae4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7b5rw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c6dl8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1c3px")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gvf2y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7q8xu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bxp3b")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
 [node name="FreeCell0" type="Control"]
 layout_mode = 3
 anchors_preset = 0
@@ -369,6 +433,12 @@ sprite_frames = SubResource("SpriteFrames_xvonv")
 animation = &"border_cycle"
 autoplay = "border_cycle"
 frame_progress = 0.763756
+
+[node name="BorderAnimGrnNew" type="AnimatedSprite2D" parent="."]
+position = Vector2(47, 67)
+scale = Vector2(0.907407, 0.932432)
+sprite_frames = SubResource("SpriteFrames_cdfy3")
+autoplay = "default"
 
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
 [connection signal="area_exited" from="Area2D" to="." method="_on_area_2d_area_exited"]

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://3v1wjcpptmsk"
-path="res://.godot/imported/awesome_tile.png-29e1d7df3862f16a1406bdb1c712916f.ctex"
+uid="uid://2non5yojsj8q"
+path="res://.godot/imported/background_green felt.jpg-305aa9c192510ba358b3208e24b0c6d1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/awesome_tile.png"
-dest_files=["res://.godot/imported/awesome_tile.png-29e1d7df3862f16a1406bdb1c712916f.ctex"]
+source_file="res://assets/backgrounds/background_green felt.jpg"
+dest_files=["res://.godot/imported/background_green felt.jpg-305aa9c192510ba358b3208e24b0c6d1.ctex"]
 
 [params]
 
