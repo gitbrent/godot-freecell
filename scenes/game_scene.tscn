@@ -225,7 +225,6 @@ vertical_alignment = 1
 
 [node name="Value" type="Label" parent="InfoRect/HBoxContainer/HBoxContElapsed"]
 layout_mode = 2
-size_flags_horizontal = 10
 size_flags_vertical = 1
 theme = ExtResource("10_gnhmw")
 text = "00:00"
@@ -245,7 +244,6 @@ vertical_alignment = 1
 
 [node name="Value" type="Label" parent="InfoRect/HBoxContainer/HBoxContMoves"]
 layout_mode = 2
-size_flags_horizontal = 3
 size_flags_vertical = 1
 theme = ExtResource("10_gnhmw")
 text = "0"
@@ -266,17 +264,16 @@ vertical_alignment = 1
 
 [node name="Value" type="Label" parent="InfoRect/HBoxContainer/HBoxContScore"]
 layout_mode = 2
-size_flags_horizontal = 10
 size_flags_vertical = 1
 theme = ExtResource("10_gnhmw")
 text = "0"
 vertical_alignment = 1
 
 [node name="GamePanelWinner" parent="." instance=ExtResource("10_c7eam")]
+visible = false
 
 [node name="MainMenu" parent="." instance=ExtResource("13_y7q6w")]
 visible = false
-z_index = 1010
 
 [node name="Placeholder_Deal" type="Sprite2D" parent="."]
 visible = false
