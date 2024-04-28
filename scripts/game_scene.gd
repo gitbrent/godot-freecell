@@ -6,7 +6,7 @@ extends Node2D
 @onready var infobox_timer:Label = $InfoRect/HBoxContainer/HBoxContElapsed/Value
 @onready var infobox_score:Label = $InfoRect/HBoxContainer/HBoxContScore/Value
 @onready var main_menu:MainMenu = $MainMenu
-@onready var game_panel_winner:Node2D = $GamePanelWinner
+@onready var game_panel_winner:Control = $GamePanelWinner
 @onready var audio_shuffle:AudioStreamPlayer = $AudioShuffle
 @onready var audio_card_play:AudioStreamPlayer = $AudioCardPlay
 @onready var audio_card_nope:AudioStreamPlayer = $AudioCardNope
@@ -62,6 +62,7 @@ func _ready():
 	# STEP 5: Connect menu buttons
 	main_menu.connect("button_pressed_newgame", self.deal_cards)
 	main_menu.connect("button_pressed_debug", self._on_btn_debug_pressed)
+	game_panel_winner.connect("button_pressed_newgame", self.deal_cards)
 
 # =============================================================================
 
