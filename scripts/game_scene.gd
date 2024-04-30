@@ -7,6 +7,7 @@ extends Node2D
 @onready var infobox_score:Label = $InfoRect/HBoxContainer/HBoxContScore/Value
 @onready var main_menu:MainMenu = $MainMenu
 @onready var game_panel_winner:Control = $GamePanelWinner
+@onready var help_scene:Control = $help_scene
 @onready var audio_shuffle:AudioStreamPlayer = $AudioShuffle
 @onready var audio_card_play:AudioStreamPlayer = $AudioCardPlay
 @onready var audio_card_nope:AudioStreamPlayer = $AudioCardNope
@@ -625,3 +626,6 @@ func _on_btn_undo_pressed():
 	# TODO:
 	audio_card_nope.play()
 	print("TODO: implement UNDO!")
+
+func _on_btn_help_pressed():
+	help_scene.visible = true
