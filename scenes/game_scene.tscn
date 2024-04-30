@@ -337,7 +337,7 @@ z_index = 2000
 visible = false
 z_index = 2000
 
-[node name="help_scene" parent="." instance=ExtResource("17_y1hha")]
+[node name="HelpScene" parent="." instance=ExtResource("17_y1hha")]
 visible = false
 z_index = 2000
 

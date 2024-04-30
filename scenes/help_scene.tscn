@@ -60,14 +60,23 @@ offset_top = 268.0
 offset_right = 1430.0
 offset_bottom = 1170.0
 theme_override_fonts/normal_font = ExtResource("3_tkbc4")
-theme_override_font_sizes/normal_font_size = 82
-theme_override_font_sizes/bold_font_size = 110
+theme_override_font_sizes/normal_font_size = 62
+theme_override_font_sizes/bold_font_size = 96
 bbcode_enabled = true
-text = "[b]FreeCell Rules[/b]
+text = "[color=e1e1e1][b]FreeCell Rules[/b][/color]
 
-- Move all the cards to foundation cells in order from A->K.
-- Use Freecells for any card.
-- Tableau piles can be stacked in alternative red/black suit ordered."
+[ul]
+Move all the cards to foundation cells.
+Cards are placed in order from A->K.
+Use Freecells for any card.
+Cards in the 8 tableau piles can be stacked.
+Tableau pile sets can be moved as a group.
+[/ul]
+
+Complete rules & history:
+[ul]
+[color=000069][url][u]https://en.wikipedia.org/wiki/FreeCell[/u][/url][/color]
+[/ul]"
 
 [node name="BtnClose" type="TextureButton" parent="TextureRect"]
 layout_mode = 0
