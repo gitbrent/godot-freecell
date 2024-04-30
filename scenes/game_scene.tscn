@@ -91,14 +91,14 @@ theme_override_constants/separation = 10
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="TexBtnMenu" type="TextureButton" parent="TopContainer/VBoxContainer/Control"]
+[node name="BtnMenu" type="TextureButton" parent="TopContainer/VBoxContainer/Control"]
 offset_top = 10.0
 offset_right = 536.0
 offset_bottom = 238.0
 scale = Vector2(0.22, 0.22)
 texture_normal = ExtResource("17_m60xu")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="TopContainer/VBoxContainer/Control/TexBtnMenu"]
+[node name="HBoxContainer" type="HBoxContainer" parent="TopContainer/VBoxContainer/Control/BtnMenu"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -109,13 +109,13 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 40
 
-[node name="TextureRect" type="TextureRect" parent="TopContainer/VBoxContainer/Control/TexBtnMenu/HBoxContainer"]
+[node name="TextureRect" type="TextureRect" parent="TopContainer/VBoxContainer/Control/BtnMenu/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
 texture = ExtResource("18_3efq7")
 
-[node name="Label" type="Label" parent="TopContainer/VBoxContainer/Control/TexBtnMenu/HBoxContainer"]
+[node name="Label" type="Label" parent="TopContainer/VBoxContainer/Control/BtnMenu/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("19_sy6uh")
@@ -131,13 +131,13 @@ size_flags_vertical = 3
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="TexBtnUndo" type="TextureButton" parent="TopContainer/VBoxContainer/HBoxContainer/Control1"]
+[node name="BtnUndo" type="TextureButton" parent="TopContainer/VBoxContainer/HBoxContainer/Control1"]
 offset_right = 267.0
 offset_bottom = 268.0
 scale = Vector2(0.21, 0.21)
 texture_normal = ExtResource("19_fe5t1")
 
-[node name="TextureRect" type="TextureRect" parent="TopContainer/VBoxContainer/HBoxContainer/Control1/TexBtnUndo"]
+[node name="TextureRect" type="TextureRect" parent="TopContainer/VBoxContainer/HBoxContainer/Control1/BtnUndo"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -157,13 +157,13 @@ flip_h = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="TexBtnHelp" type="TextureButton" parent="TopContainer/VBoxContainer/HBoxContainer/Control2"]
+[node name="BtnHelp" type="TextureButton" parent="TopContainer/VBoxContainer/HBoxContainer/Control2"]
 offset_right = 267.0
 offset_bottom = 267.0
 scale = Vector2(0.21, 0.21)
 texture_normal = ExtResource("17_rued3")
 
-[node name="TextureRect" type="TextureRect" parent="TopContainer/VBoxContainer/HBoxContainer/Control2/TexBtnHelp"]
+[node name="TextureRect" type="TextureRect" parent="TopContainer/VBoxContainer/HBoxContainer/Control2/BtnHelp"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -354,4 +354,5 @@ stream = ExtResource("16_78284")
 stream = ExtResource("17_uxhed")
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
-[connection signal="pressed" from="TopContainer/VBoxContainer/Control/TexBtnMenu" to="." method="_on_btn_main_menu_pressed"]
+[connection signal="pressed" from="TopContainer/VBoxContainer/Control/BtnMenu" to="." method="_on_btn_main_menu_pressed"]
+[connection signal="pressed" from="TopContainer/VBoxContainer/HBoxContainer/Control1/BtnUndo" to="." method="_on_btn_undo_pressed"]

@@ -620,3 +620,8 @@ func _on_timer_timeout():
 func _on_btn_main_menu_pressed():
 	audio_btn_click.play()
 	main_menu.visible = true
+
+func _on_btn_undo_pressed():
+	# TODO:
+	audio_card_nope.play()
+	print("TODO: implement UNDO!")
