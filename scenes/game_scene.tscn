@@ -1,10 +1,8 @@
-[gd_scene load_steps=19 format=3 uid="uid://yk1wyekngt53"]
+[gd_scene load_steps=23 format=3 uid="uid://yk1wyekngt53"]
 
 [ext_resource type="Script" path="res://scripts/game_scene.gd" id="1_6cyku"]
 [ext_resource type="Texture2D" uid="uid://xh7g1cqetn2e" path="res://assets/backgrounds/background_green_dark.jpg" id="3_ckg30"]
 [ext_resource type="Theme" uid="uid://b3nw8ski1k4dn" path="res://styles/control_label_theme.tres" id="3_vv2if"]
-[ext_resource type="Texture2D" uid="uid://ptpw6pfsh3ip" path="res://assets/buttons/CGB02-green_M_btn.png" id="4_ktaa6"]
-[ext_resource type="FontFile" uid="uid://b8wlkh3hxbgdn" path="res://assets/fonts/kirifont/KiriFont.ttf" id="5_eiujg"]
 [ext_resource type="PackedScene" uid="uid://chwprjvrdjihp" path="res://scenes/free_cell.tscn" id="6_4qpkg"]
 [ext_resource type="PackedScene" uid="uid://diddbqdq5js1f" path="res://scenes/foundation_cell.tscn" id="7_iqgb2"]
 [ext_resource type="PackedScene" uid="uid://d36ntyouo8moq" path="res://scenes/you_won_scene.tscn" id="10_c7eam"]
@@ -14,14 +12,18 @@
 [ext_resource type="AudioStream" uid="uid://cgl2aokvwb11k" path="res://assets/audio/cardShuffle-casino.wav" id="14_2tlea"]
 [ext_resource type="AudioStream" uid="uid://bhse2v2nsr3ej" path="res://assets/audio/cardPlace4.wav" id="15_conf1"]
 [ext_resource type="AudioStream" uid="uid://c4txv2w3qxv6g" path="res://assets/audio/card_return.ogg" id="16_78284"]
+[ext_resource type="Texture2D" uid="uid://bun1he4foddvq" path="res://assets/basic_gui/ButtonText_Small_Green_Square.png" id="17_m60xu"]
+[ext_resource type="Texture2D" uid="uid://5kvij43kkn3c" path="res://assets/basic_gui/IconButton_Small_Blue_Rounded.png" id="17_rued3"]
 [ext_resource type="AudioStream" uid="uid://35hce66lbad4" path="res://assets/audio/btn_click_002.ogg" id="17_uxhed"]
+[ext_resource type="Texture2D" uid="uid://brdqx4pmqaxta" path="res://assets/basic_gui/Icon_Small_Blank_Menu.png" id="18_3efq7"]
 [ext_resource type="Texture2D" uid="uid://de4pqr8xuhqff" path="res://assets/cards/back01.png" id="18_j214y"]
+[ext_resource type="Texture2D" uid="uid://cct42o5aadgsv" path="res://assets/basic_gui/IconButton_Small_Red_Rounded.png" id="19_fe5t1"]
+[ext_resource type="FontFile" uid="uid://dc4mvtwprqubx" path="res://assets/fonts/Acme-Regular.ttf" id="19_sy6uh"]
+[ext_resource type="Texture2D" uid="uid://mbjlgqdoh4w3" path="res://assets/basic_gui/Icon_Small_Blank_Return.png" id="20_h1xmw"]
+[ext_resource type="Texture2D" uid="uid://dunlpu5suxjdr" path="res://assets/basic_gui/Icon_Small_Blank_Help.png" id="21_7pv26"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_wnp8e"]
 load_path = "res://.godot/imported/background_green_light.png-54ff5c5ae4372c203cc177cb4891862d.ctex"
-
-[sub_resource type="SystemFont" id="SystemFont_t88bg"]
-subpixel_positioning = 0
 
 [node name="GameScene" type="Node2D"]
 script = ExtResource("1_6cyku")
@@ -83,44 +85,98 @@ layout_mode = 2
 [node name="VBoxContainer" type="VBoxContainer" parent="TopContainer"]
 custom_minimum_size = Vector2(120, 134)
 layout_mode = 2
-theme_override_constants/separation = 0
+theme_override_constants/separation = 10
 
 [node name="Control" type="Control" parent="TopContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 74)
 layout_mode = 2
+size_flags_vertical = 3
 
-[node name="BtnMainMenu" type="TextureButton" parent="TopContainer/VBoxContainer/Control"]
-layout_mode = 2
-offset_left = 7.0
+[node name="TexBtnMenu" type="TextureButton" parent="TopContainer/VBoxContainer/Control"]
 offset_top = 10.0
-offset_right = 267.0
-offset_bottom = 150.0
-scale = Vector2(0.4, 0.4)
-texture_normal = ExtResource("4_ktaa6")
-stretch_mode = 0
+offset_right = 536.0
+offset_bottom = 238.0
+scale = Vector2(0.22, 0.22)
+texture_normal = ExtResource("17_m60xu")
 
-[node name="Label" type="Label" parent="TopContainer/VBoxContainer/Control/BtnMainMenu"]
+[node name="HBoxContainer" type="HBoxContainer" parent="TopContainer/VBoxContainer/Control/TexBtnMenu"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 50.0
+offset_right = -46.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_fonts/font = ExtResource("5_eiujg")
-theme_override_font_sizes/font_size = 36
-text = "MENU"
-horizontal_alignment = 1
+theme_override_constants/separation = 40
+
+[node name="TextureRect" type="TextureRect" parent="TopContainer/VBoxContainer/Control/TexBtnMenu/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+texture = ExtResource("18_3efq7")
+
+[node name="Label" type="Label" parent="TopContainer/VBoxContainer/Control/TexBtnMenu/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("19_sy6uh")
+theme_override_font_sizes/font_size = 96
+text = "Menu"
 vertical_alignment = 1
 
-[node name="Label" type="Label" parent="TopContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="TopContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_colors/font_color = Color(1, 1, 1, 0.435294)
-theme_override_fonts/font = SubResource("SystemFont_t88bg")
-theme_override_font_sizes/font_size = 24
-text = "♠ ♥ ♣ ♦"
-horizontal_alignment = 1
-vertical_alignment = 1
+
+[node name="Control1" type="Control" parent="TopContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TexBtnUndo" type="TextureButton" parent="TopContainer/VBoxContainer/HBoxContainer/Control1"]
+offset_right = 267.0
+offset_bottom = 268.0
+scale = Vector2(0.21, 0.21)
+texture_normal = ExtResource("19_fe5t1")
+
+[node name="TextureRect" type="TextureRect" parent="TopContainer/VBoxContainer/HBoxContainer/Control1/TexBtnUndo"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = -63.0
+offset_right = 64.0
+offset_bottom = 63.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("20_h1xmw")
+flip_h = true
+
+[node name="Control2" type="Control" parent="TopContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TexBtnHelp" type="TextureButton" parent="TopContainer/VBoxContainer/HBoxContainer/Control2"]
+offset_right = 267.0
+offset_bottom = 267.0
+scale = Vector2(0.21, 0.21)
+texture_normal = ExtResource("17_rued3")
+
+[node name="TextureRect" type="TextureRect" parent="TopContainer/VBoxContainer/HBoxContainer/Control2/TexBtnHelp"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = -63.0
+offset_right = 64.0
+offset_bottom = 63.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("21_7pv26")
 
 [node name="FoundationPile" type="HBoxContainer" parent="TopContainer"]
 custom_minimum_size = Vector2(424, 134)
@@ -271,9 +327,11 @@ vertical_alignment = 1
 
 [node name="GamePanelWinner" parent="." instance=ExtResource("10_c7eam")]
 visible = false
+z_index = 2000
 
 [node name="MainMenu" parent="." instance=ExtResource("13_y7q6w")]
 visible = false
+z_index = 2000
 
 [node name="Placeholder_Deal" type="Sprite2D" parent="."]
 visible = false
@@ -296,4 +354,4 @@ stream = ExtResource("16_78284")
 stream = ExtResource("17_uxhed")
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
-[connection signal="pressed" from="TopContainer/VBoxContainer/Control/BtnMainMenu" to="." method="_on_btn_main_menu_pressed"]
+[connection signal="pressed" from="TopContainer/VBoxContainer/Control/TexBtnMenu" to="." method="_on_btn_main_menu_pressed"]
