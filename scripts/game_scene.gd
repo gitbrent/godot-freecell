@@ -22,13 +22,14 @@ var free_cells : Array[FreeCell] = []
 var fnda_cells : Array[FoundationCell] = []
 var tableau_piles : Array[TableauPile] = []
 #
+var is_tween_running : bool = false
 var dragging_cards : Array[Card] = []
 var card_dragged : Card = null
 var card_target : Card = null
 var hovered_free_cell : FreeCell = null
 var hovered_fnda_cell : FoundationCell = null
 var hovered_tabl_pile : TableauPile = null
-var is_tween_running : bool = false
+var undo_last_move : JSON = null # TODO: WIP: 20240429
 #
 var game_prop_moves : int = 0
 var game_prop_timer : int = 0
@@ -66,6 +67,10 @@ func _ready():
 	game_panel_winner.connect("button_pressed_newgame", self.deal_cards)
 
 # =============================================================================
+
+func _on_timer_timeout():
+	game_prop_timer += 1
+	update_game_props()
 
 static func compare_cards_z_index(a, b):
 	return a.z_index < b.z_index
@@ -219,7 +224,7 @@ func _on_move_card_seq_tween_completed(src_card, tgt_card, free_cell, fnda_cell,
 	# LAST
 	is_tween_running = false
 	#print("[_on_move_card_seq_tween_completed] is_tween_running = ", is_tween_running)
-	
+
 func on_return_cards_tween_completed():
 	is_tween_running = false
 	reset_card_z_indices()
@@ -572,12 +577,29 @@ func deal_cards():
 	await get_tree().create_timer(1.0).timeout
 	placeholder_deal.visible = false
 
-func _on_btn_deal_pressed():
-	deal_cards()
+func _on_btn_debug_pressed():
+	sort_and_move_cards_to_foundation(Enums.Suit.CLUBS, fnda_cells[1])
+	sort_and_move_cards_to_foundation(Enums.Suit.DIAMONDS, fnda_cells[2])
+	sort_and_move_cards_to_foundation(Enums.Suit.HEARTS, fnda_cells[3])
+	await get_tree().create_timer(1.5).timeout
+	for pile_index in range(tableau_piles.size()):
+		var pile = tableau_piles[pile_index]
+		for card_index in range(pile.get_children().size()):
+			var pile_card = pile.get_child(card_index)
+			if pile_card is Card:
+				pile_card.position = Vector2(0, card_index * Enums.Y_OFFSET)
 
-func _on_btn_pause_pressed():
+func _on_btn_main_menu_pressed():
+	audio_btn_click.play()
+	main_menu.visible = true
+
+func _on_btn_undo_pressed():
 	# TODO:
-	pass
+	audio_card_nope.play()
+	print("TODO: implement UNDO!")
+
+func _on_btn_help_pressed():
+	help_scene.visible = true
 
 # DEV/DEBUG TOOL
 func sort_and_move_cards_to_foundation(move_suit:Enums.Suit, target_fnda:FoundationCell):
@@ -601,31 +623,3 @@ func sort_and_move_cards_to_foundation(move_suit:Enums.Suit, target_fnda:Foundat
 # Custom comparison method for sorting
 func compare_ranks(a: Card, b: Card) -> bool:
 	return a.rank < b.rank
-
-func _on_btn_debug_pressed():
-	sort_and_move_cards_to_foundation(Enums.Suit.CLUBS, fnda_cells[1])
-	sort_and_move_cards_to_foundation(Enums.Suit.DIAMONDS, fnda_cells[2])
-	sort_and_move_cards_to_foundation(Enums.Suit.HEARTS, fnda_cells[3])
-	await get_tree().create_timer(1.5).timeout
-	for pile_index in range(tableau_piles.size()):
-		var pile = tableau_piles[pile_index]
-		for card_index in range(pile.get_children().size()):
-			var pile_card = pile.get_child(card_index)
-			if pile_card is Card:
-				pile_card.position = Vector2(0, card_index * Enums.Y_OFFSET)
-
-func _on_timer_timeout():
-	game_prop_timer += 1
-	update_game_props()
-
-func _on_btn_main_menu_pressed():
-	audio_btn_click.play()
-	main_menu.visible = true
-
-func _on_btn_undo_pressed():
-	# TODO:
-	audio_card_nope.play()
-	print("TODO: implement UNDO!")
-
-func _on_btn_help_pressed():
-	help_scene.visible = true

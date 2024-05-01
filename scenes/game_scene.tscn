@@ -9,7 +9,6 @@
 [ext_resource type="Theme" uid="uid://dxfw0snolsagv" path="res://styles/control_value_theme.tres" id="10_gnhmw"]
 [ext_resource type="PackedScene" uid="uid://cxf5h1ul17kl" path="res://scenes/tableau_pile.tscn" id="10_xpokh"]
 [ext_resource type="PackedScene" uid="uid://bbpy3wvistfke" path="res://scenes/main_menu.tscn" id="13_y7q6w"]
-[ext_resource type="AudioStream" uid="uid://cgl2aokvwb11k" path="res://assets/audio/cardShuffle-casino.wav" id="14_2tlea"]
 [ext_resource type="AudioStream" uid="uid://bhse2v2nsr3ej" path="res://assets/audio/cardPlace4.wav" id="15_conf1"]
 [ext_resource type="AudioStream" uid="uid://c4txv2w3qxv6g" path="res://assets/audio/card_return.ogg" id="16_78284"]
 [ext_resource type="Texture2D" uid="uid://bun1he4foddvq" path="res://assets/basic_gui/ButtonText_Small_Green_Square.png" id="17_m60xu"]
@@ -18,6 +17,7 @@
 [ext_resource type="PackedScene" uid="uid://fs2p2ny222je" path="res://scenes/help_scene.tscn" id="17_y1hha"]
 [ext_resource type="Texture2D" uid="uid://brdqx4pmqaxta" path="res://assets/basic_gui/Icon_Small_Blank_Menu.png" id="18_3efq7"]
 [ext_resource type="Texture2D" uid="uid://de4pqr8xuhqff" path="res://assets/cards/back01.png" id="18_j214y"]
+[ext_resource type="AudioStream" uid="uid://dlyngjh82lfop" path="res://assets/audio/card-shuffle-casino-2sec.wav" id="19_6bjlb"]
 [ext_resource type="Texture2D" uid="uid://cct42o5aadgsv" path="res://assets/basic_gui/IconButton_Small_Red_Rounded.png" id="19_fe5t1"]
 [ext_resource type="FontFile" uid="uid://dc4mvtwprqubx" path="res://assets/fonts/Acme-Regular.ttf" id="19_sy6uh"]
 [ext_resource type="Texture2D" uid="uid://mbjlgqdoh4w3" path="res://assets/basic_gui/Icon_Small_Blank_Return.png" id="20_h1xmw"]
@@ -350,7 +350,7 @@ texture = ExtResource("18_j214y")
 centered = false
 
 [node name="AudioShuffle" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("14_2tlea")
+stream = ExtResource("19_6bjlb")
 
 [node name="AudioCardPlay" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("15_conf1")
