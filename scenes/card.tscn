@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://6ykkdeunbek6"]
+[gd_scene load_steps=33 format=3 uid="uid://6ykkdeunbek6"]
 
 [ext_resource type="Script" path="res://scripts/card.gd" id="1_7ifcu"]
 [ext_resource type="Texture2D" uid="uid://5ua6yri85q8k" path="res://assets/cards/back07.png" id="2_ylvg2"]
@@ -164,6 +164,70 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_bba0x"]
+atlas = ExtResource("5_mtrdd")
+region = Rect2(0, 0, 108, 148)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_20ae4"]
+atlas = ExtResource("5_mtrdd")
+region = Rect2(108, 0, 108, 148)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7b5rw"]
+atlas = ExtResource("5_mtrdd")
+region = Rect2(216, 0, 108, 148)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c6dl8"]
+atlas = ExtResource("5_mtrdd")
+region = Rect2(324, 0, 108, 148)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1c3px"]
+atlas = ExtResource("5_mtrdd")
+region = Rect2(0, 148, 108, 148)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gvf2y"]
+atlas = ExtResource("5_mtrdd")
+region = Rect2(108, 148, 108, 148)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7q8xu"]
+atlas = ExtResource("5_mtrdd")
+region = Rect2(216, 148, 108, 148)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bxp3b"]
+atlas = ExtResource("5_mtrdd")
+region = Rect2(324, 148, 108, 148)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_vv7dq"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bba0x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_20ae4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7b5rw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c6dl8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1c3px")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gvf2y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7q8xu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bxp3b")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
 [node name="Card" type="Node2D"]
 script = ExtResource("1_7ifcu")
 
@@ -217,7 +281,7 @@ scale = Vector2(0.888889, 0.918919)
 sprite_frames = SubResource("SpriteFrames_8y15i")
 animation = &"border_cycle"
 autoplay = "border_cycle"
-frame_progress = 0.672584
+frame_progress = 0.98237
 
 [node name="BorderAnimGreen8" type="AnimatedSprite2D" parent="."]
 visible = false
@@ -226,7 +290,14 @@ scale = Vector2(0.861111, 0.905406)
 sprite_frames = SubResource("SpriteFrames_atlfm")
 animation = &"border_cycle"
 autoplay = "border_cycle"
-frame_progress = 0.484594
+
+[node name="BorderAnimGrnNew" type="AnimatedSprite2D" parent="."]
+visible = false
+position = Vector2(44, 64)
+scale = Vector2(0.87037, 0.905405)
+sprite_frames = SubResource("SpriteFrames_vv7dq")
+autoplay = "default"
+frame_progress = 0.0340676
 
 [connection signal="area_entered" from="Sprite2D/Area2D" to="." method="_on_area_2d_area_entered"]
 [connection signal="area_exited" from="Sprite2D/Area2D" to="." method="_on_area_2d_area_exited"]

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dpx41iw6tgeeg"
-path="res://.godot/imported/ButtonText_Orange_TextField.png-a24a4bf325d5bdc59a8a702a0df8284d.ctex"
+uid="uid://doccqluarp17a"
+path="res://.godot/imported/Box_Blue_Square.png-136a9c0a9e7a3d8a8fb4dae51196391f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/start_screen/ButtonText_Orange_TextField.png"
-dest_files=["res://.godot/imported/ButtonText_Orange_TextField.png-a24a4bf325d5bdc59a8a702a0df8284d.ctex"]
+source_file="res://assets/basic_gui/Box_Blue_Square.png"
+dest_files=["res://.godot/imported/Box_Blue_Square.png-136a9c0a9e7a3d8a8fb4dae51196391f.ctex"]
 
 [params]
 

@@ -1,13 +1,22 @@
-[gd_scene load_steps=8 format=3 uid="uid://bbpy3wvistfke"]
+[gd_scene load_steps=17 format=3 uid="uid://bbpy3wvistfke"]
 
 [ext_resource type="Script" path="res://scripts/main_menu.gd" id="1_c3rpj"]
 [ext_resource type="FontFile" uid="uid://biaey3f3ia5n2" path="res://assets/fonts/kirifont/KiriFont.otf" id="2_o0mxb"]
 [ext_resource type="Texture2D" uid="uid://byvxnhl3iurym" path="res://assets/buttons/CGB02-red_L_btn.png" id="3_5tamp"]
 [ext_resource type="Texture2D" uid="uid://b8h63uhssjmqe" path="res://assets/buttons/CGB02-purple_L_btn.png" id="4_d8fkf"]
 [ext_resource type="Texture2D" uid="uid://unkd2it6qk62" path="res://assets/buttons/CGB02-orange_L_btn.png" id="5_4wq4h"]
+[ext_resource type="Texture2D" uid="uid://bbwxkm235jxg4" path="res://assets/basic_gui/Box_Orange_Square.png" id="6_yc7rn"]
+[ext_resource type="Texture2D" uid="uid://cjtuo230wruw0" path="res://assets/basic_gui/Banner_Orange.png" id="7_6nmgg"]
+[ext_resource type="Texture2D" uid="uid://doccqluarp17a" path="res://assets/basic_gui/Box_Blue_Square.png" id="8_dxa65"]
+[ext_resource type="Texture2D" uid="uid://c147h4e5kcsjd" path="res://assets/basic_gui/ButtonText_Large_Blue_Square.png" id="9_hoqir"]
+[ext_resource type="FontFile" uid="uid://dc4mvtwprqubx" path="res://assets/fonts/Acme-Regular.ttf" id="10_l2rte"]
+[ext_resource type="Texture2D" uid="uid://d1a7q3w86rcwx" path="res://assets/basic_gui/ButtonText_Large_Orange_Round.png" id="10_n0jy5"]
+[ext_resource type="Texture2D" uid="uid://csi1aig436o7y" path="res://assets/basic_gui/ButtonText_Large_Red_Round.png" id="11_jipm6"]
+[ext_resource type="Texture2D" uid="uid://hycrehb3kevt" path="res://assets/basic_gui/ButtonText_Large_Green_Round.png" id="12_1v455"]
+[ext_resource type="Texture2D" uid="uid://bdj8fyct20haj" path="res://assets/basic_gui/PremadeButtons_XRed.png" id="14_f5r2l"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_buyta"]
-bg_color = Color(0, 0, 0, 0.392157)
+bg_color = Color(0, 0, 0, 0.501961)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_er5im"]
 bg_color = Color(0, 0.486275, 0, 1)
@@ -33,6 +42,7 @@ offset_bottom = 810.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_buyta")
 
 [node name="Panel-Menu" type="Panel" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -175,6 +185,153 @@ theme_override_font_sizes/font_size = 32
 text = "[X] Show Stats"
 horizontal_alignment = 1
 
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 111.0
+offset_top = 183.0
+offset_right = 971.0
+offset_bottom = 637.0
+texture = ExtResource("6_yc7rn")
+patch_margin_left = 192
+patch_margin_top = 240
+patch_margin_right = 214
+patch_margin_bottom = 214
+
+[node name="TextureRect" type="TextureRect" parent="NinePatchRect"]
+visible = false
+layout_mode = 0
+offset_left = 146.0
+offset_top = -91.0
+offset_right = 1285.0
+offset_bottom = 366.0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("7_6nmgg")
+
+[node name="Label" type="Label" parent="NinePatchRect/TextureRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 108.0
+offset_bottom = -113.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 96
+text = "PAUSED"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureRectMain" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 309.0
+offset_top = 182.0
+offset_right = 1833.0
+offset_bottom = 1704.0
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("8_dxa65")
+stretch_mode = 4
+
+[node name="TitleBox" type="TextureRect" parent="TextureRectMain"]
+layout_mode = 0
+offset_left = 172.0
+offset_top = -155.0
+offset_right = 1334.0
+offset_bottom = 219.0
+texture = ExtResource("9_hoqir")
+
+[node name="LabelTitle" type="Label" parent="TextureRectMain/TitleBox"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("10_l2rte")
+theme_override_font_sizes/font_size = 210
+text = "PAUSED"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BtnNewGame" type="TextureButton" parent="TextureRectMain"]
+layout_mode = 0
+offset_left = 173.0
+offset_top = 293.0
+offset_right = 1332.0
+offset_bottom = 651.0
+button_mask = 3
+texture_normal = ExtResource("11_jipm6")
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="TextureRectMain/BtnNewGame"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("10_l2rte")
+theme_override_font_sizes/font_size = 168
+text = "New Game"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BtnOptions" type="TextureButton" parent="TextureRectMain"]
+layout_mode = 0
+offset_left = 172.5
+offset_top = 685.0
+offset_right = 1331.5
+offset_bottom = 1043.0
+texture_normal = ExtResource("12_1v455")
+
+[node name="Label" type="Label" parent="TextureRectMain/BtnOptions"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("10_l2rte")
+theme_override_font_sizes/font_size = 168
+text = "Options"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BtnResume" type="TextureButton" parent="TextureRectMain"]
+layout_mode = 0
+offset_left = 172.5
+offset_top = 1072.5
+offset_right = 1331.5
+offset_bottom = 1430.5
+texture_normal = ExtResource("10_n0jy5")
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="TextureRectMain/BtnResume"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("10_l2rte")
+theme_override_font_sizes/font_size = 168
+text = "Resume"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BtnX" type="TextureButton" parent="TextureRectMain"]
+layout_mode = 0
+offset_left = 1385.0
+offset_top = -92.5
+offset_right = 1651.0
+offset_bottom = 174.5
+scale = Vector2(0.8, 0.8)
+texture_normal = ExtResource("14_f5r2l")
+
 [connection signal="pressed" from="Panel-Menu/HBoxCont-main/VBoxContainer-L/Control1/BtnNewGame" to="." method="_on_btn_newgame_pressed"]
 [connection signal="pressed" from="Panel-Menu/HBoxCont-main/VBoxContainer-L/Control2/BtnDebug" to="." method="_on_btn_debug_pressed"]
 [connection signal="pressed" from="Panel-Menu/HBoxCont-main/VBoxContainer-L/Control3/BtnResume" to="." method="_on_btn_resume_pressed"]
+[connection signal="pressed" from="TextureRectMain/BtnNewGame" to="." method="_on_btn_newgame_pressed"]
+[connection signal="pressed" from="TextureRectMain/BtnOptions" to="." method="_on_btn_options_pressed"]
+[connection signal="pressed" from="TextureRectMain/BtnResume" to="." method="_on_btn_resume_pressed"]
+[connection signal="pressed" from="TextureRectMain/BtnX" to="." method="_on_btn_resume_pressed"]

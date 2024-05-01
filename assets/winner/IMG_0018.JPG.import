@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://co0anj3n2fyhc"
-path="res://.godot/imported/background_green_felt.png-62f9a90116ccba98535f5f82726c24c6.ctex"
+uid="uid://c4ay81oikc6o0"
+path="res://.godot/imported/IMG_0018.JPG-cd739e303dc62891bdfa7f96a6a4ba4e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/background_green_felt.png"
-dest_files=["res://.godot/imported/background_green_felt.png-62f9a90116ccba98535f5f82726c24c6.ctex"]
+source_file="res://assets/winner/IMG_0018.JPG"
+dest_files=["res://.godot/imported/IMG_0018.JPG-cd739e303dc62891bdfa7f96a6a4ba4e.ctex"]
 
 [params]
 

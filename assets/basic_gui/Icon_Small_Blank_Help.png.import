@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://2non5yojsj8q"
-path="res://.godot/imported/background_green felt.jpg-d3098d5d57a35970b74d8fe684667028.ctex"
+uid="uid://dunlpu5suxjdr"
+path="res://.godot/imported/Icon_Small_Blank_Help.png-5d27eace3074427009c148b28850bb46.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/background_green felt.jpg"
-dest_files=["res://.godot/imported/background_green felt.jpg-d3098d5d57a35970b74d8fe684667028.ctex"]
+source_file="res://assets/basic_gui/Icon_Small_Blank_Help.png"
+dest_files=["res://.godot/imported/Icon_Small_Blank_Help.png-5d27eace3074427009c148b28850bb46.ctex"]
 
 [params]
 

@@ -1,0 +1,103 @@
+[gd_scene load_steps=7 format=3 uid="uid://fs2p2ny222je"]
+
+[ext_resource type="Script" path="res://scripts/help_scene.gd" id="1_tycfo"]
+[ext_resource type="Texture2D" uid="uid://cjn4wne0oa2wh" path="res://assets/basic_gui/Box_Blue_Rounded.png" id="2_86jhd"]
+[ext_resource type="Texture2D" uid="uid://c147h4e5kcsjd" path="res://assets/basic_gui/ButtonText_Large_Blue_Square.png" id="3_3gacm"]
+[ext_resource type="FontFile" uid="uid://dc4mvtwprqubx" path="res://assets/fonts/Acme-Regular.ttf" id="3_tkbc4"]
+[ext_resource type="Texture2D" uid="uid://d1a7q3w86rcwx" path="res://assets/basic_gui/ButtonText_Large_Orange_Round.png" id="5_q357j"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_edahm"]
+bg_color = Color(0, 0, 0, 0.501961)
+
+[node name="help_scene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_tycfo")
+
+[node name="Panel-Overlay" type="Panel" parent="."]
+offset_right = 1080.0
+offset_bottom = 810.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_edahm")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+offset_left = 262.0
+offset_top = 112.0
+offset_right = 1772.0
+offset_bottom = 1622.0
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("2_86jhd")
+
+[node name="TextureRectTitle" type="TextureRect" parent="TextureRect"]
+layout_mode = 0
+offset_left = 167.5
+offset_top = -165.0
+offset_right = 1329.5
+offset_bottom = 209.0
+texture = ExtResource("3_3gacm")
+
+[node name="LabelTitle" type="Label" parent="TextureRect/TextureRectTitle"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("3_tkbc4")
+theme_override_font_sizes/font_size = 210
+text = "HELP"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RichTextLabel" type="RichTextLabel" parent="TextureRect"]
+layout_mode = 0
+offset_left = 95.0
+offset_top = 268.0
+offset_right = 1430.0
+offset_bottom = 1170.0
+theme_override_fonts/normal_font = ExtResource("3_tkbc4")
+theme_override_font_sizes/normal_font_size = 62
+theme_override_font_sizes/bold_font_size = 96
+bbcode_enabled = true
+text = "[color=e1e1e1][b]FreeCell Rules[/b][/color]
+
+[ul]
+Move all the cards to foundation cells.
+Cards are placed in order from A->K.
+Use Freecells for any card.
+Cards in the 8 tableau piles can be stacked.
+Tableau pile sets can be moved as a group.
+[/ul]
+
+Complete rules & history:
+[ul]
+[color=000069][url][u]https://en.wikipedia.org/wiki/FreeCell[/u][/url][/color]
+[/ul]"
+
+[node name="BtnClose" type="TextureButton" parent="TextureRect"]
+layout_mode = 0
+offset_left = 472.5
+offset_top = 1245.0
+offset_right = 1631.5
+offset_bottom = 1603.0
+scale = Vector2(0.5, 0.5)
+texture_normal = ExtResource("5_q357j")
+
+[node name="Label" type="Label" parent="TextureRect/BtnClose"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("3_tkbc4")
+theme_override_font_sizes/font_size = 168
+text = "Close"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="TextureRect/BtnClose" to="." method="_on_btn_close_pressed"]
