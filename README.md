@@ -9,12 +9,12 @@ Godot FreeCell is a classic solitaire card game built with the Godot Engine, des
     <tr>
       <td>
         <a href="https://github.com/gitbrent/godot-freecell/">
-          <img alt="FreeCell Solitaire Gameplay on iPad" title="FreeCell Solitaire Gameplay" src="https://github.com/gitbrent/godot-freecell/assets/7218970/269d1d39-ecf0-4fe6-b925-ee6f513a56a4" width="400"/>
+          <img alt="FreeCell Solitaire Gameplay on iPad" title="FreeCell Solitaire Gameplay" src="https://github.com/gitbrent/godot-freecell/assets/7218970/6f6f92d6-e663-4c61-976d-9d17df7c0ca1" width="400"/>
         </a>
       </td>
       <td>
         <a href="https://github.com/gitbrent/godot-freecell/">
-          <img alt="FreeCell Solitaire Gameplay on iPad" title="FreeCell Solitaire Gameplay" src="https://github.com/gitbrent/godot-freecell/assets/7218970/3fc0f9ca-9ea3-4ded-94c8-212a3d653244" width="400"/>
+          <img alt="FreeCell Solitaire Gameplay on iPad" title="FreeCell Solitaire Gameplay" src="https://github.com/gitbrent/godot-freecell/assets/7218970/2e624a89-ce5d-42bc-afe9-8eabd232a7eb" width="400"/>
         </a>
       </td>
     </tr>
