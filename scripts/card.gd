@@ -90,3 +90,9 @@ func show_points(points: int):
 func play_points_animation():
 	animation_player.stop()  # Stop any ongoing animation
 	animation_player.play("show_points")
+
+func get_card_props():
+	return {
+		"suit": suit,
+		"rank": rank
+	}

@@ -220,6 +220,7 @@ func _on_move_card_seq_tween_completed(src_card, tgt_card, free_cell, fnda_cell,
 		game_prop_moves += 1
 		update_game_props()
 		check_for_win_condition()
+		save_game_state()
 	
 	# LAST
 	is_tween_running = false
@@ -458,6 +459,57 @@ func _on_card_hover_tabl_ended(pile: TableauPile):
 
 # =============================================================================
 
+# WIP: region Save_Restore_Game_State
+
+func save_game_state():
+	var game_state = {
+		"free_cells": [],
+		"fnda_cells": [],
+		"tableau_piles": [],
+		"game_props": {
+			"timer": game_prop_timer,
+			"score": game_prop_score,
+			"moves": game_prop_moves
+		}
+	}
+	
+	# Assume freecell_piles, foundation_piles, and tableau_piles are arrays of nodes
+	for pile in free_cells:
+		var cards_data = []
+		for card in pile.get_children():
+			if card is Card:
+				cards_data.append(card.get_card_props())
+		game_state["free_cells"].append(cards_data)
+	
+	for pile in fnda_cells:
+		var cards_data = []
+		for card in pile.get_children():
+			if card is Card:
+				cards_data.append(card.get_card_props())
+		game_state["fnda_cells"].append(cards_data)
+	
+	for pile in tableau_piles:
+		var cards_data = []
+		for card in pile.get_children():
+			if card is Card:
+				cards_data.append(card.get_card_props())
+		game_state["tableau_piles"].append(cards_data)
+	
+	var file = FileAccess.open("user://savegame.save", FileAccess.WRITE)
+	file.store_string(JSON.stringify(game_state))
+	file.close()
+
+func get_save_game_state() -> Dictionary:
+	var game_state = null
+	var file = FileAccess.open("user://savegame.save", FileAccess.READ)
+	if file:
+		var save_data = file.get_as_text()
+		file.close()
+		game_state = JSON.parse_string(save_data)
+	return game_state
+
+# =============================================================================
+
 func update_game_props():
 	infobox_moves.text = str(game_prop_moves)
 	infobox_timer.text = "%02d:%02d" % [int(float(game_prop_timer) / 60.0), int(game_prop_timer % 60)]
@@ -518,6 +570,7 @@ func deal_cards():
 	const animation_time:float = 0.15  # Time it takes for each card to move to its pile
 	var initial_position:Vector2 = placeholder_deal.global_position
 	var deck_builder:Array = []
+	var prev_save_game_state:Dictionary = get_save_game_state()
 	
 	# STEP 1: audio & cleanup
 	clear_all_cards()
@@ -568,9 +621,15 @@ func deal_cards():
 	reset_card_z_indices()
 	
 	# STEP 6: Clear game props
-	game_prop_timer = 0
-	game_prop_moves = 0
-	game_prop_score = 0
+	if (prev_save_game_state and prev_save_game_state.game_props):
+		#print("DEBUG: prev_save_game_state[game_props]: ", prev_save_game_state["game_props"])
+		game_prop_timer = prev_save_game_state["game_props"]["timer"]
+		game_prop_moves = prev_save_game_state["game_props"]["moves"]
+		game_prop_score = prev_save_game_state["game_props"]["score"]
+	else:
+		game_prop_timer = 0
+		game_prop_moves = 0
+		game_prop_score = 0
 	update_game_props()
 
 	# STEP 7: Hide face deal placeholder card ater cards have tweened	
