@@ -15,12 +15,13 @@ extends Node2D
 @onready var placeholder_deal:Sprite2D = $Placeholder_Deal
 
 # VARIABLES
+var initial_position : Vector2 = Vector2()
 var drag_offset : Vector2 = Vector2()
 #
 var card_deck : Array[Card] = []
 var free_cells : Array[FreeCell] = []
 var fnda_cells : Array[FoundationCell] = []
-var tableau_piles : Array[TableauPile] = []
+var tabl_cells : Array[TableauCell] = []
 #
 var is_tween_running : bool = false
 var dragging_cards : Array[Card] = []
@@ -28,7 +29,7 @@ var card_dragged : Card = null
 var card_target : Card = null
 var hovered_free_cell : FreeCell = null
 var hovered_fnda_cell : FoundationCell = null
-var hovered_tabl_pile : TableauPile = null
+var hovered_tabl_pile : TableauCell = null
 var undo_last_move : JSON = null # TODO: WIP: 20240429
 #
 var game_prop_moves : int = 0
@@ -55,16 +56,19 @@ func _ready():
 		fnda_cells.append(fnda_cell)
 	
 	# STEP 4: Init tableau-piles
-	for i in range(0, 8): # Assuming you named them TableauPile0 through TableauPile7
-		var tabl_pile:TableauPile = get_node("TableauPileCont/TableauPile" + str(i))
+	for i in range(0, 8): # Assuming you named them TableauCell0 through TableauCell7
+		var tabl_pile:TableauCell = get_node("TableauPile/TableauCell" + str(i))
 		tabl_pile.connect("card_hover_tabl_start", self._on_card_hover_tabl_start)
 		tabl_pile.connect("card_hover_tabl_ended", self._on_card_hover_tabl_ended)
-		tableau_piles.append(tabl_pile)
+		tabl_cells.append(tabl_pile)
 	
 	# STEP 5: Connect menu buttons
-	main_menu.connect("button_pressed_newgame", self.deal_cards)
+	main_menu.connect("button_pressed_newgame", self._on_btn_pressed_newgame)
 	main_menu.connect("button_pressed_debug", self._on_btn_debug_pressed)
 	game_panel_winner.connect("button_pressed_newgame", self.deal_cards)
+	
+	# STEP 6: Set global vars
+	initial_position = placeholder_deal.global_position
 
 # =============================================================================
 
@@ -94,8 +98,8 @@ func identify_card_pile(card: Card) -> int:
 		return -1
 
 	# STEP 1: check tableau
-	for pile_index in range(tableau_piles.size()):
-		var pile = tableau_piles[pile_index]
+	for pile_index in range(tabl_cells.size()):
+		var pile = tabl_cells[pile_index]
 		for pile_card in pile.get_children():
 			if pile_card is Card and pile_card.suit == card.suit and pile_card.rank == card.rank:
 				return pile_index
@@ -122,7 +126,7 @@ func is_valid_drag_start(card: Card, card_pile_index: int, sequence_length: int)
 	elif card_pile_index == -3:
 		return false
 	
-	var card_pile = tableau_piles[card_pile_index].get_children()  # Assuming piles are parent nodes to cards.
+	var card_pile = tabl_cells[card_pile_index].get_children()  # Assuming piles are parent nodes to cards.
 	
 	# Check if the card is the last in the pile.
 	if card == card_pile[card_pile.size() - 1]:
@@ -147,7 +151,7 @@ func is_valid_drag_start(card: Card, card_pile_index: int, sequence_length: int)
 	
 	return true  # Valid sequence
 
-func move_card_sequence(tgt_card: Card, free_cell: FreeCell, fnda_cell: FoundationCell, tabl_pile: TableauPile):
+func move_card_sequence(tgt_card: Card, free_cell: FreeCell, fnda_cell: FoundationCell, tabl_pile: TableauCell):
 	for idx in range(dragging_cards.size()):
 		var src_card = dragging_cards[idx]
 		var target_position = Vector2()
@@ -242,7 +246,7 @@ func get_draggable_sequence(card: Card) -> Array[Card]:
 	if card_pile_index == -2:
 		return [card]
 
-	var card_pile = tableau_piles[card_pile_index].get_children()
+	var card_pile = tabl_cells[card_pile_index].get_children()
 	var start_index = card_pile.find(card)
 	
 	if is_valid_drag_start(card, card_pile_index, range(start_index, card_pile.size()).size()):
@@ -350,7 +354,7 @@ func _on_card_hover_start(src_card: Card, tgt_card: Card):
 		return
 
 	# RULE: Only the top-most (the card completely visible) card is a valid target
-	var pile_tab = tableau_piles[identify_card_pile(tgt_card)]
+	var pile_tab = tabl_cells[identify_card_pile(tgt_card)]
 	var last_child_index = pile_tab.get_child_count() - 1
 	if tgt_card and tgt_card == pile_tab.get_child(last_child_index):
 		#print("[HOVER]_on_card_hover_start: " + Enums.human_readable_card(tgt_card))
@@ -413,7 +417,7 @@ func _on_card_hover_fnda_ended(fnda_cell: FoundationCell):
 func _on_card_double_clicked(card: Card):
 	var pile_index = identify_card_pile(card)
 	if pile_index >= 0:
-		var pile = tableau_piles[pile_index]
+		var pile = tabl_cells[pile_index]
 		if card == pile.get_children().back():  # Using .back() to get the last card in the pile
 			# Check for valid foundation moves
 			for fnda_cell in fnda_cells:
@@ -444,14 +448,14 @@ func _on_card_double_clicked(card: Card):
 		#print("[FYI] The card is not in a tableau pile.")
 		pass
 
-func _on_card_hover_tabl_start(pile: TableauPile):
+func _on_card_hover_tabl_start(pile: TableauCell):
 	# TODO: Only highlight when move is valid
 	if get_card_count(pile) == 0:
 		hovered_tabl_pile = pile
 		#print("_on_card_hover_tabl_start")
 		pile.highlight(true)
 
-func _on_card_hover_tabl_ended(pile: TableauPile):
+func _on_card_hover_tabl_ended(pile: TableauCell):
 	#print("_on_card_hover_tabl_ended")
 	pile.highlight(false)
 
@@ -459,21 +463,24 @@ func _on_card_hover_tabl_ended(pile: TableauPile):
 
 # =============================================================================
 
-# WIP: region Save_Restore_Game_State
+#region Save_Restore_Game_State
 
 func save_game_state():
 	var game_state = {
 		"free_cells": [],
 		"fnda_cells": [],
-		"tableau_piles": [],
+		"tabl_cells": [],
 		"game_props": {
 			"timer": game_prop_timer,
 			"score": game_prop_score,
 			"moves": game_prop_moves
+		},
+		"_meta": {
+			"version": Enums.SAVE_GAME_DB_VER
 		}
 	}
 	
-	# Assume freecell_piles, foundation_piles, and tableau_piles are arrays of nodes
+	# Assume freecell_piles, foundation_piles, and tabl_cells are arrays of nodes
 	for pile in free_cells:
 		var cards_data = []
 		for card in pile.get_children():
@@ -488,25 +495,37 @@ func save_game_state():
 				cards_data.append(card.get_card_props())
 		game_state["fnda_cells"].append(cards_data)
 	
-	for pile in tableau_piles:
+	for pile in tabl_cells:
 		var cards_data = []
 		for card in pile.get_children():
 			if card is Card:
 				cards_data.append(card.get_card_props())
-		game_state["tableau_piles"].append(cards_data)
+		game_state["tabl_cells"].append(cards_data)
 	
-	var file = FileAccess.open("user://savegame.save", FileAccess.WRITE)
-	file.store_string(JSON.stringify(game_state))
-	file.close()
+	var file = FileAccess.open(Enums.SAVE_GAME_PATH, FileAccess.WRITE)
+	if file:
+		file.store_string(JSON.stringify(game_state))
+		file.close()
+	else:
+		print("[ERROR] unable to open 'savegame.save'")
 
 func get_save_game_state() -> Dictionary:
-	var game_state = null
-	var file = FileAccess.open("user://savegame.save", FileAccess.READ)
+	var game_state:Dictionary = {}
+	var file = FileAccess.open(Enums.SAVE_GAME_PATH, FileAccess.READ)
 	if file:
 		var save_data = file.get_as_text()
+		if save_data:
+			game_state = JSON.parse_string(save_data)
 		file.close()
-		game_state = JSON.parse_string(save_data)
+	if game_state and "_meta" in game_state and "version" in game_state._meta and game_state._meta.version >= Enums.SAVE_GAME_DB_VER:
+		pass
+	else:
+		game_state = {}
+	
+	# Done
 	return game_state
+
+#endregion
 
 # =============================================================================
 
@@ -532,8 +551,8 @@ func check_for_win_condition():
 		pass
 
 func reset_card_z_indices():
-	for i in range(tableau_piles.size()):
-		var pile:TableauPile = tableau_piles[i]
+	for i in range(tabl_cells.size()):
+		var pile:TableauCell = tabl_cells[i]
 		for j in range(pile.get_child_count()):
 			var pile_card = pile.get_child(j)
 			if pile_card is Card:
@@ -554,7 +573,7 @@ func reset_card_z_indices():
 				pile_card.z_index = j
 
 func clear_all_cards():
-	var pile_containers:Array = [free_cells, fnda_cells, tableau_piles]
+	var pile_containers:Array = [free_cells, fnda_cells, tabl_cells]
 	
 	for pile in pile_containers:
 		for container in pile:
@@ -565,10 +584,32 @@ func clear_all_cards():
 	
 	card_deck.clear()
 
+func connect_card_signals(card):
+	card.connect("card_hover_start", self._on_card_hover_start)
+	card.connect("card_hover_ended", self._on_card_hover_ended)
+	var control_node = card.get_node("CardControl")
+	control_node.connect("card_drag_start", self._on_card_drag_start)
+	control_node.connect("drag_in_progress", self._on_drag_in_progress)
+	control_node.connect("card_drag_ended", self._on_card_drag_ended)
+	control_node.connect("card_double_clicked", self._on_card_double_clicked)
+
+func connect_and_tween_card(card:Card, target:Control, target_position:Vector2, card_index:int):
+	const animation_time:float = 0.15  # Time it takes for each card to move to its pile
+
+	connect_card_signals(card)
+	# move card to tableau from game_scene
+	remove_child(card)
+	target.add_child(card)
+	card_deck.append(card) # TODO: 20240501: we've already done this above???? remove?
+	# Tween into place
+	card.global_position = initial_position
+	is_tween_running = true
+	var tween:Tween = get_tree().create_tween()
+	tween.tween_property(card, "global_position", target_position, animation_time*(card_index+1))
+	tween.play()
+
 func deal_cards():
 	const num_cards_in_columns:Array[int] = [7, 7, 7, 7, 6, 6, 6, 6]
-	const animation_time:float = 0.15  # Time it takes for each card to move to its pile
-	var initial_position:Vector2 = placeholder_deal.global_position
 	var deck_builder:Array = []
 	var prev_save_game_state:Dictionary = get_save_game_state()
 	
@@ -595,33 +636,64 @@ func deal_cards():
 			card_deck.append(card)
 	
 	# STEP 4: Setup and run animations for all cards
-	for pile_index in range(tableau_piles.size()):
-		var num_cards = num_cards_in_columns[pile_index]
-		for card_index in range(num_cards):
-			var card = card_deck[pile_index + card_index * tableau_piles.size()]  # Calculate index based on interleave
-			card.connect("card_hover_start", self._on_card_hover_start)
-			card.connect("card_hover_ended", self._on_card_hover_ended)
-			var control_node = card.get_node("CardControl")
-			control_node.connect("card_drag_start", self._on_card_drag_start)
-			control_node.connect("drag_in_progress", self._on_drag_in_progress)
-			control_node.connect("card_drag_ended", self._on_card_drag_ended)
-			control_node.connect("card_double_clicked", self._on_card_double_clicked)
-			# move card to tableau from game_scene
-			remove_child(card)
-			tableau_piles[pile_index].add_child(card)
-			card_deck.append(card)
-			# Tween into place
-			card.global_position = initial_position
-			var tween:Tween = get_tree().create_tween()
-			var target_position = tableau_piles[pile_index].global_position + Vector2(0, card_index * Enums.Y_OFFSET)
-			tween.tween_property(card, "global_position", target_position, animation_time*(card_index+1))
-			tween.play()
+
+	# TODO: WIP: ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	if prev_save_game_state and "tabl_cells" in prev_save_game_state:
+		# [1/3] FREE
+		for pile_index in range(prev_save_game_state.free_cells.size()):
+			var pile = prev_save_game_state.free_cells[pile_index]
+			if pile.size() > 0:
+				var curr_card = prev_save_game_state.free_cells[pile_index][0]
+				var card:Card = null
+				for deck_card in card_deck:
+					if deck_card.suit == curr_card.suit and deck_card.rank == curr_card.rank:
+						card = deck_card
+				if card:
+					var target_position = free_cells[pile_index].global_position + Vector2(Enums.CARD_POSITION.x, Enums.CARD_POSITION.y)
+					connect_and_tween_card(card, free_cells[pile_index], target_position, 0)
+				else:
+					print("ERROR: no card!")
+		# [2/3] FNDA
+		for pile_index in range(prev_save_game_state.fnda_cells.size()):
+			var num_cards = prev_save_game_state.fnda_cells[pile_index].size()
+			for card_index in range(num_cards):
+				var curr_card = prev_save_game_state.fnda_cells[pile_index][card_index]
+				var card:Card = null
+				for deck_card in card_deck:
+					if deck_card.suit == curr_card.suit and deck_card.rank == curr_card.rank:
+						card = deck_card
+				if card:
+					var target_position = fnda_cells[pile_index].global_position + Vector2(Enums.CARD_POSITION.x, Enums.CARD_POSITION.y)
+					connect_and_tween_card(card, fnda_cells[pile_index], target_position, card_index)
+				else:
+					print("ERROR: no card!")
+		# [3/3] TABL
+		for pile_index in range(prev_save_game_state.tabl_cells.size()):
+			var num_cards = prev_save_game_state.tabl_cells[pile_index].size()
+			for card_index in range(num_cards):
+				var curr_card = prev_save_game_state.tabl_cells[pile_index][card_index]
+				var card:Card = null
+				for deck_card in card_deck:
+					if deck_card.suit == curr_card.suit and deck_card.rank == curr_card.rank:
+						card = deck_card
+				if card:
+					var target_position = tabl_cells[pile_index].global_position + Vector2(0, card_index * Enums.Y_OFFSET)
+					connect_and_tween_card(card, tabl_cells[pile_index], target_position, card_index)
+				else:
+					print("ERROR: no card!")
+	else:
+		for pile_index in range(tabl_cells.size()):
+			var num_cards = num_cards_in_columns[pile_index]
+			for card_index in range(num_cards):
+				var card = card_deck[pile_index + card_index * tabl_cells.size()]  # Calculate index based on interleave
+				var target_position = tabl_cells[pile_index].global_position + Vector2(0, card_index * Enums.Y_OFFSET)
+				connect_and_tween_card(card, tabl_cells[pile_index], target_position, card_index)
 	
 	# STEP 5: Reset z-indexes
 	reset_card_z_indices()
 	
 	# STEP 6: Clear game props
-	if (prev_save_game_state and prev_save_game_state.game_props):
+	if prev_save_game_state and prev_save_game_state.game_props:
 		#print("DEBUG: prev_save_game_state[game_props]: ", prev_save_game_state["game_props"])
 		game_prop_timer = prev_save_game_state["game_props"]["timer"]
 		game_prop_moves = prev_save_game_state["game_props"]["moves"]
@@ -630,7 +702,10 @@ func deal_cards():
 		game_prop_timer = 0
 		game_prop_moves = 0
 		game_prop_score = 0
+	
+	# STEP 7:
 	update_game_props()
+	save_game_state()
 
 	# STEP 7: Hide face deal placeholder card ater cards have tweened	
 	await get_tree().create_timer(1.0).timeout
@@ -641,12 +716,18 @@ func _on_btn_debug_pressed():
 	sort_and_move_cards_to_foundation(Enums.Suit.DIAMONDS, fnda_cells[2])
 	sort_and_move_cards_to_foundation(Enums.Suit.HEARTS, fnda_cells[3])
 	await get_tree().create_timer(1.5).timeout
-	for pile_index in range(tableau_piles.size()):
-		var pile = tableau_piles[pile_index]
+	for pile_index in range(tabl_cells.size()):
+		var pile = tabl_cells[pile_index]
 		for card_index in range(pile.get_children().size()):
 			var pile_card = pile.get_child(card_index)
 			if pile_card is Card:
 				pile_card.position = Vector2(0, card_index * Enums.Y_OFFSET)
+
+func _on_btn_pressed_newgame():
+	# STEP 1: delete save file
+	DirAccess.remove_absolute(Enums.SAVE_GAME_PATH)
+	# STEP 2: deal	
+	deal_cards()
 
 func _on_btn_main_menu_pressed():
 	audio_btn_click.play()

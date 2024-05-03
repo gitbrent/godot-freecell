@@ -1,8 +1,8 @@
 extends Control
-class_name TableauPile
+class_name TableauCell
 
-signal card_hover_tabl_start(tabl_pile : TableauPile)
-signal card_hover_tabl_ended(tabl_pile : TableauPile)
+signal card_hover_tabl_start(tabl_pile : TableauCell)
+signal card_hover_tabl_ended(tabl_pile : TableauCell)
 
 @onready var panel_hover : Panel = $PanelHover
 @onready var panel_normal : Panel = $PanelNormal

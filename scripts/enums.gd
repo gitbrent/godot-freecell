@@ -1,7 +1,9 @@
 extends Node
 
-const CARD_POSITION = Vector2(3.0, 3.0)
+const CARD_POSITION : Vector2 = Vector2(3.0, 3.0)
 const Y_OFFSET : float = 45.0
+const SAVE_GAME_DB_VER : int = 20240501
+const SAVE_GAME_PATH : String = "user://savegame.save"
 
 enum SuitColor {
 	RED,

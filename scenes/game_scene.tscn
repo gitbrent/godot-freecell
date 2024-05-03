@@ -199,7 +199,7 @@ layout_mode = 2
 [node name="FoundationCell3" parent="TopContainer/FoundationPile" instance=ExtResource("7_iqgb2")]
 layout_mode = 2
 
-[node name="TableauPileCont" type="HBoxContainer" parent="."]
+[node name="TableauPile" type="HBoxContainer" parent="."]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -211,42 +211,42 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 130
 
-[node name="TableauPile0" parent="TableauPileCont" instance=ExtResource("10_xpokh")]
+[node name="TableauCell0" parent="TableauPile" instance=ExtResource("10_xpokh")]
 layout_mode = 2
 size_flags_horizontal = 1
 mouse_filter = 1
 
-[node name="TableauPile1" parent="TableauPileCont" instance=ExtResource("10_xpokh")]
+[node name="TableauCell1" parent="TableauPile" instance=ExtResource("10_xpokh")]
 layout_mode = 2
 size_flags_horizontal = 1
 mouse_filter = 1
 
-[node name="TableauPile2" parent="TableauPileCont" instance=ExtResource("10_xpokh")]
+[node name="TableauCell2" parent="TableauPile" instance=ExtResource("10_xpokh")]
 layout_mode = 2
 size_flags_horizontal = 1
 mouse_filter = 1
 
-[node name="TableauPile3" parent="TableauPileCont" instance=ExtResource("10_xpokh")]
+[node name="TableauCell3" parent="TableauPile" instance=ExtResource("10_xpokh")]
 layout_mode = 2
 size_flags_horizontal = 1
 mouse_filter = 1
 
-[node name="TableauPile4" parent="TableauPileCont" instance=ExtResource("10_xpokh")]
+[node name="TableauCell4" parent="TableauPile" instance=ExtResource("10_xpokh")]
 layout_mode = 2
 size_flags_horizontal = 1
 mouse_filter = 1
 
-[node name="TableauPile5" parent="TableauPileCont" instance=ExtResource("10_xpokh")]
+[node name="TableauCell5" parent="TableauPile" instance=ExtResource("10_xpokh")]
 layout_mode = 2
 size_flags_horizontal = 1
 mouse_filter = 1
 
-[node name="TableauPile6" parent="TableauPileCont" instance=ExtResource("10_xpokh")]
+[node name="TableauCell6" parent="TableauPile" instance=ExtResource("10_xpokh")]
 layout_mode = 2
 size_flags_horizontal = 1
 mouse_filter = 1
 
-[node name="TableauPile7" parent="TableauPileCont" instance=ExtResource("10_xpokh")]
+[node name="TableauCell7" parent="TableauPile" instance=ExtResource("10_xpokh")]
 layout_mode = 2
 size_flags_horizontal = 1
 mouse_filter = 1
