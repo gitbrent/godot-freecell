@@ -220,6 +220,7 @@ func _on_move_card_seq_tween_completed(src_card, tgt_card, free_cell, fnda_cell,
 	# STEP 2: If moving the last card in the sequence, reset the dragging cards array and other properties
 	if dragging_cards.size() > 0 and src_card == dragging_cards.back():
 		dragging_cards.clear()
+		hovered_tabl_pile = null # the control's hover fired while tween ran and ouse was over this TABL, so clear!
 		reset_card_z_indices()
 		game_prop_moves += 1
 		update_game_props()
@@ -323,6 +324,7 @@ func _on_card_drag_ended(card):
 					if get_card_count(cell) == 0:
 						total_free_cells += 1
 				if total_free_cells >= dragging_cards.size() - 1:
+					print("[TABL valid] Card can be placed on this empty tableau: ", hovered_tabl_pile)
 					move_card_sequence(null, null, null, hovered_tabl_pile)
 				else:
 					print("[hovered_tabl_pile] card cannot be placed here: ", hovered_tabl_pile)
@@ -450,9 +452,9 @@ func _on_card_double_clicked(card: Card):
 
 func _on_card_hover_tabl_start(pile: TableauCell):
 	# TODO: Only highlight when move is valid
-	if get_card_count(pile) == 0:
+	if get_card_count(pile) == 0 and dragging_cards.size() > 0:
 		hovered_tabl_pile = pile
-		#print("_on_card_hover_tabl_start")
+		#print("[_on_card_hover_tabl_start] SET hovered_tabl_pile: ", hovered_tabl_pile)
 		pile.highlight(true)
 
 func _on_card_hover_tabl_ended(pile: TableauCell):
@@ -737,6 +739,7 @@ func _on_btn_undo_pressed():
 	# TODO:
 	audio_card_nope.play()
 	print("TODO: implement UNDO!")
+	_on_btn_debug_pressed()
 
 func _on_btn_help_pressed():
 	help_scene.visible = true
