@@ -29,6 +29,10 @@ Godot FreeCell is a classic solitaire card game built with the Godot Engine, des
 - The objective is to move all cards to the foundation piles, sorting them by suit and in ascending order.
 - More detailed rules and history of the game can be found on [Wikipedia](https://en.wikipedia.org/wiki/FreeCell)
 
+## 🃏 Play Online
+
+- [Godot FreeCell Solitaire Online](https://gitbrent.itch.io/godot-freecell)
+
 ## 🔌 Installation
 
 To run FreeCell Solitaire on your local machine, you'll need to have Godot Engine installed. You can download Godot Engine from [here](https://godotengine.org/download).
