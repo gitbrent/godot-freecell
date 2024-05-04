@@ -65,7 +65,7 @@ func _ready():
 	# STEP 5: Connect menu buttons
 	main_menu.connect("button_pressed_newgame", self._on_btn_pressed_newgame)
 	main_menu.connect("button_pressed_debug", self._on_btn_debug_pressed)
-	game_panel_winner.connect("button_pressed_newgame", self.deal_cards)
+	game_panel_winner.connect("button_pressed_newgame", self._on_btn_pressed_newgame)
 	
 	# STEP 6: Set global vars
 	initial_position = placeholder_deal.global_position
@@ -417,40 +417,48 @@ func _on_card_hover_fnda_ended(fnda_cell: FoundationCell):
 	fnda_cell.highlight(false)
 
 func _on_card_double_clicked(card: Card):
+	var is_valid = false
+	
+	# STEP 1: ensure valid dbl-click source (only top card on TABL)
 	var pile_index = identify_card_pile(card)
 	if pile_index >= 0:
 		var pile = tabl_cells[pile_index]
 		if card == pile.get_children().back():  # Using .back() to get the last card in the pile
-			# Check for valid foundation moves
-			for fnda_cell in fnda_cells:
-				if get_card_count(fnda_cell) == 0 and card.rank == Enums.Rank.ACE:
-					# Move Ace to empty foundation cell
+			is_valid = true
+	elif card.find_parent("FreeCellPile"):
+		is_valid = true
+	
+	if is_valid:
+		# Check for valid foundation moves
+		for fnda_cell in fnda_cells:
+			if get_card_count(fnda_cell) == 0 and card.rank == Enums.Rank.ACE:
+				# Move Ace to empty foundation cell
+				dragging_cards = [card]
+				move_card_sequence(null, null, fnda_cell, null)
+				return
+			elif get_card_count(fnda_cell) > 0:
+				var top_fnda_card = get_top_fnda_card(fnda_cell)
+				if top_fnda_card.suit == card.suit and top_fnda_card.rank + 1 == card.rank:
+					# Sequentially correct card to non-empty foundation
 					dragging_cards = [card]
 					move_card_sequence(null, null, fnda_cell, null)
 					return
-				elif get_card_count(fnda_cell) > 0:
-					var top_fnda_card = get_top_fnda_card(fnda_cell)
-					if top_fnda_card.suit == card.suit and top_fnda_card.rank + 1 == card.rank:
-						# Sequentially correct card to non-empty foundation
-						dragging_cards = [card]
-						move_card_sequence(null, null, fnda_cell, null)
-						return
-			
-			# If no foundation move is made, check for FreeCell move
-			for free_cell in free_cells:
-				if get_card_count(free_cell) == 0:
-					dragging_cards = [card]
-					move_card_sequence(null, free_cell, null, null)
-					return
-			#print("[move-to-free] No available FreeCells")
-		else:
-			#print("[FYI] The card is not the top card of its pile and cannot be moved to a FreeCell.")
-			pass
+		
+		# If no foundation move is made, check for FreeCell move
+		for free_cell in free_cells:
+			if get_card_count(free_cell) == 0:
+				dragging_cards = [card]
+				move_card_sequence(null, free_cell, null, null)
+				return
 	else:
-		#print("[FYI] The card is not in a tableau pile.")
+		#print("[FYI] The card is not the top card of its pile and cannot be moved to a FreeCell.")
 		pass
 
 func _on_card_hover_tabl_start(pile: TableauCell):
+	# STEP 0: Bail; dont highlight if tween animation is the trigger
+	if is_tween_running:
+		return
+
 	# TODO: Only highlight when move is valid
 	if get_card_count(pile) == 0 and dragging_cards.size() > 0:
 		hovered_tabl_pile = pile
