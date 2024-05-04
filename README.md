@@ -83,4 +83,6 @@ Godot FreeCell is available under the MIT License, which allows for both persona
 
 - Game development powered by [Godot Engine](https://godotengine.org/).
 - Free assets used in this game were sourced from [itch.io](https://itch.io/).
+- Card sprites via [mreliptik.itch.io](https://mreliptik.itch.io/playing-cards-packs-52-cards)
+- GUI assets via [penzilla.itch.io](https://penzilla.itch.io/basic-gui-bundle)
 - A big thank you to the Godot and open-source communities for their invaluable resources and support.
