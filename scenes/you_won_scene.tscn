@@ -1,6 +1,6 @@
 [gd_scene load_steps=13 format=3 uid="uid://d36ntyouo8moq"]
 
-[ext_resource type="Script" path="res://scripts/you_won_scene.gd" id="1_pdn2y"]
+[ext_resource type="Script" uid="uid://cffo7ooawouse" path="res://scripts/you_won_scene.gd" id="1_pdn2y"]
 [ext_resource type="Texture2D" uid="uid://bb1u0gonhdusc" path="res://assets/winner/Banner_Green.png" id="3_cw3ul"]
 [ext_resource type="Texture2D" uid="uid://doccqluarp17a" path="res://assets/basic_gui/Box_Blue_Square.png" id="3_dmagh"]
 [ext_resource type="Texture2D" uid="uid://c207xeske16dq" path="res://assets/winner/color_star_1.png" id="3_tu6sr"]
@@ -63,7 +63,7 @@ tracks/2/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_yeov7"]
 _data = {
-"scale_star": SubResource("Animation_vp6hl")
+&"scale_star": SubResource("Animation_vp6hl")
 }
 
 [node name="you_won_scene" type="Control"]

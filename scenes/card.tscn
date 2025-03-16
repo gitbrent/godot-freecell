@@ -1,8 +1,8 @@
 [gd_scene load_steps=33 format=3 uid="uid://6ykkdeunbek6"]
 
-[ext_resource type="Script" path="res://scripts/card.gd" id="1_7ifcu"]
+[ext_resource type="Script" uid="uid://13eib513osh4" path="res://scripts/card.gd" id="1_7ifcu"]
 [ext_resource type="Texture2D" uid="uid://5ua6yri85q8k" path="res://assets/cards/back07.png" id="2_ylvg2"]
-[ext_resource type="Script" path="res://scripts/card_control.gd" id="3_lrmxn"]
+[ext_resource type="Script" uid="uid://dabxfty3qbglf" path="res://scripts/card_control.gd" id="3_lrmxn"]
 [ext_resource type="Texture2D" uid="uid://ktc86ygau5ll" path="res://assets/effects/rainbow-border-sprite-2.png" id="4_yi6hy"]
 [ext_resource type="Texture2D" uid="uid://cwkrfsmuu1d8o" path="res://assets/effects/border-sprite-sheet-green-4x2.png" id="5_mtrdd"]
 
@@ -51,7 +51,7 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_tf4mn"]
 _data = {
-"show_points": SubResource("Animation_04dup")
+&"show_points": SubResource("Animation_04dup")
 }
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vh0yb"]

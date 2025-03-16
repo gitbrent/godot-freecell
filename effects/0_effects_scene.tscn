@@ -2,10 +2,10 @@
 
 [ext_resource type="Texture2D" uid="uid://bc2n3phmju565" path="res://assets/buttons/ButtonText_Large_Green_Round.png" id="1_mkyje"]
 [ext_resource type="FontFile" uid="uid://b8wlkh3hxbgdn" path="res://assets/fonts/kirifont/KiriFont.ttf" id="2_rluxw"]
-[ext_resource type="Shader" path="res://effects/gdai_00.gdshader" id="3_fj11e"]
+[ext_resource type="Shader" uid="uid://csngn84qkguaj" path="res://effects/gdai_00.gdshader" id="3_fj11e"]
 [ext_resource type="StyleBox" uid="uid://c54keensvf1q3" path="res://styles/free_cell_border.tres" id="4_bhifl"]
 [ext_resource type="Texture2D" uid="uid://de4pqr8xuhqff" path="res://assets/cards/back01.png" id="5_m6ksv"]
-[ext_resource type="Script" path="res://effects/Card.gd" id="6_hgfms"]
+[ext_resource type="Script" uid="uid://clnlnx0cblkgr" path="res://effects/Card.gd" id="6_hgfms"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_85xvr"]
 particle_flag_disable_z = true

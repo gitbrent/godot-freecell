@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://fs2p2ny222je"]
 
-[ext_resource type="Script" path="res://scripts/help_scene.gd" id="1_tycfo"]
+[ext_resource type="Script" uid="uid://bbpx52o47geq8" path="res://scripts/help_scene.gd" id="1_tycfo"]
 [ext_resource type="Texture2D" uid="uid://cjn4wne0oa2wh" path="res://assets/basic_gui/Box_Blue_Rounded.png" id="2_86jhd"]
 [ext_resource type="Texture2D" uid="uid://c147h4e5kcsjd" path="res://assets/basic_gui/ButtonText_Large_Blue_Square.png" id="3_3gacm"]
 [ext_resource type="FontFile" uid="uid://dc4mvtwprqubx" path="res://assets/fonts/Acme-Regular.ttf" id="3_tkbc4"]

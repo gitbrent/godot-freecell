@@ -1,9 +1,9 @@
 [gd_scene load_steps=55 format=3 uid="uid://chwprjvrdjihp"]
 
-[ext_resource type="Script" path="res://scripts/free_cell.gd" id="1_pfu5x"]
+[ext_resource type="Script" uid="uid://dnn2ocgqvcde5" path="res://scripts/free_cell.gd" id="1_pfu5x"]
 [ext_resource type="Texture2D" uid="uid://5ua6yri85q8k" path="res://assets/cards/back07.png" id="2_gqg5f"]
 [ext_resource type="Texture2D" uid="uid://b2fww2ijpgm2u" path="res://assets/effects/flare_1.png" id="2_xfsnu"]
-[ext_resource type="Shader" path="res://effects/gdai_00.gdshader" id="3_jke44"]
+[ext_resource type="Shader" uid="uid://csngn84qkguaj" path="res://effects/gdai_00.gdshader" id="3_jke44"]
 [ext_resource type="StyleBox" uid="uid://c54keensvf1q3" path="res://styles/free_cell_border.tres" id="4_hcx6b"]
 [ext_resource type="Texture2D" uid="uid://bmx78t1wkh1ry" path="res://assets/effects/05-flames-border.png" id="6_6443v"]
 [ext_resource type="Texture2D" uid="uid://dkreatwqopy3y" path="res://assets/effects/16-green-star.png" id="7_ciyjd"]
